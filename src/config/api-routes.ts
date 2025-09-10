@@ -6,8 +6,8 @@ const POPULATE_PRODUCT = {
 
 export type ApiRoutesArgs = {
     ProductsList: {
-        page: number,
-        pageSize: number
+        page?: number,
+        pageSize?: number
     },
     ProductsDetails: {
         id: string

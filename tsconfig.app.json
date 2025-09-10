@@ -10,31 +10,10 @@
     ],
     "module": "ESNext",
     "skipLibCheck": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
-      "components": [
-        "components/*"
-      ],
-      "config": [
-        "config/*"
-      ],
-      "styles": [
-        "styles/*"
-      ],
-      "utils": [
-        "utils/*"
-      ],
-      "hooks": [
-        "hooks/*"
-      ],
-      "types": [
-        "types/*"
-      ],
-      "services": [
-        "services/*"
-      ],
-      "assets": [
-        "assets/*"
+      "@/*": [
+        "src/*"
       ]
     },
     "moduleResolution": "bundler",
