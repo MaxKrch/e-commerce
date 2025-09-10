@@ -32,6 +32,9 @@
       ],
       "services": [
         "services/*"
+      ],
+      "assets": [
+        "assets/*"
       ]
     },
     "moduleResolution": "bundler",
