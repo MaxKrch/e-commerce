@@ -19,7 +19,17 @@ const parseTsConfigPaths = (paths: Record<string, string[]>): Record<string, str
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  resolve: { 
+  resolve: {
     alias: parseTsConfigPaths(tsconfigApp.compilerOptions.paths),
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @use "styles/variables" as *;
+          @use "styles/mixins" as *;
+        `
+      }
+    }
+  }
 })
