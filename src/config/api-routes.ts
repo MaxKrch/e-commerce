@@ -4,7 +4,11 @@ const POPULATE_PRODUCT = {
     populate: ['images', 'productCategory']
 }
 
-export type ApiRoutesArgs = {
+export type ApiProductsArgs = {
+    Categories: {
+        page?: number,
+        pageSize?: number
+    },
     ProductsList: {
         page?: number,
         pageSize?: number
@@ -15,11 +19,24 @@ export type ApiRoutesArgs = {
 }
 
 export const apiRoutes = {
+    categories: {
+        list: ({
+            page = 1,
+            pageSize = 25,
+        }: ApiProductsArgs['Categories']) => {
+            const queryString = qs.stringify({
+                populate: POPULATE_PRODUCT,
+                pagination: { page, pageSize }
+            })
+
+            return `/product-categories?${queryString}`
+        }
+    },
     products: {
         list: ({
             page = 1,
-            pageSize = 25
-        }: ApiRoutesArgs['ProductsList']) => {
+            pageSize = 25,
+        }: ApiProductsArgs['ProductsList']) => {
             const queryString = qs.stringify({
                 populate: POPULATE_PRODUCT,
                 pagination: { page, pageSize }
@@ -28,7 +45,7 @@ export const apiRoutes = {
             return `/products?${queryString}`
         },
 
-        details: ({ id }: ApiRoutesArgs['ProductsDetails']) => {
+        details: ({ id }: ApiProductsArgs['ProductsDetails']) => {
             const queryString = qs.stringify({ populate: POPULATE_PRODUCT });
 
             return `/products/${id}?${queryString}`
