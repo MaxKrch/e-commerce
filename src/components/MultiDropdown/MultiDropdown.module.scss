@@ -1,0 +1,26 @@
+ .container {
+   width: $dropdown-width;
+ }
+
+ .options-container {
+   background: $dropdown-options-bg;
+   margin-top: $space-xxs;
+   box-shadow: $dropdown-options-shadow;
+ }
+
+ .option {
+   display: flex;
+   align-items: center;
+   padding: $space-s $space-xs;
+   width: 100%;
+   height: $dropdown-option-height;
+   cursor: pointer;
+
+   &_selected {
+     color: $dropdown-option-selected-color;
+   }
+
+   &:not(.option_selected):hover {
+     color: $dropdown-option-hover-color;
+   }
+ }
