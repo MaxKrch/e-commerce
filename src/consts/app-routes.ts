@@ -13,6 +13,10 @@ export const appRoutes = {
             create: (id: string) => `/products/${id}`
         },
     },
+    categories: {
+        mask: './categories',
+        create: () => '/categories'
+    },
     card: {
         mask: '/card',
         create: () => '/card'

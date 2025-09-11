@@ -1,4 +1,4 @@
-import { apiRoutes, type ApiProductsArgs } from "@/config/api-routes"
+import { apiRoutes, type ApiProductsArgs } from "@/consts/api-routes"
 import api from "./api-client"
 import type { StrapiResponse } from "@/types/strapi-api"
 import type { ProductCategory, ProductResponseFull, ProductResponseShort } from "@/types/product"
