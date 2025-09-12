@@ -17,9 +17,28 @@
     align-items: center;
     color: $pagination-color;
     cursor: pointer;
+    order: 4;
 
-    &__prev-icon {
-        transform: rotate(180deg);
+    &__prev {
+        order: 1;
+    
+        &-icon {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__next {
+        order: 7;
+    }
+
+    &:not(.page__prev, .page__next) {
+        &:first-of-type {
+            order: 2;
+        }
+
+        &:last-of-type {
+            order: 6;
+        }
     }
 
     &:hover:not(.current, .disabled) {
@@ -42,4 +61,12 @@
     width: #{$item-width / 2};
     display: flex;
     justify-content: center;
+
+    &__next {
+        order: 5;
+    }
+
+    &__prev{
+       order: 3; 
+    }
 }
