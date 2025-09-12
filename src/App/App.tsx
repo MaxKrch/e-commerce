@@ -1,13 +1,13 @@
 import cn from 'clsx'
 import styles from './App.module.scss'
 import { useEffect } from 'react'
-import productApi from '@/services/product-api'
-import AppErrorBoundory from '@/widgets/AppErrorBoundory'
 import { Outlet } from 'react-router-dom'
-import Header from '@/widgets/Header'
+import productApi from 'services/product-api'
+import AppErrorBoundory from './components/AppErrorBoundory'
+import Header from './components/Header'
 
 const App = () => {
-  useEffect(() => { productApi.getProductList({}).then(test => console.log(test)) }, [])
+  useEffect(() => { productApi.getProductList({ request: {} }).then(test => console.log(test)) }, [])
   return (
     <AppErrorBoundory>
       <div className={cn(styles['container'])}>

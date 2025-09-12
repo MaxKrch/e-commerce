@@ -18,7 +18,8 @@ $space-l: 18px;
 $space-m: 16px;
 $space-s: 14px;
 $space-xs: 12px;
-$space-xxs: 8px;
+$space-xxs: 10px;
+$space-xxxs: 8px;
 
 // Цвета шрифта 
 $text-primary: #000;
@@ -35,7 +36,8 @@ $shadow-bold: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
 // Общие размеры элементов
 $page-container-min-width: 320px;
 $page-container-max-width: 1240px;
-$page-container-width: 90%;
+$page-container-width: 100%;
+$page-container-padding-x: $space-xxs;
 
 $control-field-heihgt: 52px;
 $control-field-width: 300px;
@@ -107,6 +109,7 @@ $card-bg: #fff;
 $card-image-bg: #d9d9d9;
 $card-min-width: 300px;
 $cart-max-width: 350px;
+$card-shadow: $shadow-normal;
 
 // Переменные Dropdown 
 $dropdown-width: $control-field-width;

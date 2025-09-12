@@ -1,6 +1,4 @@
-import React from 'react';
-
-import Loader, {  LoaderProps } from './Loader';
+import Loader, { type LoaderProps } from './Loader';
 
 export default {
   title: 'Loader',
@@ -18,5 +16,5 @@ export default {
 };
 
 export const Default = (props: LoaderProps) => (
-  <Loader {...props}/>
+  <Loader {...props} />
 );

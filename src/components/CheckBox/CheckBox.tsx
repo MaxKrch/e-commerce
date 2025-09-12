@@ -1,5 +1,5 @@
 import React, { useCallback, type ChangeEvent } from 'react';
-import CheckIcon from '../icons/CheckIcon';
+import CheckIcon from 'components/icons/CheckIcon';
 import cn from 'clsx';
 import style from './CheckBox.module.scss'
 

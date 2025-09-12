@@ -1,5 +1,5 @@
 import React from 'react';
-import CheckBox, { CheckBoxProps } from './CheckBox';
+import CheckBox, { type CheckBoxProps } from './CheckBox';
 
 export default {
   title: 'CheckBox',
@@ -27,7 +27,7 @@ export default {
   }
 };
 
-export const Default = ({checked, ...props}: CheckBoxProps) => {
+export const Default = ({ checked, ...props }: CheckBoxProps) => {
   const [value, setValue] = React.useState<boolean | undefined>(checked)
   return <CheckBox {...props} checked={value} onChange={setValue} />
 };

@@ -10,10 +10,37 @@
     ],
     "module": "ESNext",
     "skipLibCheck": true,
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@/*": [
-        "src/*"
+      "App/*": [
+        "App/*"
+      ],
+      "assets/*": [
+        "assets/*"
+      ],
+      "components/*": [
+        "components/*"
+      ],
+      "config/*": [
+        "config/*"
+      ],
+      "const/*": [
+        "const/*"
+      ],
+      "hooks/*": [
+        "hooks/*"
+      ],
+      "services/*": [
+        "services/*"
+      ],
+      "styles/*": [
+        "styles/*"
+      ],
+      "types/*": [
+        "types/*"
+      ],
+      "utils/*": [
+        "utils/*"
       ]
     },
     "moduleResolution": "bundler",

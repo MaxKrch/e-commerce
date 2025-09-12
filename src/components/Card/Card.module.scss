@@ -1,0 +1,67 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: $space-xl;
+    background: $card-bg;
+    padding-bottom: $space-xl;
+    min-width: $card-min-width;
+    max-width: $cart-max-width;
+    width: $card-width;
+
+    &:hover {
+        box-shadow: $shadow-normal;
+    }
+}
+
+.img {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    background: $card-image-bg;
+
+    &__img {
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+        display: block;
+    }
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    padding: 0 $space-xs;
+    gap: $space-xxs;
+}
+
+.caption {
+    font-weight: 700;
+    font-size: $space-xs;
+    line-height: 130%;
+    color: $text-secondary;
+}
+
+.title {
+    line-height: 120%;
+}
+
+.subtitle {
+    line-height: 125%;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    vertical-align: center;
+    margin-top: $space-l;
+    padding: 0 $space-xs;
+
+    &__content {
+        font-weight: 700;
+        font-size: calc((var(--space-l) + var(--space-m)) / 2);
+        line-height: 122%;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+    }
+}

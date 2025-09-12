@@ -61,3 +61,11 @@
 }
 
 ;
+
+@mixin content-container {
+    max-width: $page-container-max-width;
+    min-width: $page-container-min-width;
+    width: $page-container-width;
+    padding: 0 $page-container-padding-x;
+    margin: auto;
+}

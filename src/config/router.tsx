@@ -1,14 +1,14 @@
 import { createBrowserRouter, Navigate, type RouteObject } from "react-router-dom";
-import App from "@/App";
-import { appRoutes } from "@/consts/app-routes";
-import PageErrorElement from "@/widgets/PageErrorElement";
-import MainPage from "@/App/pages/Main";
-import CategoriesPage from "@/App/pages/Categories";
-import ProductsPage from "@/App/pages/Products";
-import ProductDetailsPage from "@/App/pages/ProductDetails";
-import CartPage from "@/App/pages/Cart";
-import MyPage from "@/App/pages/My";
-import AboutPage from "@/App/pages/About";
+import { appRoutes } from "consts/app-routes";
+import App from "App";
+import PageErrorElement from "App/components/PageErrorElement";
+import MainPage from "App/pages/Main";
+import CategoriesPage from "App/pages/Categories";
+import ProductsPage from "App/pages/Products";
+import ProductDetailsPage from "App/pages/ProductDetails";
+import CartPage from "App/pages/Cart";
+import MyPage from "App/pages/My";
+import AboutPage from "App/pages/About";
 
 const routes: RouteObject[] = [
     {

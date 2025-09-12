@@ -1,24 +1,16 @@
 import React, { memo } from 'react';
-import Text from '../Text';
-import cn from 'classnames'
-import style from './Card.module.css'
+import Text from 'components/Text';
+import cn from 'clsx'
+import style from './Card.module.scss'
 
 export type CardProps = {
-    /** Дополнительный classname */
-    className?: string,
-    /** URL изображения */
     image: string;
-    /** Слот над заголовком */
-    captionSlot?: React.ReactNode;
-    /** Заголовок карточки */
     title: React.ReactNode;
-    /** Описание карточки */
     subtitle: React.ReactNode;
-    /** Содержимое карточки (футер/боковая часть), может быть пустым */
+    className?: string,
+    captionSlot?: React.ReactNode;
     contentSlot?: React.ReactNode;
-    /** Клик на карточку */
     onClick?: React.MouseEventHandler;
-    /** Слот для действия */
     actionSlot?: React.ReactNode;
 };
 
@@ -32,54 +24,51 @@ const Card: React.FC<CardProps> = ({
     actionSlot,
     className
 }) => {
-    return(
+    return (
         <article
-            className={cn(style['card'], className)} 
+            className={cn(style['card'], className)}
             onClick={onClick}
         >
-            <div className={cn(style['card-img__container'])}>
+            <div className={cn(style['img'])}>
                 <img
-                    className={cn(style['card-img__img'])} 
-                    src={image} 
-                    alt={title ? title.toString() : 'Card image'} 
+                    className={cn(style['img__img'])}
+                    src={image}
+                    alt={title ? title.toString() : 'Card image'}
                 />
             </div>
- 
-            <div className={cn(style['card-body'])}>
-                <main className={cn(style['card-content'])}>
-                    {captionSlot &&
-                        <div className={cn(style['card-caption'])}>
-                            {captionSlot}
-                        </div>
-                    }
-                    <Text
-                        maxLines={2}
-                        view='p-20'
-                        weight='bold'
-                        color='primary' 
-                        className={cn(style['card-title'])}
-                    >
-                        {title}
-                    </Text>
-                    <Text 
-                        maxLines={3} 
-                        view='p-16'
-                        weight='normal'
-                        color='secondary'
-                        className={cn(style['card-subtitle'])}
-                    >
-                        {subtitle}
-                    </Text>
-                </main>
-                <footer className={cn(style['card-footer'])}>
-                    <div className={cn(style['card-footer__content'])}>
-                        {contentSlot}
+            <main className={cn(style['body'])}>
+                {captionSlot &&
+                    <div className={cn(style['caption'])}>
+                        {captionSlot}
                     </div>
-                    <div className={cn(style['card-footer__action'])}>
-                        {actionSlot} 
-                    </div>               
-                </footer>
-            </div>
+                }
+                <Text
+                    maxLines={2}
+                    view='p-20'
+                    weight='bold'
+                    color='primary'
+                    className={cn(style['title'])}
+                >
+                    {title}
+                </Text>
+                <Text
+                    maxLines={3}
+                    view='p-16'
+                    weight='normal'
+                    color='secondary'
+                    className={cn(style['subtitle'])}
+                >
+                    {subtitle}
+                </Text>
+            </main>
+            <footer className={cn(style['footer'])}>
+                <div className={cn(style['footer__content'])}>
+                    {contentSlot}
+                </div>
+                <div className={cn(style['footer__action'])}>
+                    {actionSlot}
+                </div>
+            </footer>
         </article>
     )
 };

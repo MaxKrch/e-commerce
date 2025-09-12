@@ -1,6 +1,4 @@
-import React from 'react';
-
-import Text, { TextProps } from './Text';
+import Text, { type TextProps } from './Text';
 
 export default {
   title: 'Text',
@@ -16,17 +14,17 @@ export default {
     },
     tag: {
       options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'p', 'span'],
-      mapping:  ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'p', 'span'],
+      mapping: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'p', 'span'],
       control: 'select'
     },
     weight: {
       options: ['normal', 'bold'],
-      mapping:  ['normal', 'bold'],
+      mapping: ['normal', 'bold'],
       control: 'select'
     },
     color: {
       options: ['primary', 'secondary', 'accent'],
-      mapping:  ['primary', 'secondary', 'accent'],
+      mapping: ['primary', 'secondary', 'accent'],
       control: 'select'
     },
     children: {
@@ -37,5 +35,5 @@ export default {
 };
 
 export const Default = (props: TextProps) => (
-  <Text {...props}/>
+  <Text {...props} />
 );

@@ -1,8 +1,8 @@
 import cn from 'clsx';
 import React from 'react';
 import style from './Button.module.scss';
-import Loader from '@/components/Loader'
-import Text from '@/components/Text';
+import Loader from 'components/Loader'
+import Text from 'components/Text';
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   loading?: boolean;

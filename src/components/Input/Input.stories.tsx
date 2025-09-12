@@ -1,6 +1,5 @@
-import React from 'react';
 import ArrowDownIcon from '../icons/ArrowDownIcon';
-import Input, { InputProps } from './Input';
+import Input, { type InputProps } from './Input';
 
 export default {
   title: 'Input',
@@ -33,5 +32,5 @@ export default {
 };
 
 export const Default = (props: InputProps) => (
-    <Input {...props} onChange={()=> {}} afterSlot={<ArrowDownIcon color="secondary" />}/>
+  <Input {...props} onChange={() => { }} afterSlot={<ArrowDownIcon color="secondary" />} />
 );

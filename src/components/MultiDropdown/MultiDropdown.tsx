@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Input from '../Input';
+import Input from 'components/Input';
 import cn from 'clsx';
 import style from './MultiDropdown.module.scss'
-import ArrowDownIcon from '../icons/ArrowDownIcon';
+import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 
 export type Option = {
   key: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import MultiDropdown, { MultiDropdownProps, Option } from './MultiDropdown';
+import MultiDropdown, { type MultiDropdownProps, type Option } from './MultiDropdown';
 
 const OPTIONS = [
   { key: 'msk', value: 'Moscow' },
@@ -39,7 +39,7 @@ export const Default = (props: MultiDropdownProps) => {
       options={OPTIONS}
       onChange={setValue}
       value={value}
-      getTitle={(values: Option[]) => values.length === 0 ? 'Выберите города': values.map(({ value }) => value).join(', ')}
-  />
+      getTitle={(values: Option[]) => values.length === 0 ? 'Выберите города' : values.map(({ value }) => value).join(', ')}
+    />
   );
 };
