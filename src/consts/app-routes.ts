@@ -17,7 +17,7 @@ export const appRoutes = {
         },
     },
     categories: {
-        mask: './categories',
+        mask: '/categories',
         create: () => '/categories',
         title: 'Categories',
     },

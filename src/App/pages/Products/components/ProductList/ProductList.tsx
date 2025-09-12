@@ -11,9 +11,10 @@ import { clsx } from "clsx";
 
 type ProductListProps = {
     products: ProductResponseShort[];
+    total?: number
 }
 
-const ProductList = ({ products }: ProductListProps) => {
+const ProductList = ({ products, total }: ProductListProps) => {
     const navigate = useNavigate()
     const handleCartClick = useCallback((id: ProductResponseShort['id']) => {
         navigate(`${appRoutes.products.details.create(id)}`)
@@ -38,7 +39,7 @@ const ProductList = ({ products }: ProductListProps) => {
                     color="secondary"
                     className={clsx(style['count__size'])}
                 >
-                    {products.length}
+                    {total || products.length}
                 </Text>
             </div>
             <ul className={clsx(style['list'])}>
@@ -50,7 +51,7 @@ const ProductList = ({ products }: ProductListProps) => {
                             captionSlot={product.images[0].caption}
                             title={product.title}
                             subtitle={product.description}
-                            contentSlot={product.price}
+                            contentSlot={`$${product.price}`}
                             onClick={() => handleCartClick(product.id)}
                             actionSlot={
                                 <Button onClick={() => handleButtonClick(product.id)}>

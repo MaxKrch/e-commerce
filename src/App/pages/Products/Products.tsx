@@ -19,6 +19,7 @@ const ProductsPage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
     const [pageCount, setPageCount] = useState<number | null>(null);
+    const [productsTotal, setProductsTotal] = useState<number | null>(null);
     const lastRequestSignal = useRef<AbortController | null>(null)
 
     const handleChangePage = useCallback((page: number) => {
@@ -53,6 +54,7 @@ const ProductsPage = () => {
                     if (isStrapiSuccessResponse<ProductResponseShort[]>(response.data)) {
                         setPageCount(response.data.meta.pagination.pageCount);
                         setProducts(response.data.data);
+                        setProductsTotal(response.data.meta.pagination.total)
                     }
                 }
             } catch (err) {
@@ -72,7 +74,10 @@ const ProductsPage = () => {
             />
             <ProductSearch onSearch={() => { }} />
             <ProductFilter />
-            <ProductList products={products} />
+            <ProductList 
+                products={products}
+                total={productsTotal}
+            />
             <Pagination
                 currentPage={currentPage}
                 pageCount={pageCount}
