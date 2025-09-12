@@ -1,7 +1,7 @@
 import Button from "components/Button"
 import Input from "components/Input"
 import Text from "components/Text"
-import style from './Search.module.scss
+import style from './Search.module.scss'
 import { useMemo, type FC } from "react"
 
 type SearchProps = {
