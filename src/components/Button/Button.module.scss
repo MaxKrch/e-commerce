@@ -6,7 +6,8 @@
     border: 1px solid transparent;
     border-radius: $button-border-radius;
     padding: $button-padding-x $button-padding-y;
-    min-height: $button-height;
+    height: $button-height;
+    white-space: nowrap;
     cursor: pointer;
 }
 

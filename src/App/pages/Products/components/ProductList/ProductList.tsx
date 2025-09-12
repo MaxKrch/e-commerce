@@ -6,6 +6,8 @@ import { useCallback } from "react";
 import { appRoutes } from "consts/app-routes";
 import Card from "components/Card";
 import Button from "components/Button";
+import style from './ProductList.module.scss';
+import { clsx } from "clsx";
 
 type ProductListProps = {
     products: ProductResponseShort[];
@@ -17,24 +19,33 @@ const ProductList = ({ products }: ProductListProps) => {
         navigate(`${appRoutes.products.details.create(id)}`)
     }, [products])
 
-    const handleButtonClick = useCallback((id: ProductResponseShort['id']) => {
+    const handleButtonClick = useCallback((_id: ProductResponseShort['id']) => {
 
     }, [products])
 
     return (
-        <div>
-            <div>
-                <Text>
+        <div className={clsx(style['container'])}>
+            <div className={clsx(style['count'])}>
+                <Text
+                    color="primary"
+                    weight="bold"
+                    className={clsx(style['count__title'])}
+                >
                     Total products
                 </Text>
-                <Text>
+                <Text
+                    view="p-20"
+                    color="secondary"
+                    className={clsx(style['count__size'])}
+                >
                     {products.length}
                 </Text>
             </div>
-            <ul>
+            <ul className={clsx(style['list'])}>
                 {products.map(product => (
                     <li key={product.id}>
                         <Card
+                            className={clsx(style['card'])}
                             image={product.images[0].url}
                             captionSlot={product.images[0].caption}
                             title={product.title}

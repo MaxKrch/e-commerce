@@ -108,7 +108,8 @@ $checkbox-size: 40px;
 $card-bg: #fff;
 $card-image-bg: #d9d9d9;
 $card-min-width: 300px;
-$cart-max-width: 350px;
+$cart-max-width: 600px;
+$card-height: 100%;
 $card-shadow: $shadow-normal;
 
 // Переменные Dropdown 
@@ -121,3 +122,8 @@ $dropdown-option-selected-color: $text-accent;
 
 // Переменные Loader 
 $loader-default-color: $brand;
+
+// Переменные Pagination
+$pagination-color: #151411;
+$item-width: 38px;
+$item-height: 42px;

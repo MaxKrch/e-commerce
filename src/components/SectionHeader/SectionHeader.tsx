@@ -22,6 +22,7 @@ const SectionHeader: FC<SectionHeaderProps> = ({
             <Text
                 tag="h1"
                 view="title"
+                color="primary"
                 weight="bold"
                 className={clsx(
                     style['title']
@@ -30,6 +31,7 @@ const SectionHeader: FC<SectionHeaderProps> = ({
                 {title}
             </Text>
             <Text
+                color="secondary"
                 view="p-20"
                 className={clsx(
                     style['content']

@@ -1,5 +1,7 @@
+import { clsx } from "clsx";
 import Search from "components/Search";
 import { useCallback, useState } from "react";
+import style from './ProductSearch.module.scss'
 
 export type ProductSearchProps = {
     onSearch: (value: string) => void
@@ -20,12 +22,14 @@ const ProductSearch = ({
     }, [value])
 
     return (
-        <Search
-            value={value}
-            onChangeValue={handleChange}
-            onSearch={handleSearch}
-            placeholder="Search product"
-        />
+        <div className={clsx(style['search'])}>
+            <Search
+                value={value}
+                onChangeValue={handleChange}
+                onSearch={handleSearch}
+                placeholder="Search product"
+            />
+        </div>
     )
 
 }

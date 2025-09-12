@@ -1,6 +1,4 @@
 $max-width: 650px;
-$gap: $space-xxxl;
-$title-font-size: 44px;
 
 .section-header {
     max-width: $max-width;
@@ -12,7 +10,7 @@ $title-font-size: 44px;
 
     @include tablet-up {
         padding: 50px 0;
-        gap: $gap;
+        gap: $space-xxxl;
     }
 
     @include laptop-up {
@@ -20,15 +18,9 @@ $title-font-size: 44px;
     }
 }
 
-.title {
-    height: $title-font-size;
-    color: $text-primary;
-}
-
 .content {
     height: 0;
     overflow: hidden;
-    color: $text-secondary;
     text-align: center;
 
     @include tablet-up {

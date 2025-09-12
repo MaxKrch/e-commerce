@@ -17,38 +17,52 @@ const TEXT_DATA = {
 const ProductsPage = () => {
     const [products, setProducts] = useState<ProductResponseShort[]>([]);
     const [searchParams, setSearchParams] = useSearchParams()
-    const currentPage = useRef<string | null>(searchParams.get('page'))
-
-    const handleChangePage = useCallback((page: string) => {
-        if (page !== currentPage.current) {
-            const newSearchParams = new URLSearchParams(searchParams);
-            newSearchParams.set('page', page)
-            setSearchParams(newSearchParams)
-            currentPage.current = page;
-        }
-    }, [currentPage.current, searchParams])
-
+    const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
+    const [pageCount, setPageCount] = useState<number | null>(null);
     const lastRequestSignal = useRef<AbortController | null>(null)
+
+    const handleChangePage = useCallback((page: number) => {
+        if (page !== currentPage) {
+            const newSearchParams = new URLSearchParams(searchParams);
+            newSearchParams.set('page', `${page}`)
+            setSearchParams(newSearchParams)
+            setCurrentPage(page);
+        }
+    }, [currentPage, searchParams, setSearchParams])
+
+
     const abortLastRequest = useCallback(() => {
         if (lastRequestSignal.current) {
             lastRequestSignal.current.abort()
         }
-    }, [lastRequestSignal.current])
+    }, [])
 
     useEffect(() => {
         const getProducts = async () => {
             abortLastRequest()
-            const response = await productApi.getProductList({ request: { page: Number(currentPage.current ?? 1) } })
-            if (response instanceof Error) {
-                setProducts([])
-            } else {
-                if (isStrapiSuccessResponse<ProductResponseShort[]>(response.data)) setProducts(response.data.data)
+            lastRequestSignal.current = new AbortController()
+            try {
+                const response = await productApi.getProductList({
+                    request: { page: currentPage },
+                    signal: lastRequestSignal.current.signal
+                })
+
+                if (response instanceof Error) {
+                    setProducts([])
+                } else {
+                    if (isStrapiSuccessResponse<ProductResponseShort[]>(response.data)) {
+                        setPageCount(response.data.meta.pagination.pageCount);
+                        setProducts(response.data.data);
+                    }
+                }
+            } catch (err) {
+                if (err instanceof Error && err.name !== 'AbortError') setProducts([])
             }
         }
         getProducts()
 
         return () => abortLastRequest()
-    }, [currentPage.current])
+    }, [currentPage])
 
     return (
         <div>
@@ -60,7 +74,8 @@ const ProductsPage = () => {
             <ProductFilter />
             <ProductList products={products} />
             <Pagination
-                currentPage={currentPage.current}
+                currentPage={currentPage}
+                pageCount={pageCount}
                 onClick={handleChangePage}
             />
         </div>

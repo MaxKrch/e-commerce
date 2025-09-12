@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 54px 0 108px;
+}
+
+.list {
+    display: contents;
+}
+
+.page {
+    width: $item-width;
+    height: $item-height;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $pagination-color;
+    cursor: pointer;
+
+    &__prev-icon {
+        transform: rotate(180deg);
+    }
+
+    &:hover:not(.current, .disabled) {
+        background: $brand-hover;
+    }
+}
+
+.current {
+    background: $brand;
+    color: #fff;
+    cursor: auto;
+}
+
+.disabled {
+    color: $brand-disabled;
+    cursor: auto;
+}
+
+.elipses {
+    width: #{$item-width / 2};
+    display: flex;
+    justify-content: center;
+}
