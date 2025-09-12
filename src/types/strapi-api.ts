@@ -9,19 +9,26 @@ type MetaResponse<T> = T extends Array<any>
     ? { pagination: StrapiPagination }
     : {}
 
-export type StrapiResponse<T> =
-    | {
-        data: T,
-        meta: MetaResponse<T>,
-        error: never
+type StrapiResponseSuccess<T> = {
+    data: T,
+    meta: MetaResponse<T>,
+    error: never
+}
+
+type StrapiResponseError = {
+    data: {}
+    meta: never,
+    error: {
+        status: number,
+        name: string,
+        message: string,
+        details?: {}
     }
-    | {
-        data: {}
-        meta: never,
-        error: {
-            status: number,
-            name: string,
-            message: string,
-            details?: {}
-        }
-    }
+}
+
+export type StrapiResponse<T> = StrapiResponseSuccess<T> | StrapiResponseError
+
+export function isStrapiSuccessResponse<T>(response: StrapiResponse<T>): response is StrapiResponseSuccess<T> {
+    return !('error' in response)
+        ;
+}

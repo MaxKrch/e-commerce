@@ -25,18 +25,21 @@ const Card: React.FC<CardProps> = ({
     className
 }) => {
     return (
-        <article
-            className={cn(style['card'], className)}
-            onClick={onClick}
-        >
-            <div className={cn(style['img'])}>
+        <article className={cn(style['card'], className)}>
+            <div
+                className={cn(style['img'])}
+                onClick={onClick}
+            >
                 <img
                     className={cn(style['img__img'])}
                     src={image}
                     alt={title ? title.toString() : 'Card image'}
                 />
             </div>
-            <main className={cn(style['body'])}>
+            <main
+                className={cn(style['body'])}
+                onClick={onClick}
+            >
                 {captionSlot &&
                     <div className={cn(style['caption'])}>
                         {captionSlot}

@@ -35,7 +35,8 @@ export type ProductResponseShort = {
     isInStock: boolean,
     createdAt: string,
     updatedAt: string,
-    publishedAt: string
+    publishedAt: string,
+    images: Image[]
 }
 
 export type ProductResponseFull = {

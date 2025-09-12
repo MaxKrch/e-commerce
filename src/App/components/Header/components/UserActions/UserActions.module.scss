@@ -1,0 +1,16 @@
+$actions-width: 70px;
+
+.actions {
+    width: $actions-width;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include tablet-up() {
+        order: 2;
+    }
+}
+
+.action:hover {
+    color: $brand-hover
+}

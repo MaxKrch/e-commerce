@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 @mixin mobile-up {
     @media screen and (min-width: $breakpoint-phone) {
         @content

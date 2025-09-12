@@ -1,8 +1,7 @@
 import qs from 'qs'
 
-const POPULATE_PRODUCT = {
-    populate: ['images', 'productCategory']
-}
+const populate = ['images', 'productCategory']
+
 
 export type ApiProductsArgs = {
     Categories: {
@@ -25,7 +24,7 @@ export const apiRoutes = {
             pageSize = 25,
         }: ApiProductsArgs['Categories']) => {
             const queryString = qs.stringify({
-                populate: POPULATE_PRODUCT,
+                populate,
                 pagination: { page, pageSize }
             })
 
@@ -38,7 +37,7 @@ export const apiRoutes = {
             pageSize = 25,
         }: ApiProductsArgs['ProductsList']) => {
             const queryString = qs.stringify({
-                populate: POPULATE_PRODUCT,
+                populate,
                 pagination: { page, pageSize }
             })
 
@@ -46,7 +45,7 @@ export const apiRoutes = {
         },
 
         details: ({ id }: ApiProductsArgs['ProductsDetails']) => {
-            const queryString = qs.stringify({ populate: POPULATE_PRODUCT });
+            const queryString = qs.stringify({ populate });
 
             return `/products/${id}?${queryString}`
         },

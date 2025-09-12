@@ -1,0 +1,8 @@
+$logo-width: 130px;
+
+.logo {
+    width: $logo-width;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
