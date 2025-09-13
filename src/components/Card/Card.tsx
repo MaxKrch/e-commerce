@@ -1,56 +1,59 @@
 import React, { memo } from 'react';
 import Text from 'components/Text';
-import cn from 'clsx'
+import clsx from 'clsx'
 import style from './Card.module.scss'
+import type { ProductResponseShort } from 'types/product';
 
 export type CardProps = {
-    image: string;
-    title: React.ReactNode;
-    subtitle: React.ReactNode;
+    display?: 'full' | 'preview',
+    product: ProductResponseShort;
     className?: string,
-    captionSlot?: React.ReactNode;
-    contentSlot?: React.ReactNode;
     onClick?: React.MouseEventHandler;
-    actionSlot?: React.ReactNode;
+    captionSlot?: React.ReactNode;
+    contentSlot?: (product: ProductResponseShort) => React.ReactNode;
+    actionSlot?: (id: ProductResponseShort['documentId']) => React.ReactNode;
 };
 
 const Card: React.FC<CardProps> = ({
-    image,
-    captionSlot,
-    title,
-    subtitle,
-    contentSlot,
+    display = 'preview',
+    product,
     onClick,
+    captionSlot,
+    contentSlot,
     actionSlot,
     className
 }) => {
+    const {
+        images,
+        description,
+        documentId: id,
+        title,
+    } = product;
     return (
-        <article className={cn(style['card'], className)}>
+        <article className={clsx(style['card'], className)}>
             <div
-                className={cn(style['img'])}
+                className={clsx(style['img'])}
                 onClick={onClick}
             >
                 <img
-                    className={cn(style['img__img'])}
-                    src={image}
+                    className={clsx(style['img__img'])}
+                    src={images[0].url}
                     alt={title ? title.toString() : 'Card image'}
                 />
             </div>
             <main
-                className={cn(style['body'])}
+                className={clsx(style['body'])}
                 onClick={onClick}
             >
-                {captionSlot &&
-                    <div className={cn(style['caption'])}>
-                        {captionSlot}
-                    </div>
-                }
+                <div className={clsx(style['caption-slot'])}>
+                    {captionSlot}
+                </div>
                 <Text
                     maxLines={2}
                     view='p-20'
                     weight='bold'
                     color='primary'
-                    className={cn(style['title'])}
+                    className={clsx(style['title'])}
                 >
                     {title}
                 </Text>
@@ -59,17 +62,16 @@ const Card: React.FC<CardProps> = ({
                     view='p-16'
                     weight='normal'
                     color='secondary'
-                    className={cn(style['subtitle'])}
                 >
-                    {subtitle}
+                    {description}
                 </Text>
             </main>
-            <footer className={cn(style['footer'])}>
-                <div className={cn(style['footer__content'])}>
-                    {contentSlot}
+            <footer className={clsx(style['footer'], style[display])}>
+                <div className={clsx(style['content-slot'])}>
+                    {contentSlot && contentSlot(product)}
                 </div>
-                <div className={cn(style['footer__action'])}>
-                    {actionSlot}
+                <div className={clsx(style['action-slot'])}>
+                    {actionSlot && actionSlot(id)}
                 </div>
             </footer>
         </article>

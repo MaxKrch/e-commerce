@@ -5,6 +5,9 @@ import productApi from "services/product-api";
 import type { ProductResponseFull, ProductResponseShort } from "types/product";
 import { isStrapiSuccessResponse } from "types/strapi-api";
 import { metaData } from "./config";
+import ProductCard from "./components/ProductCard";
+import RelatedProducts from "./components/RelatedProducts";
+import StepBack from "./components/StepBack";
 
 const ProductDetailsPage = () => {
     const params = useParams()
@@ -27,7 +30,9 @@ const ProductDetailsPage = () => {
         const requestProduct = async () => {
             if (!params.id) return;
 
-            clearProductAbortCntrl()
+            clearProductAbortCntrl();
+            setProduct(null);
+            setRelatedProducts(null)
             productAbortCntr.current = new AbortController()
 
             try {
@@ -110,6 +115,9 @@ const ProductDetailsPage = () => {
                     {metaData.title(product?.title)}
                 </title>
             </Helmet>
+            <StepBack />
+            {product && <ProductCard product={product} />}
+            {relatedProducts && <RelatedProducts products={relatedProducts} />}
 
         </div>
     )

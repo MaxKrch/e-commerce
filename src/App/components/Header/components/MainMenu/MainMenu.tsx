@@ -15,8 +15,10 @@ const MainMenu = () => {
         <nav className={clsx(style['menu'])}>
             {AppMenu.map(item => (
                 <NavLink
+                    key={item.path}
                     to={item.path}
                     className={classes}
+                    end
                 >
                     <Text view="p-18">
                         {item.title}

@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import { isStrapiSuccessResponse } from "types/strapi-api";
 import ProductList from "./components/ProductList";
 import Pagination from "components/Pagination";
-import { metaData, textData } from "./constants";
+import { metaData, textData } from "./config";
 import { Helmet } from "react-helmet-async";
 
 
@@ -20,6 +20,7 @@ const ProductsPage = () => {
     const [pageCount, setPageCount] = useState<number | undefined>(undefined);
     const [productsTotal, setProductsTotal] = useState<number | undefined>(undefined);
     const lastRequestSignal = useRef<AbortController | null>(null)
+    const [_requestError, setRequestError] = useState<Error | null>(null)
 
     const handleChangePage = useCallback((page: number) => {
         if (page !== currentPage) {
@@ -41,6 +42,7 @@ const ProductsPage = () => {
         const getProducts = async () => {
             abortLastRequest()
             lastRequestSignal.current = new AbortController()
+
             try {
                 const response = await productApi.getProductList({
                     request: {
@@ -51,16 +53,19 @@ const ProductsPage = () => {
                 })
 
                 if (response instanceof Error) {
-                    setProducts([])
-                } else {
-                    if (isStrapiSuccessResponse<ProductResponseShort[]>(response.data)) {
-                        setPageCount(response.data.meta.pagination.pageCount);
-                        setProducts(response.data.data);
-                        setProductsTotal(response.data.meta.pagination.total)
-                    }
+                    throw response
                 }
+
+                if (!isStrapiSuccessResponse<ProductResponseShort[]>(response.data)) {
+                    throw new Error('Unknown Error')
+                }
+
+                setPageCount(response.data.meta.pagination.pageCount);
+                setProducts(response.data.data);
+                setProductsTotal(response.data.meta.pagination.total)
+
             } catch (err) {
-                if (err instanceof Error && err.name !== 'AbortError') setProducts([])
+                if (err instanceof Error && err.name !== 'AbortError') setRequestError(err)
             }
         }
         getProducts()
@@ -72,12 +77,12 @@ const ProductsPage = () => {
         <div>
             <Helmet>
                 <title>
-                    {metaData.title}
+                    {metaData.title()}
                 </title>
             </Helmet>
             <SectionHeader
-                title={textData.title}
-                content={textData.description}
+                title={textData.title()}
+                content={textData.description()}
             />
             <ProductSearch onSearch={() => { }} />
             <ProductFilter />

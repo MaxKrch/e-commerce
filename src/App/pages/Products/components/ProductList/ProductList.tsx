@@ -1,13 +1,11 @@
 import type { ProductResponseShort } from "types/product"
 import type { ProductListProps } from ".";
 import Text from "components/Text";
-import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
-import { appRoutes } from "constants/app-routes";
-import Card from "components/Card";
+import { memo, useCallback } from "react";
 import Button from "components/Button";
 import style from './ProductList.module.scss';
 import { clsx } from "clsx";
+import CardList from "components/CardList";
 
 type ProductListProps = {
     products: ProductResponseShort[];
@@ -15,14 +13,24 @@ type ProductListProps = {
 }
 
 const ProductList = ({ products, total }: ProductListProps) => {
-    const navigate = useNavigate()
-    const handleCartClick = useCallback((id: ProductResponseShort['id']) => {
-        navigate(`${appRoutes.products.details.create(id)}`)
-    }, [products])
+    const handleClick = useCallback((_id: ProductResponseShort['documentId']) => {
+    }, [])
 
-    const handleButtonClick = useCallback((_id: ProductResponseShort['id']) => {
+    const actionSlot = useCallback((id: ProductResponseShort['documentId']) => (
+        <Button onClick={() => handleClick(id)}>
+            Add to Cart
+        </Button>
+    ), [handleClick])
 
-    }, [products])
+    const contentSlot = useCallback((product: ProductResponseShort) => (
+        <Text
+            color="primary"
+            view="p-18"
+            weight="bold"
+        >
+            ${product.price}
+        </Text>
+    ), [])
 
     return (
         <div className={clsx(style['container'])}>
@@ -42,28 +50,15 @@ const ProductList = ({ products, total }: ProductListProps) => {
                     {total || products.length}
                 </Text>
             </div>
-            <ul className={clsx(style['list'])}>
-                {products.map(product => (
-                    <li key={product.id}>
-                        <Card
-                            className={clsx(style['card'])}
-                            image={product.images[0].url}
-                            captionSlot={product.images[0].caption}
-                            title={product.title}
-                            subtitle={product.description}
-                            contentSlot={`$${product.price}`}
-                            onClick={() => handleCartClick(product.id)}
-                            actionSlot={
-                                <Button onClick={() => handleButtonClick(product.id)}>
-                                    Add to Cart
-                                </Button>
-                            }
-                        />
-                    </li>
-                ))}
-            </ul>
+            <CardList
+                display="preview"
+                products={products}
+                contentSlot={contentSlot}
+                actionSlot={actionSlot}
+            />
         </div>
     )
 }
 
-export default ProductList;
+ProductList.displayName = "ProductList"
+export default memo(ProductList);

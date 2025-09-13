@@ -1,5 +1,5 @@
 import cn from 'clsx';
-import React from 'react';
+import React, { memo } from 'react';
 import style from './Button.module.scss';
 import Loader from 'components/Loader'
 import Text from 'components/Text';
@@ -47,6 +47,7 @@ const Button: React.FC<ButtonProps> = ({
   )
 };
 
-export default Button;
+Button.displayName = "Button"
+export default memo(Button);
 
 

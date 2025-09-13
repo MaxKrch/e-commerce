@@ -24,6 +24,7 @@ const ProductSearch = ({
     return (
         <div className={clsx(style['search'])}>
             <Search
+                fullscreen={true}
                 value={value}
                 onChangeValue={handleChange}
                 onSearch={handleSearch}

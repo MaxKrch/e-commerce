@@ -12,7 +12,7 @@ export const appRoutes = {
         },
         details: {
             mask: '/products/:id',
-            create: (id: ProductResponseShort['id']) => `/products/${id}`,
+            create: (id: ProductResponseShort['documentId']) => `/products/${id}`,
         },
     },
     categories: {

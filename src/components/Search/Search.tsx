@@ -1,11 +1,11 @@
 import Button from "components/Button"
 import Input from "components/Input"
-import Text from "components/Text"
 import style from './Search.module.scss'
 import { useMemo, type FC } from "react"
 import clsx from "clsx"
 
 type SearchProps = {
+    fullscreen?: boolean,
     placeholder?: string,
     minSearchLength?: number,
     value: string,
@@ -14,6 +14,7 @@ type SearchProps = {
 }
 
 const Search: FC<SearchProps> = ({
+    fullscreen,
     value,
     onChangeValue,
     placeholder,
@@ -25,7 +26,10 @@ const Search: FC<SearchProps> = ({
     }, [minSearchLength, value.length])
 
     return (
-        <div className={clsx(style['search'])}>
+        <div className={clsx(
+            style['search'],
+            fullscreen && style['fullscreen']
+        )}>
             <Input
                 value={value}
                 onChange={onChangeValue}
@@ -37,9 +41,7 @@ const Search: FC<SearchProps> = ({
                 disabled={disabled}
                 className={clsx(style['button'])}
             >
-                <Text>
-                    Find now
-                </Text>
+                Find now
             </Button>
         </div>
     )

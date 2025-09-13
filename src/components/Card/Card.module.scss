@@ -36,34 +36,15 @@
     cursor: pointer;
 }
 
-.caption {
-    font-weight: 700;
-    font-size: $space-xs;
-    line-height: 130%;
-    color: $text-secondary;
-}
-
-.title {
-    line-height: 120%;
-}
-
-.subtitle {
-    line-height: 125%;
-}
-
 .footer {
     display: flex;
     justify-content: space-between;
     vertical-align: center;
     margin-top: $space-l;
     padding: 0 $space-xs;
+}
 
-    &__content {
-        font-weight: 700;
-        font-size: calc((var(--space-l) + var(--space-m)) / 2);
-        line-height: 122%;
-        color: var(--text-primary);
-        display: flex;
-        align-items: center;
-    }
+.content-slot {
+    display: flex;
+    align-items: center;
 }

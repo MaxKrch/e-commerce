@@ -15,7 +15,7 @@ const LogoIcon: React.FC<IconProps> = ({
             viewBox="0 0 42 42"
             fill="none"
         >
-            <g clip-path="url(#clip0_502_630)">
+            <g clipPath="url(#clip0_502_630)">
                 <path d="M42 0H0V42H42V0Z" fill="white" />
                 <path d="M32.9035 20.601L31.9655 24.101H13.6535L8.66949 5.50549H12.2955L16.338 20.601H32.9035Z" fill="#AD7E5C" />
                 <path d="M31.402 26.201L30.464 29.701H9.60749L8.66949 26.201H31.402Z" fill="#518581" />

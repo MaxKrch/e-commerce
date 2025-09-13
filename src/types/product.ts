@@ -33,24 +33,13 @@ export type ProductResponseShort = {
     discountPercent: number,
     rating: number,
     isInStock: boolean,
+    images: Image[]
     createdAt: string,
     updatedAt: string,
     publishedAt: string,
-    images: Image[]
 }
 
-export type ProductResponseFull = {
-    id: number,
-    documentId: string,
-    title: string,
-    description: string,
-    price: number,
-    discountPercent: number,
-    rating: number,
-    isInStock: boolean,
-    images: Image[],
+export type ProductResponseFull = ProductResponseShort & {
     productCategory: ProductCategory,
-    createdAt: string,
-    updatedAt: string,
 }
 
