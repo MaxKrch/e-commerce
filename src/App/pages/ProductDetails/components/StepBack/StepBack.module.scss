@@ -1,0 +1,12 @@
+.stepback {
+    @include content-container();
+    margin-top: 14px;
+
+    @include tablet-only() {
+        margin-top: 28px;
+    }
+
+    @include laptop-up() {
+        margin-top: 56px;
+    }
+}

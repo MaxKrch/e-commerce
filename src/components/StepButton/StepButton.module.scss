@@ -1,3 +1,19 @@
-div {
-    color: inherit
+$button-height: 48px;
+
+.button {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    height: $button-height;
+    color: $text-primary;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+        color: $text-accent;
+        border-bottom-color: $text-accent;
+    }
+}
+
+.back {
+    transform: rotate(180deg);
 }

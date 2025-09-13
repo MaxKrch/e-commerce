@@ -1,11 +1,12 @@
 import type { ProductResponseShort } from "types/product"
 import type { ProductListProps } from ".";
 import Text from "components/Text";
-import { memo, useCallback } from "react";
-import Button from "components/Button";
+import { memo } from "react";
 import style from './ProductList.module.scss';
 import { clsx } from "clsx";
 import CardList from "components/CardList";
+import previewCardActionSlot from "components/Card/slots/previewCardActionSlot";
+import previewCardContentSlot from "components/Card/slots/previewCardContentSlot";
 
 type ProductListProps = {
     products: ProductResponseShort[];
@@ -13,25 +14,6 @@ type ProductListProps = {
 }
 
 const ProductList = ({ products, total }: ProductListProps) => {
-    const handleClick = useCallback((_id: ProductResponseShort['documentId']) => {
-    }, [])
-
-    const actionSlot = useCallback((id: ProductResponseShort['documentId']) => (
-        <Button onClick={() => handleClick(id)}>
-            Add to Cart
-        </Button>
-    ), [handleClick])
-
-    const contentSlot = useCallback((product: ProductResponseShort) => (
-        <Text
-            color="primary"
-            view="p-18"
-            weight="bold"
-        >
-            ${product.price}
-        </Text>
-    ), [])
-
     return (
         <div className={clsx(style['container'])}>
             <div className={clsx(style['count'])}>
@@ -53,8 +35,8 @@ const ProductList = ({ products, total }: ProductListProps) => {
             <CardList
                 display="preview"
                 products={products}
-                contentSlot={contentSlot}
-                actionSlot={actionSlot}
+                contentSlot={previewCardContentSlot}
+                actionSlot={previewCardActionSlot}
             />
         </div>
     )

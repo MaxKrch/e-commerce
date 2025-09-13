@@ -20,6 +20,7 @@ $space-s: 14px;
 $space-xs: 12px;
 $space-xxs: 10px;
 $space-xxxs: 8px;
+$title-size: 44px;
 
 // Цвета шрифта 
 $text-primary: #000;
@@ -27,7 +28,7 @@ $text-secondary: #afadb5;
 $text-accent: #518581;
 
 // Общие цвета элементов
-$primary-bg: #efefef;
+$primary-bg: #fafafa;
 
 $shadow-light: 0 2px 5px 0 rgba(200, 200, 200, 0.1);
 $shadow-normal: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
@@ -105,12 +106,16 @@ $checkbox-check-color-disabled: $brand-disabled;
 $checkbox-size: 40px;
 
 // Переменные Card  
-$card-bg: #fff;
-$card-image-bg: #d9d9d9;
-$card-min-width: 300px;
-$cart-max-width: 600px;
-$card-height: 100%;
-$card-shadow: $shadow-normal;
+$preview-card-bg: #fff;
+$preview-card-image-bg: #d9d9d9;
+$preview-card-min-width: 300px;
+$preview-card-max-width: 600px;
+$preview-card-height: 100%;
+$preview-card-shadow: $shadow-normal;
+
+$full-card-min-width: 400px;
+$full-card-max-width: 600px;
+$full-card-actions-space: 48px;
 
 // Переменные Dropdown 
 $dropdown-width: $control-field-width;

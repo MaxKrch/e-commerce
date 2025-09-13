@@ -1,34 +1,41 @@
+import clsx from "clsx"
 import ArrowRightIcon from "components/icons/ArrowRightIcon"
+import Text from "components/Text"
+import style from './StepButton.module.scss'
 import { memo, useCallback, type ButtonHTMLAttributes, type FC } from "react"
+import { useNavigate } from "react-router-dom"
 
 export type StepButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     direction: 'back' | 'go',
-    steps?: number,
-    priority?: 'primary' | 'secondary',
     children: React.ReactNode,
     className?: string,
 }
 
 
 const StepButton: FC<StepButtonProps> = ({
-    steps = 1,
-    priority = 'primary',
     direction,
     children,
     className,
     ...rest
 }) => {
-
+    const navigate = useNavigate()
     const handleClick = useCallback(() => {
-
-    }, [direction, steps])
+        direction === 'back'
+            ? navigate(-1)
+            : navigate(1)
+    }, [direction])
 
     return (
-        <button onClick={handleClick} {...rest}>
-            <ArrowRightIcon />
-            <p>
+        <button
+            className={clsx(style['button'], className)}
+            onClick={handleClick} {...rest}
+        >
+            <ArrowRightIcon className={clsx(direction === 'back' && style['back'])} />
+            <Text
+                view="p-20"
+            >
                 {children}
-            </p>
+            </Text>
         </button>
     )
 }

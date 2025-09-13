@@ -1,0 +1,10 @@
+$margin-top: 48px;
+
+.container {
+    @include content-container();
+    margin-top: $margin-top;
+}
+
+.title {
+    font-size: $space-xxxl;
+}
