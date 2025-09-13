@@ -1,7 +1,7 @@
 import cn from 'clsx';
 import style from './AppLogo.module.scss'
 import { Link } from 'react-router-dom';
-import { appRoutes } from 'consts/app-routes';
+import { appRoutes } from 'constants/app-routes';
 import LogoIcon from 'components/icons/LogoIcon';
 import AppNameIcon from 'components/icons/AppNameIcon';
 

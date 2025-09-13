@@ -3,7 +3,7 @@ import type { ProductListProps } from ".";
 import Text from "components/Text";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
-import { appRoutes } from "consts/app-routes";
+import { appRoutes } from "constants/app-routes";
 import Card from "components/Card";
 import Button from "components/Button";
 import style from './ProductList.module.scss';

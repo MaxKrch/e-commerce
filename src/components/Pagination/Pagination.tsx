@@ -9,7 +9,7 @@ export type PaginationProps = {
     currentPage: number,
     pageCount?: number,
     className?: string,
-    countLinks?: number,
+    visiblePageArround?: number,
     onClick: (page: number) => void
 }
 
@@ -17,7 +17,7 @@ const Pagination: FC<PaginationProps> = ({
     currentPage,
     pageCount,
     className,
-    countLinks = 2,
+    visiblePageArround = 2,
     onClick
 }) => {
     if (typeof pageCount !== 'number' || pageCount <= 1) {
@@ -25,9 +25,9 @@ const Pagination: FC<PaginationProps> = ({
     }
     const normalizedCurrentPage = Math.min(Math.max(1, currentPage), pageCount)
 
-    const showLeftElipses = (normalizedCurrentPage - countLinks > 2);
-    const showRightElipses = !!pageCount && (normalizedCurrentPage + countLinks < pageCount - 1)
-    const pages = getPageNumbers(normalizedCurrentPage, pageCount, countLinks);
+    const showLeftElipses = (normalizedCurrentPage - visiblePageArround > 2);
+    const showRightElipses = !!pageCount && (normalizedCurrentPage + visiblePageArround < pageCount - 1)
+    const pages = getPageNumbers(normalizedCurrentPage, pageCount, visiblePageArround);
 
     const handleClick = useCallback((page: number) => {
         if (page === normalizedCurrentPage || page < 1 || (pageCount && page > pageCount)) return;

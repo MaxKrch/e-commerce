@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import style from './MainMenu.module.scss';
-import { appRoutes } from "consts/app-routes";
 import { memo } from "react";
 import { NavLink } from 'react-router-dom'
 import Text from "components/Text";
+import AppMenu from "constants/app-menu";
 
 const MainMenu = () => {
     const classes = ({ isActive }: { isActive: boolean }) => clsx({
@@ -13,30 +13,16 @@ const MainMenu = () => {
 
     return (
         <nav className={clsx(style['menu'])}>
-            <NavLink
-                to={appRoutes.products.list.create()}
-                className={classes}
-            >
-                <Text view="p-18">
-                    {appRoutes.products.list.title}
-                </Text>
-            </NavLink>
-            <NavLink
-                to={appRoutes.categories.create()}
-                className={classes}
-            >
-                <Text view="p-18">
-                    {appRoutes.categories.title}
-                </Text>
-            </NavLink>
-            <NavLink
-                to={appRoutes.about.create()}
-                className={classes}
-            >
-                <Text view="p-18">
-                    {appRoutes.about.title}
-                </Text>
-            </NavLink>
+            {AppMenu.map(item => (
+                <NavLink
+                    to={item.path}
+                    className={classes}
+                >
+                    <Text view="p-18">
+                        {item.title}
+                    </Text>
+                </NavLink>
+            ))}
         </nav>
     )
 }

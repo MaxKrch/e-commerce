@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate, type RouteObject } from "react-router-dom";
-import { appRoutes } from "consts/app-routes";
+import { appRoutes } from "constants/app-routes";
 import App from "App";
 import PageErrorElement from "App/components/PageErrorElement";
 import MainPage from "App/pages/Main";

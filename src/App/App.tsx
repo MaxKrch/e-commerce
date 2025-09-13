@@ -3,13 +3,16 @@ import cn from 'clsx';
 import style from './App.module.scss';
 import AppErrorBoundory from './components/AppErrorBoundory'
 import Header from './components/Header'
+import { HelmetProvider } from 'react-helmet-async';
 
 const App = () => {
   return (
     <div className={cn(style['app'])}>
       <AppErrorBoundory>
-        <Header />
-        <Outlet />
+        <HelmetProvider>
+          <Header />
+          <Outlet />
+        </HelmetProvider>
       </AppErrorBoundory>
     </div>
   )

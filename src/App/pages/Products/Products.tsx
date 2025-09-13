@@ -8,18 +8,17 @@ import { useSearchParams } from "react-router-dom";
 import { isStrapiSuccessResponse } from "types/strapi-api";
 import ProductList from "./components/ProductList";
 import Pagination from "components/Pagination";
+import { metaData, textData } from "./constants";
+import { Helmet } from "react-helmet-async";
 
-const TEXT_DATA = {
-    TITLE: 'Products',
-    CONTENT: 'We display products based on the latest products we have, if you want to see our old products please enter the name of the item'
-}
+
 
 const ProductsPage = () => {
     const [products, setProducts] = useState<ProductResponseShort[]>([]);
     const [searchParams, setSearchParams] = useSearchParams()
     const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
-    const [pageCount, setPageCount] = useState<number | null>(null);
-    const [productsTotal, setProductsTotal] = useState<number | null>(null);
+    const [pageCount, setPageCount] = useState<number | undefined>(undefined);
+    const [productsTotal, setProductsTotal] = useState<number | undefined>(undefined);
     const lastRequestSignal = useRef<AbortController | null>(null)
 
     const handleChangePage = useCallback((page: number) => {
@@ -44,7 +43,10 @@ const ProductsPage = () => {
             lastRequestSignal.current = new AbortController()
             try {
                 const response = await productApi.getProductList({
-                    request: { page: currentPage },
+                    request: {
+                        page: currentPage,
+                        pageSize: 9,
+                    },
                     signal: lastRequestSignal.current.signal
                 })
 
@@ -68,13 +70,18 @@ const ProductsPage = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>
+                    {metaData.title}
+                </title>
+            </Helmet>
             <SectionHeader
-                title={TEXT_DATA.TITLE}
-                content={TEXT_DATA.CONTENT}
+                title={textData.title}
+                content={textData.description}
             />
             <ProductSearch onSearch={() => { }} />
             <ProductFilter />
-            <ProductList 
+            <ProductList
                 products={products}
                 total={productsTotal}
             />

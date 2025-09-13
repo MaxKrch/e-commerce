@@ -9,7 +9,6 @@ export const appRoutes = {
         list: {
             mask: '/products',
             create: () => '/products',
-            title: 'Products'
         },
         details: {
             mask: '/products/:id',
@@ -19,12 +18,10 @@ export const appRoutes = {
     categories: {
         mask: '/categories',
         create: () => '/categories',
-        title: 'Categories',
     },
     card: {
         mask: '/card',
         create: () => '/card',
-        title: 'Cart',
     },
     my: {
         mask: '/my',
@@ -33,6 +30,5 @@ export const appRoutes = {
     about: {
         mask: '/about',
         create: () => '/about',
-        title: 'About us'
     }
 } as const
