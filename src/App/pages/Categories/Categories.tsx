@@ -1,7 +1,10 @@
 const CategoriesPage = () => {
     return (
-        <div>
-            Categories Page
+        <div style={{
+            textAlign: 'center',
+            marginTop: '50px',
+        }}>
+            In working...
         </div>
     )
 }

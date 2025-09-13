@@ -1,7 +1,10 @@
 const AboutPage = () => {
     return (
-        <div>
-            About
+        <div style={{
+            textAlign: 'center',
+            marginTop: '50px',
+        }}>
+            In working...
         </div>
     )
 }
