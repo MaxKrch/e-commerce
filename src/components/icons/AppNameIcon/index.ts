@@ -1,1 +1,1 @@
-export { default } from './AppNameIcon'
+export { default } from './AppNameIcon';

@@ -1,1 +1,1 @@
-export { default } from './AppErrorBoundory'
+export { default } from './AppErrorBoundory';

@@ -1,22 +1,14 @@
-import clsx from "clsx";
+import clsx from 'clsx';
+import MultiDropdown from 'components/MultiDropdown';
+
 import style from './ProductFilter.module.scss';
-import MultiDropdown from "components/MultiDropdown";
 
-type ProductFilterProps = {
+const ProductFilter = () => {
+  return (
+    <div className={clsx(style['filter'])}>
+      <MultiDropdown options={[]} value={[]} onChange={() => undefined} getTitle={() => ''} />
+    </div>
+  );
+};
 
-}
-
-const ProductFilter = ({ }: ProductFilterProps) => {
-    return (
-        <div className={clsx(style['filter'])}>
-            <MultiDropdown
-                options={[]}
-                value={[]}
-                onChange={() => { }}
-                getTitle={() => ''}
-            />
-        </div>
-    )
-}
-
-export default ProductFilter
+export default ProductFilter;

@@ -5,6 +5,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  base: '/e-commerce/',
   resolve: {
     alias: {
       '@styles': path.resolve(__dirname, 'src/styles'),

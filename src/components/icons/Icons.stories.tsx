@@ -1,6 +1,6 @@
-import { type IconProps } from './Icon';
-import CheckIcon from './CheckIcon';
 import ArrowDownIcon from './ArrowDownIcon';
+import CheckIcon from './CheckIcon';
+import { type IconProps } from './Icon';
 
 export default {
   title: 'Icons',
@@ -11,13 +11,13 @@ export default {
     color: {
       options: ['primary', 'secondary', 'accent'],
       mapping: ['primary', 'secondary', 'accent'],
-      control: 'select'
+      control: 'select',
     },
     width: {
-      control: 'number'
+      control: 'number',
     },
     height: {
-      control: 'number'
+      control: 'number',
     },
   },
 };

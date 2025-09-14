@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Input from 'components/Input';
 import cn from 'clsx';
-import style from './MultiDropdown.module.scss'
+import Input from 'components/Input';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import style from './MultiDropdown.module.scss';
 
 export type Option = {
   key: string;
@@ -19,8 +20,8 @@ export type MultiDropdownProps = {
 };
 
 const isNode = (element: EventTarget | null): element is Node => {
-  return element !== null && element instanceof Node
-}
+  return element !== null && element instanceof Node;
+};
 
 const MultiDropdown: React.FC<MultiDropdownProps> = ({
   options,
@@ -28,11 +29,11 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
   onChange,
   disabled,
   getTitle,
-  className
+  className,
 }) => {
   const inputElement = useRef<HTMLInputElement | null>(null);
   const optionsElement = useRef<HTMLUListElement | null>(null);
-  const resultGetTitle = useMemo(() => getTitle(value), [value])
+  const resultGetTitle = useMemo(() => getTitle(value), [value, getTitle]);
   const [isShowDropdown, setIsShowDropdown] = useState(false);
   const [inputValue, setInputvalue] = useState(value.length > 0 ? resultGetTitle : '');
 
@@ -42,8 +43,8 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     disabled,
     isShowDropdown,
     inputValue,
-    resultGetTitle
-  })
+    resultGetTitle,
+  });
 
   useEffect(() => {
     stateRef.current = {
@@ -52,95 +53,96 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
       disabled,
       isShowDropdown,
       inputValue,
-      resultGetTitle
-    }
-  }, [options, value, disabled, isShowDropdown, inputValue, resultGetTitle])
+      resultGetTitle,
+    };
+  }, [options, value, disabled, isShowDropdown, inputValue, resultGetTitle]);
 
-  const handleClick = useCallback((event: MouseEvent) => {
-    const target = event.target;
-    if (!isNode(target)) {
-      return
-    }
-
-    const { value, isShowDropdown, disabled } = stateRef.current
-
-    if (inputElement.current?.contains(target) && !disabled && !isShowDropdown) {
-      setIsShowDropdown(true);
-      return;
-    }
-
-    if (optionsElement.current?.contains(target) && target instanceof HTMLLIElement) {
-      const isSelectedOption = value.findIndex(option => option.key === target.dataset.id) > -1
-
-      if (isSelectedOption) {
-        const indexTargetOption = value.findIndex(option => option.key === target.dataset.id);
-        if (indexTargetOption > -1) {
-          onChange(value.filter(option => option.key !== target.dataset.id));
-        }
-
-      } else {
-        const targetOption = options.find(option => option.key === target.dataset.id)
-        if (targetOption) {
-          onChange([...value, targetOption])
-        }
+  const handleClick = useCallback(
+    (event: MouseEvent) => {
+      const target = event.target;
+      if (!isNode(target)) {
+        return;
       }
-      return;
-    }
 
-    if (!inputElement.current?.contains(target) && !optionsElement.current?.contains(target) && isShowDropdown) {
-      setIsShowDropdown(false)
-    }
-  }, [])
+      const { value, isShowDropdown, disabled, options } = stateRef.current;
+
+      if (inputElement.current?.contains(target) && !disabled && !isShowDropdown) {
+        setIsShowDropdown(true);
+        return;
+      }
+
+      if (optionsElement.current?.contains(target) && target instanceof HTMLLIElement) {
+        const isSelectedOption = value.findIndex((option) => option.key === target.dataset.id) > -1;
+
+        if (isSelectedOption) {
+          const indexTargetOption = value.findIndex((option) => option.key === target.dataset.id);
+          if (indexTargetOption > -1) {
+            onChange(value.filter((option) => option.key !== target.dataset.id));
+          }
+        } else {
+          const targetOption = options.find((option) => option.key === target.dataset.id);
+          if (targetOption) {
+            onChange([...value, targetOption]);
+          }
+        }
+        return;
+      }
+
+      if (
+        !inputElement.current?.contains(target) &&
+        !optionsElement.current?.contains(target) &&
+        isShowDropdown
+      ) {
+        setIsShowDropdown(false);
+      }
+    },
+    [onChange]
+  );
 
   useEffect(() => {
-    if (!isShowDropdown) {
-      stateRef.current.value.length > 0 ? setInputvalue(resultGetTitle) : setInputvalue('')
+    if (isShowDropdown || stateRef.current.value.length === 0) {
+      setInputvalue('');
     } else {
-      setInputvalue('')
+      setInputvalue(resultGetTitle);
     }
-  }, [isShowDropdown, resultGetTitle])
+  }, [isShowDropdown, resultGetTitle]);
 
   useEffect(() => {
-    document.addEventListener('click', handleClick)
+    document.addEventListener('click', handleClick);
 
-    return () => document.removeEventListener('click', handleClick)
-  }, [handleClick])
+    return () => document.removeEventListener('click', handleClick);
+  }, [handleClick]);
 
   return (
-    <div className={cn(
-      style['container'],
-      className
-    )}>
+    <div className={cn(style['container'], className)}>
       <Input
         disabled={disabled}
         onChange={setInputvalue}
         value={inputValue}
         ref={inputElement}
-        afterSlot={<ArrowDownIcon color='secondary' />}
+        afterSlot={<ArrowDownIcon color="secondary" />}
         placeholder={resultGetTitle}
-      >
-      </Input>
-      {isShowDropdown && !disabled &&
-        <ul
-          ref={optionsElement}
-          className={cn(style['options-container'])}
-        >
-          {options.filter(item => item.value.toLowerCase().includes(inputValue.toLowerCase())).map(option => (
-            <li
-              data-id={option.key}
-              key={option.key}
-              className={cn(
-                style['option'],
-                value.find(value => value.key === option.key) && style['option_selected']
-              )}
-            >
-              {option.value}
-            </li>
-          ))}
+      />
+      {isShowDropdown && !disabled && (
+        <ul ref={optionsElement} className={cn(style['options-container'])}>
+          {options
+            .filter((item) => item.value.toLowerCase().includes(inputValue.toLowerCase()))
+            .map((option) => (
+              <li
+                data-id={option.key}
+                key={option.key}
+                className={cn(
+                  style['option'],
+                  value.find((value) => value.key === option.key) && style['option_selected']
+                )}
+              >
+                {option.value}
+              </li>
+            ))}
         </ul>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default MultiDropdown;

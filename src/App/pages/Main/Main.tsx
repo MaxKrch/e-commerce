@@ -1,12 +1,13 @@
-import { appRoutes } from "constants/app-routes";
-import { Navigate } from "react-router-dom";
+import { appRoutes } from 'constants/app-routes';
+
+import { Navigate } from 'react-router-dom';
 
 const MainPage = () => {
-    return (
-        <div>
-            <Navigate to={appRoutes.products.list.create()}></Navigate>
-        </div>
-    )
-}
+  return (
+    <div>
+      <Navigate to={appRoutes.products.list.create()} />
+    </div>
+  );
+};
 
 export default MainPage;

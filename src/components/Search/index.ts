@@ -1,2 +1,2 @@
-export { default } from './Search'
-export { type SearchPtops } from './Search'
+export { default } from './Search';
+export { type SearchPtops } from './Search';

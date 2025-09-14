@@ -1,4 +1,5 @@
 import ArrowDownIcon from '../icons/ArrowDownIcon';
+
 import Input, { type InputProps } from './Input';
 
 export default {
@@ -11,26 +12,26 @@ export default {
     value: {
       control: 'text',
       mapping: {
-        'undefined': undefined,
-      }
+        undefined: undefined,
+      },
     },
     placeholder: {
       control: 'text',
       mapping: {
-        'undefined': undefined,
-      }
+        undefined: undefined,
+      },
     },
     disabled: {
       mapping: {
-        'true': true,
-        'false': false,
-        'undefined': undefined,
+        true: true,
+        false: false,
+        undefined: undefined,
       },
-      control: 'boolean'
-    }
+      control: 'boolean',
+    },
   },
 };
 
 export const Default = (props: InputProps) => (
-  <Input {...props} onChange={() => { }} afterSlot={<ArrowDownIcon color="secondary" />} />
+  <Input {...props} onChange={() => undefined} afterSlot={<ArrowDownIcon color="secondary" />} />
 );

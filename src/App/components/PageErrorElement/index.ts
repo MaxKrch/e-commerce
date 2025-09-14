@@ -1,1 +1,1 @@
-export { default, type PageErrorElementProps } from './PageErrorElement';
+export { default } from './PageErrorElement';

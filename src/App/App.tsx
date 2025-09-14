@@ -1,9 +1,10 @@
-import { Outlet } from 'react-router-dom'
 import cn from 'clsx';
-import style from './App.module.scss';
-import AppErrorBoundory from './components/AppErrorBoundory'
-import Header from './components/Header'
 import { HelmetProvider } from 'react-helmet-async';
+import { Outlet } from 'react-router-dom';
+
+import style from './App.module.scss';
+import AppErrorBoundory from './components/AppErrorBoundory';
+import Header from './components/Header';
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
         </HelmetProvider>
       </AppErrorBoundory>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

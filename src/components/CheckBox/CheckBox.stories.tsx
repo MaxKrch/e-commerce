@@ -1,4 +1,5 @@
 import React from 'react';
+
 import CheckBox, { type CheckBoxProps } from './CheckBox';
 
 export default {
@@ -10,24 +11,24 @@ export default {
     },
     disabled: {
       mapping: {
-        'true': true,
-        'false': false,
-        'undefined': undefined,
+        true: true,
+        false: false,
+        undefined: undefined,
       },
-      control: 'boolean'
+      control: 'boolean',
     },
     checked: {
       mapping: {
-        'true': true,
-        'false': false,
-        'undefined': undefined,
+        true: true,
+        false: false,
+        undefined: undefined,
       },
-      control: 'boolean'
-    }
-  }
+      control: 'boolean',
+    },
+  },
 };
 
 export const Default = ({ checked, ...props }: CheckBoxProps) => {
-  const [value, setValue] = React.useState<boolean | undefined>(checked)
-  return <CheckBox {...props} checked={value} onChange={setValue} />
+  const [value, setValue] = React.useState<boolean | undefined>(checked);
+  return <CheckBox {...props} checked={value} onChange={setValue} />;
 };

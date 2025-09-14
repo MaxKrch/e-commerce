@@ -1,13 +1,5 @@
-export type PageErrorElementProps = {
-
-}
-
-const PageErrorElement = ({ }: PageErrorElementProps) => {
-    return (
-        <div>
-            Ooops! Im fall...
-        </div>
-    )
-}
+const PageErrorElement = () => {
+  return <div>Ooops! Im fall...</div>;
+};
 
 export default PageErrorElement;

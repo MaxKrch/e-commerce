@@ -1,4 +1,5 @@
 import React from 'react';
+
 import MultiDropdown, { type MultiDropdownProps, type Option } from './MultiDropdown';
 
 const OPTIONS = [
@@ -16,16 +17,16 @@ export default {
     },
     value: {
       mapping: String,
-      control: "object",
+      control: 'object',
     },
     disabled: {
       mapping: {
-        'true': true,
-        'false': false,
-        'undefined': undefined,
+        true: true,
+        false: false,
+        undefined: undefined,
       },
-      control: 'boolean'
-    }
+      control: 'boolean',
+    },
   },
 };
 
@@ -39,7 +40,9 @@ export const Default = (props: MultiDropdownProps) => {
       options={OPTIONS}
       onChange={setValue}
       value={value}
-      getTitle={(values: Option[]) => values.length === 0 ? 'Выберите города' : values.map(({ value }) => value).join(', ')}
+      getTitle={(values: Option[]) =>
+        values.length === 0 ? 'Выберите города' : values.map(({ value }) => value).join(', ')
+      }
     />
   );
 };

@@ -1,3 +1,3 @@
 export const metaData = {
-    title: (data?: string) => `${data ?? 'Страница товара'}`
-}
+  title: (data?: string) => `${data ?? 'Страница товара'}`,
+};
