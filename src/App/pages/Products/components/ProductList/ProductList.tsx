@@ -8,8 +8,6 @@ import type { ProductResponseShort } from 'types/product';
 
 import style from './ProductList.module.scss';
 
-import type { ProductListProps } from '.';
-
 type ProductListProps = {
   products: ProductResponseShort[];
   total?: number;

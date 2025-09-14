@@ -58,7 +58,7 @@
 }
 
 .elipses {
-    width: #{$item-width / 2};
+    width: calc($item-width / 2);
     display: flex;
     justify-content: center;
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Button from '../Button';
 
 import type { CardProps } from './Card';
@@ -47,5 +45,5 @@ export default {
 };
 
 export const Default = (props: CardProps) => (
-  <Card {...props} actionSlot={<Button>В корзину</Button>} />
+  <Card {...props} actionSlot={() => <Button>В корзину</Button>} />
 );
