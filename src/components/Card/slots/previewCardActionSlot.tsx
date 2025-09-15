@@ -1,8 +1,8 @@
 import Button from 'components/Button';
-import type { ProductResponseShort } from 'types/product';
+import type { Product } from 'types/product';
 
-const previewCardActionSlot = (id: ProductResponseShort['documentId']) => {
-  const handleClick = (id: ProductResponseShort['documentId']) => {
+const previewCardActionSlot = (id: Product['documentId']) => {
+  const handleClick = (id: Product['documentId']) => {
     void id;
   };
 

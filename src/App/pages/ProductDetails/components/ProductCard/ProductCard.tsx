@@ -3,20 +3,20 @@ import Button from 'components/Button';
 import Card from 'components/Card';
 import Text from 'components/Text';
 import { memo, useCallback } from 'react';
-import type { ProductResponseFull } from 'types/product';
+import type { Product } from 'types/product';
 
 import style from './ProductCard.module.scss';
 
 export type ProductCardProps = {
-  product: ProductResponseFull;
+  product: Product;
 };
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const handlePrimaryBtn = useCallback((id: ProductResponseFull['documentId']) => {
+  const handlePrimaryBtn = useCallback((id: Product['documentId']) => {
     void id;
   }, []);
 
-  const handleSecondBtn = useCallback((id: ProductResponseFull['documentId']) => {
+  const handleSecondBtn = useCallback((id: Product['documentId']) => {
     void id;
   }, []);
 

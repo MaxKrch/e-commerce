@@ -1,19 +1,19 @@
 import clsx from 'clsx';
 import Text from 'components/Text';
-import React, { memo } from 'react';
-import type { ProductResponseShort } from 'types/product';
+import React, { memo, useCallback } from 'react';
+import type { Product } from 'types/product';
 
 import style from './Card.module.scss';
 import ImageGalery from './components/ImageGalery';
 
 export type CardProps = {
   display?: 'full' | 'preview';
-  product: ProductResponseShort;
+  product: Product;
   className?: string;
   onClick?: React.MouseEventHandler;
-  captionSlot?: React.ReactNode;
-  contentSlot?: (product: ProductResponseShort) => React.ReactNode;
-  actionSlot?: (id: ProductResponseShort['documentId']) => React.ReactNode;
+  captionSlot?: (product: Product) => React.ReactNode;
+  contentSlot?: (product: Product) => React.ReactNode;
+  actionSlot?: (id: Product['documentId']) => React.ReactNode;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -26,9 +26,16 @@ const Card: React.FC<CardProps> = ({
   className,
 }) => {
   const { images, description, documentId: id, title } = product;
+
+  const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    if (display === 'preview' && onClick) {
+      onClick(event)
+    }
+  }, [])
+
   return (
     <article className={clsx(style['card'], style[`${display}-card`], className)}>
-      <div className={clsx(style['img'], style[`${display}-img`])} onClick={onClick}>
+      <div className={clsx(style['img'], style[`${display}-img`])} onClick={handleClick}>
         {display === 'full' ? (
           <ImageGalery images={images} />
         ) : (
@@ -40,8 +47,10 @@ const Card: React.FC<CardProps> = ({
         )}
       </div>
       <div className={clsx(style['body'], style[`${display}-body`])}>
-        <main className={clsx(style['main'], style[`${display}-main`])} onClick={onClick}>
-          <div className={clsx(style[`${display}-caption-slot`])}>{captionSlot}</div>
+        <main className={clsx(style['main'], style[`${display}-main`])} onClick={handleClick}>
+          {captionSlot && (
+            <div className={clsx(style[`${display}-caption-slot`])}>{captionSlot(product)}</div>
+          )}
           <Text
             maxLines={2}
             view="p-20"

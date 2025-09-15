@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import type { ProductResponseFull } from 'types/product';
+import type { Product } from 'types/product';
 
 import style from './ImageGalery.module.scss';
 
 export type ImageGaleryProps = {
-  images: ProductResponseFull['images'];
+  images: Product['images'];
 };
 
 const ImageGalery = ({ images }: ImageGaleryProps) => {

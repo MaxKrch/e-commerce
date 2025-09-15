@@ -4,13 +4,13 @@ import { clsx } from 'clsx';
 import Card, { type CardProps } from 'components/Card';
 import { memo, useCallback, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { ProductResponseShort } from 'types/product';
+import type { Product } from 'types/product';
 
 import style from './CardList.module.scss';
 
 type CardListProps = Pick<CardProps, 'contentSlot' | 'actionSlot' | 'captionSlot'> & {
   display?: 'preview' | 'full';
-  products: ProductResponseShort[];
+  products: Product[];
   titleSlot?: ReactNode;
 };
 
@@ -25,7 +25,7 @@ const CardList = ({
   const navigate = useNavigate();
 
   const handleCartClick = useCallback(
-    (id: ProductResponseShort['documentId']) => {
+    (id: Product['documentId']) => {
       navigate(`${appRoutes.products.details.create(id)}`);
     },
     [navigate]

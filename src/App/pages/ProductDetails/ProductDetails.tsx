@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import productApi from 'services/product-api';
-import type { ProductResponseFull, ProductResponseShort } from 'types/product';
+import type { Product } from 'types/product';
 import { isStrapiSuccessResponse } from 'types/strapi-api';
 
 import ProductCard from './components/ProductCard';
@@ -13,11 +13,11 @@ import { metaData } from './config';
 const ProductDetailsPage = () => {
   const params = useParams();
 
-  const [product, setProduct] = useState<ProductResponseFull | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const productAbortCntr = useRef<AbortController | null>(null);
   const [, setRequestProductError] = useState<Error | null>(null);
 
-  const [relatedProducts, setRelatedProducts] = useState<ProductResponseShort[] | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[] | null>(null);
   const relatedProductsAbortCntr = useRef<AbortController | null>(null);
   const [, setRequestRelatedProductsError] = useState<Error | null>(null);
 
@@ -46,7 +46,7 @@ const ProductDetailsPage = () => {
           throw response;
         }
 
-        if (!isStrapiSuccessResponse<ProductResponseFull>(response.data)) {
+        if (!isStrapiSuccessResponse<Product>(response.data)) {
           throw new Error('Unknown error');
         }
 
@@ -87,7 +87,7 @@ const ProductDetailsPage = () => {
           throw response;
         }
 
-        if (!isStrapiSuccessResponse<ProductResponseShort[]>(response.data)) {
+        if (!isStrapiSuccessResponse<Product[]>(response.data)) {
           throw new Error('Unknown Error');
         }
 

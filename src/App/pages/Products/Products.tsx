@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import productApi from 'services/product-api';
-import type { ProductResponseShort } from 'types/product';
+import type { Product } from 'types/product';
 import { isStrapiSuccessResponse } from 'types/strapi-api';
 
 import ProductFilter from './components/ProductFilter';
@@ -13,7 +13,7 @@ import ProductSearch from './components/ProductSearch';
 import { metaData, textData } from './config';
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState<ProductResponseShort[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
   const [pageCount, setPageCount] = useState<number | undefined>(undefined);
@@ -57,7 +57,7 @@ const ProductsPage = () => {
           throw response;
         }
 
-        if (!isStrapiSuccessResponse<ProductResponseShort[]>(response.data)) {
+        if (!isStrapiSuccessResponse<Product[]>(response.data)) {
           throw new Error('Unknown Error');
         }
 

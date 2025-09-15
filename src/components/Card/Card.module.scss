@@ -51,6 +51,10 @@
         cursor: pointer;
     }
 
+    &-title {
+        height: 2.5em;
+    }
+
     &-footer {
         display: flex;
         justify-content: space-between;
@@ -91,7 +95,6 @@
 
     &-body {
         gap: $space-xxs;
-        cursor: pointer;
     }
 
     &-title {

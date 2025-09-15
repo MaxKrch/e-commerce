@@ -17,7 +17,7 @@ export type ProductCategory = {
   image: Image;
 };
 
-export type ProductResponseShort = {
+export type Product = {
   id: number;
   documentId: string;
   title: string;
@@ -30,8 +30,5 @@ export type ProductResponseShort = {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-};
-
-export type ProductResponseFull = ProductResponseShort & {
   productCategory: ProductCategory;
 };

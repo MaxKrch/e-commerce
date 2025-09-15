@@ -1,15 +1,18 @@
 import { clsx } from 'clsx';
-import previewCardActionSlot from 'components/Card/slots/previewCardActionSlot';
-import previewCardContentSlot from 'components/Card/slots/previewCardContentSlot';
+import {
+  previewCardActionSlot,
+  previewCardContentSlot,
+  previewCardCaptionSlot,
+} from 'components/Card/slots';
 import CardList from 'components/CardList';
 import Text from 'components/Text';
 import { memo } from 'react';
-import type { ProductResponseShort } from 'types/product';
+import type { Product } from 'types/product';
 
 import style from './ProductList.module.scss';
 
 type ProductListProps = {
-  products: ProductResponseShort[];
+  products: Product[];
   total?: number;
 };
 
@@ -27,6 +30,7 @@ const ProductList = ({ products, total }: ProductListProps) => {
       <CardList
         display="preview"
         products={products}
+        captionSlot={previewCardCaptionSlot}
         contentSlot={previewCardContentSlot}
         actionSlot={previewCardActionSlot}
       />

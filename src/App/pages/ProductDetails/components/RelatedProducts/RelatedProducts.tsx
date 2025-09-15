@@ -1,26 +1,26 @@
 import clsx from 'clsx';
-import previewCardActionSlot from 'components/Card/slots/previewCardActionSlot';
-import previewCardContentSlot from 'components/Card/slots/previewCardContentSlot';
+import { previewCardCaptionSlot, previewCardActionSlot, previewCardContentSlot } from 'components/Card/slots';
 import CardList from 'components/CardList';
 import Text from 'components/Text';
 import { memo } from 'react';
-import type { ProductResponseShort } from 'types/product';
+import type { Product } from 'types/product';
 
 import style from './RelatedProducts.module.scss';
 
 export type RelatedProductsProps = {
-  products: ProductResponseShort[];
+  products: Product[];
 };
 
 const RelatedProducts = ({ products }: RelatedProductsProps) => {
   return (
     <div className={clsx(style['container'])}>
       <Text color="primary" weight="bold" className={clsx(style['title'])}>
-        Related Items
+        Related products
       </Text>
       <CardList
         display="preview"
         products={products}
+        captionSlot={previewCardCaptionSlot}
         contentSlot={previewCardContentSlot}
         actionSlot={previewCardActionSlot}
       />

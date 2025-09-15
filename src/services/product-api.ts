@@ -1,5 +1,5 @@
 import { apiRoutes, type ApiProductsArgs } from 'services/api-routes-builder';
-import type { ProductCategory, ProductResponseFull, ProductResponseShort } from 'types/product';
+import type { ProductCategory, Product, Product } from 'types/product';
 import type { StrapiResponse } from 'types/strapi-api';
 import formateAxiosError from 'utils/formate-axios-error';
 
@@ -22,7 +22,7 @@ const productApi = {
   },
   getProductList: async ({ request, signal }: RequestArgs<ApiProductsArgs['ProductsList']>) => {
     try {
-      return api.get<StrapiResponse<ProductResponseShort[]>>(apiRoutes.products.list(request), {
+      return api.get<StrapiResponse<Product[]>>(apiRoutes.products.list(request), {
         signal,
       });
     } catch (err) {
@@ -34,7 +34,7 @@ const productApi = {
     signal,
   }: RequestArgs<ApiProductsArgs['ProductsDetails']>) => {
     try {
-      return api.get<StrapiResponse<ProductResponseFull>>(apiRoutes.products.details(request), {
+      return api.get<StrapiResponse<Product>>(apiRoutes.products.details(request), {
         signal,
       });
     } catch (err) {
