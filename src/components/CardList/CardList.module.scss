@@ -1,0 +1,21 @@
+.count {
+    display: flex;
+    align-items: center;
+    gap: $space-xxl;
+
+    &__title {
+        font-size: $space-xxxl;
+    }
+}
+
+.list {
+    margin-top: $space-xxxl;
+    display: grid;
+    justify-content: space-between;
+    gap: $space-xxl;
+    grid-template-columns: repeat(auto-fill, minmax($preview-card-min-width, 1fr));
+}
+
+.card {
+    margin: auto;
+}

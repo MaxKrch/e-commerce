@@ -1,0 +1,37 @@
+.product-card {
+    @include content-container();
+
+    margin-top: $space-xxs;
+
+    @include tablet-only() {
+        margin-top: $space-m;
+    }
+
+    @include laptop-up() {
+        margin-top: $space-xxxl;
+    }
+}
+
+.content-slot {
+    font-size: $space-xxxl;
+
+    @include mobile-up() {
+
+        font-size: $title-size;
+    }
+}
+
+.action-slot {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    @include mobile-up() {
+        justify-content: start;
+        gap: $space-xxxl;
+    }
+
+    @include laptop-up() {
+        gap: $full-card-actions-space;
+    }
+}

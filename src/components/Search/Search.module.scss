@@ -1,0 +1,24 @@
+.search {
+    gap: $space-xxs $space-xl;
+    display: flex;
+}
+
+.fullscreen {
+    flex-wrap: wrap;
+
+    @include tablet-up {
+        flex-wrap: nowrap;
+    }
+
+    .input {
+        flex-basis: 100%;
+    }
+
+    .button {
+        flex-basis: 100%;
+
+        @include tablet-up {
+            flex-basis: content;
+        }
+    }
+}

@@ -1,0 +1,76 @@
+.button {
+    display: flex;
+    gap: $space-xxs;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: $button-border-radius;
+    padding: $button-padding-x $button-padding-y;
+    height: $button-height;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.primary {
+    background: $button-primary-bg;
+    color: $button-primary-text;
+    border-color: $button-primary-bg;
+
+    &:not(.loading) {
+        &:not(.disabled):hover {
+            background: $button-primary-bg-hover;
+            color: $button-primary-text-hover;
+            border-color: $button-primary-bg-hover
+        }
+
+        &:active {
+            background: $button-primary-bg-active;
+            color: $button-primary-text-active;
+            border-color: $button-primary-bg-active;
+        }
+    }
+
+    &.disabled {
+        background: $button-primary-bg-disabled;
+        color: $button-primary-text-disabled;
+        border-color: $button-primary-bg-disabled;
+    }
+
+    &.loader {
+        color: $button-primary-text;
+    }
+}
+
+.secondary {
+    background: $button-secondary-bg;
+    color: $button-secondary-text;
+    border-color: $button-secondary-text;
+
+    &:not(.loading) {
+        &:not(.disabled):hover {
+            background: $button-secondary-bg-hover;
+            color: $button-secondary-text-hover;
+            border-color: $button-secondary-text-hover;
+        }
+
+        &:active {
+            background: $button-secondary-bg-active;
+            color: $button-secondary-text-active;
+            border-color: $button-secondary-text-active;
+        }
+    }
+
+    &.disabled {
+        background: $button-secondary-bg-disabled;
+        color: $button-secondary-text-disabled;
+        border-color: $button-secondary-text-disabled;
+    }
+
+    &.loader {
+        color: $button-secondary-text;
+    }
+}
+
+.disabled {
+    cursor: auto;
+}

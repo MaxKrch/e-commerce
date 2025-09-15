@@ -1,0 +1,55 @@
+.container {
+    position: relative;
+    width: $input-width;
+}
+
+.input {
+    font-weight: 400;
+    font-size: $space-m;
+    line-height: 125%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $space-xxs;
+    height: $input-height;
+    width: 100%;
+    padding: $space-s $space-xs;
+    border: 1px solid $input-border-color;
+    color: $input-text;
+    background: $input-bg;
+
+    &::placeholder {
+        color: $input-placeholder-color;
+        font-weight: 400;
+        font-size: $space-m;
+        line-height: 125%;
+    }
+
+    &:focus {
+        background: $input-bg-focus;
+        border: 1px solid $input-border-color-focus;
+        color: $input-text-focus;
+        cursor: auto;
+    }
+
+    &:disabled {
+        background: $input-bg-disabled;
+        border: 1px solid $input-border-color-disabled;
+        color: $input-text-disabled;
+    }
+}
+
+.with-icon {
+    padding-right: #{$input-icon-width + $space-xxs + $space-xs};
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    width: $input-icon-width;
+    right: $space-xs;
+    top: $space-s;
+    pointer-events: none;
+    cursor: pointer;
+}

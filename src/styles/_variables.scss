@@ -1,0 +1,134 @@
+// Брейкпоинты
+$breakpoint-mobile: 375px;
+$breakpoint-tablet: 768px;
+$breakpoint-laptop: 1024px;
+$breakpoint-desktop: 1440px;
+
+// Основные цвета
+$brand: #518581;
+$brand-active: #487773;
+$brand-hover: #86aaa7;
+$brand-disabled: #d9d9d9;
+
+// Основные размеры
+$space-xxxl: 32px;
+$space-xxl: 24px;
+$space-xl: 20px;
+$space-l: 18px;
+$space-m: 16px;
+$space-s: 14px;
+$space-xs: 12px;
+$space-xxs: 10px;
+$space-xxxs: 8px;
+$title-size: 44px;
+
+// Цвета шрифта 
+$text-primary: #000;
+$text-secondary: #afadb5;
+$text-accent: #518581;
+
+// Общие цвета элементов
+$primary-bg: #fafafa;
+
+$shadow-light: 0 2px 5px 0 rgba(200, 200, 200, 0.1);
+$shadow-normal: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
+$shadow-bold: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
+
+// Общие размеры элементов
+$page-container-min-width: 320px;
+$page-container-max-width: 1240px;
+$page-container-width: 100%;
+$page-container-padding-x: $space-xxs;
+
+$control-field-heihgt: 52px;
+$control-field-width: 300px;
+
+$border-radius: 0;
+
+// Переменные Button 
+$button-primary-text: #fff;
+$button-primary-text-hover: #fff;
+$button-primary-text-disabled: #fff;
+$button-primary-text-active: #fff;
+
+$button-primary-bg: $brand;
+$button-primary-bg-hover: $brand-hover;
+$button-primary-bg-disabled: $brand-disabled;
+$button-primary-bg-active: $brand-active;
+
+$button-secondary-text: $text-primary;
+$button-secondary-text-hover: $text-primary;
+$button-secondary-text-disabled: $text-primary;
+$button-secondary-text-active: $text-primary;
+
+$button-secondary-bg: #fff;
+$button-secondary-bg-hover: #eeeefe;
+$button-secondary-bg-disabled: $brand-disabled;
+$button-secondary-bg-active: #dedeee;
+
+$button-border-radius: $border-radius;
+$button-height: $control-field-heihgt;
+$button-padding-x: $space-l;
+$button-padding-y: $space-xxxl;
+
+// Переменные Input 
+$input-text: $text-primary;
+$input-text-focus: $text-primary;
+$input-text-disabled: $brand-disabled;
+
+$input-placeholder-color: $text-secondary;
+
+$input-bg: #fff;
+$input-bg-focus: #fff;
+$input-bg-disabled: #fff;
+
+$input-border-color: #fff;
+$input-border-color-focus: $brand;
+$input-border-color-disabled: #fff;
+
+$input-height: $control-field-heihgt;
+$input-width: $control-field-width;
+$input-icon-width: $space-xl;
+
+// Переменные Checkbox 
+$checkbox-bg: #fff;
+$checkbox-bg-hover: #fff;
+$checkbox-bg-disabled: rgba(255, 255, 255, 0.5);
+
+$checkbox-border-color: #fff;
+$checkbox-border-color-hover: $brand;
+$checkbox-border-color-disabled: rgba(255, 255, 255, 0);
+
+$checkbox-check-color: $brand;
+$checkbox-check-color-hover: $brand;
+$checkbox-check-color-disabled: $brand-disabled;
+
+$checkbox-size: 40px;
+
+// Переменные Card  
+$preview-card-bg: #fff;
+$preview-card-image-bg: #d9d9d9;
+$preview-card-min-width: 300px;
+$preview-card-max-width: 600px;
+$preview-card-height: 100%;
+$preview-card-shadow: $shadow-normal;
+
+$full-card-min-width: 400px;
+$full-card-max-width: 600px;
+$full-card-actions-space: 48px;
+
+// Переменные Dropdown 
+$dropdown-width: $control-field-width;
+$dropdown-options-bg: #fff;
+$dropdown-options-shadow: $shadow-normal;
+$dropdown-option-height: $control-field-heihgt;
+$dropdown-option-hover-color: $text-secondary;
+$dropdown-option-selected-color: $text-accent;
+
+// Переменные Loader 
+$loader-default-color: $brand;
+
+// Переменные Pagination
+$pagination-color: #151411;
+$item-width: 38px;
+$item-height: 42px;
