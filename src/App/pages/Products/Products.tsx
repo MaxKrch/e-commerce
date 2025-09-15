@@ -11,15 +11,16 @@ import ProductFilter from './components/ProductFilter';
 import ProductList from './components/ProductList';
 import ProductSearch from './components/ProductSearch';
 import { metaData, textData } from './config';
+import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(REQUEST_STATUS.IDLE)
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
   const [pageCount, setPageCount] = useState<number | undefined>(undefined);
   const [productsTotal, setProductsTotal] = useState<number | undefined>(undefined);
   const lastRequestSignal = useRef<AbortController | null>(null);
-  const [, setRequestError] = useState<Error | null>(null);
 
   const handleChangePage = useCallback(
     (page: number) => {
@@ -45,6 +46,7 @@ const ProductsPage = () => {
       lastRequestSignal.current = new AbortController();
 
       try {
+        setRequestStatus(REQUEST_STATUS.PENDING);
         const response = await productApi.getProductList({
           request: {
             page: currentPage,
@@ -64,8 +66,11 @@ const ProductsPage = () => {
         setPageCount(response.data.meta.pagination.pageCount);
         setProducts(response.data.data);
         setProductsTotal(response.data.meta.pagination.total);
+        setRequestStatus(REQUEST_STATUS.SUCCESS)
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') setRequestError(err);
+        if (err instanceof Error && err.name !== 'AbortError') {
+          setRequestStatus(REQUEST_STATUS.ERROR)
+        }
       }
     };
     getProducts();
@@ -81,7 +86,7 @@ const ProductsPage = () => {
       <SectionHeader title={textData.title()} content={textData.description()} />
       <ProductSearch onSearch={() => undefined} />
       <ProductFilter />
-      <ProductList products={products} total={productsTotal} />
+      <ProductList products={products} total={productsTotal} requestStatus={requestStatus} />
       <Pagination currentPage={currentPage} pageCount={pageCount} onClick={handleChangePage} />
     </div>
   );

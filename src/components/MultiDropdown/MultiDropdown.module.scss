@@ -1,5 +1,7 @@
  .container {
    width: $dropdown-width;
+   border-radius: $border-radius-secondary;
+   overflow: hidden;
  }
 
  .options-container {

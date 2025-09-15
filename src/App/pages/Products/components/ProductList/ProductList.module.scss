@@ -9,10 +9,19 @@ $margin-top: 48px;
 .count {
     display: flex;
     align-items: center;
-    gap: $space-xxl;
+    gap: $space-xl;
+
+    @include mobile-up() {
+        gap: $space-xxl;
+    }
+
 
     &__title {
-        font-size: $space-xxxl;
+        font-size: $space-xxl;
+
+        @include tablet-up() {
+            font-size: $space-xxxl;
+        }
     }
 }
 

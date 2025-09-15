@@ -1,50 +1,59 @@
 import clsx from 'clsx';
 import Button from 'components/Button';
-import Card from 'components/Card';
+import Card, { CardSkeleton } from 'components/Card';
 import Text from 'components/Text';
-import { memo, useCallback } from 'react';
+import React from 'react';
 import type { Product } from 'types/product';
 
 import style from './ProductCard.module.scss';
+import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';
 
 export type ProductCardProps = {
-  product: Product;
+  product: Product | null;
+  requestStatus: RequestStatus;
 };
 
-const ProductCard = ({ product }: ProductCardProps) => {
-  const handlePrimaryBtn = useCallback((id: Product['documentId']) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, requestStatus }) => {
+  const handlePrimaryBtn = (id: Product['documentId']) => {
     void id;
-  }, []);
+  }
 
-  const handleSecondBtn = useCallback((id: Product['documentId']) => {
+  const handleSecondBtn = (id: Product['documentId']) => {
     void id;
-  }, []);
+  }
 
-  const contentSlot = useCallback(() => {
+  const contentSlot = () => {
     return (
       <Text weight="bold" className={clsx(style['content-slot'])}>
-        ${product.price}
+        ${product?.price}
       </Text>
     );
-  }, [product]);
+  }
 
-  const actionSlot = useCallback(() => {
+  const actionSlot = () => {
     return (
-      <div className={clsx(style['action-slot'])}>
-        <Button onClick={() => handlePrimaryBtn(product.documentId)}>Buy Now</Button>
-        <Button priority="secondary" onClick={() => handleSecondBtn(product.documentId)}>
-          Add to Cart
-        </Button>
-      </div>
+      <>
+        {product && (
+          <div className={clsx(style['action-slot'])}>
+            <Button onClick={() => handlePrimaryBtn(product.documentId)}>Buy Now</Button>
+            <Button priority="secondary" onClick={() => handleSecondBtn(product.documentId)}>
+              Add to Cart
+            </Button>
+          </div>
+        )}
+      </>
     );
-  }, [product, handlePrimaryBtn, handleSecondBtn]);
+  }
 
   return (
     <article className={clsx(style['product-card'])}>
-      <Card display="full" product={product} contentSlot={contentSlot} actionSlot={actionSlot} />
+      {(requestStatus === REQUEST_STATUS.PENDING || !product)
+        ? <CardSkeleton display='full' />
+        : <Card display="full" product={product} contentSlot={contentSlot} actionSlot={actionSlot} />
+      }
     </article>
   );
 };
 
-ProductCard.displayName = 'ProductCard';
-export default memo(ProductCard);
+
+export default React.memo(ProductCard);

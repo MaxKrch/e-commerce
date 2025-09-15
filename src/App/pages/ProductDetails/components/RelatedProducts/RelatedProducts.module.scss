@@ -8,3 +8,16 @@ $margin-top: 48px;
 .title {
     font-size: $space-xxxl;
 }
+
+.related-products {
+    max-width: 100%;
+
+    ul {
+        display: flex;
+        overflow: auto;
+
+        @include tablet-up() {
+            display: grid;
+        }
+    }
+}

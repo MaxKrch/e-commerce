@@ -34,6 +34,11 @@ $shadow-light: 0 2px 5px 0 rgba(200, 200, 200, 0.1);
 $shadow-normal: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
 $shadow-bold: 0 4px 10px 0 rgba(0, 0, 0, 0.75);
 
+// Переменные keyframe Pulse 
+$pulse-primary-color: #f1f1f1;
+$pulse-secondary-color: #909090;
+$pulse-animation-time: 3s;
+
 // Общие размеры элементов
 $page-container-min-width: 320px;
 $page-container-max-width: 1240px;
@@ -43,7 +48,8 @@ $page-container-padding-x: $space-xxs;
 $control-field-heihgt: 52px;
 $control-field-width: 300px;
 
-$border-radius: 0;
+$border-radius-primary: 4px;
+$border-radius-secondary: 2px;
 
 // Переменные Button 
 $button-primary-text: #fff;
@@ -66,7 +72,6 @@ $button-secondary-bg-hover: #eeeefe;
 $button-secondary-bg-disabled: $brand-disabled;
 $button-secondary-bg-active: #dedeee;
 
-$button-border-radius: $border-radius;
 $button-height: $control-field-heihgt;
 $button-padding-x: $space-l;
 $button-padding-y: $space-xxxl;

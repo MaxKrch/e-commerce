@@ -11,10 +11,10 @@ const AppLogo = () => {
   return (
     <Link to={appRoutes.main.create()} className={cn(style['logo'])}>
       <LogoIcon />
-      <AppNameIcon />
+      <AppNameIcon className={cn(style['name'])} />
     </Link>
   );
 };
 
-AppLogo.displayName = 'AppLogo';
+
 export default AppLogo;

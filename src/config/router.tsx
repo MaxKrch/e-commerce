@@ -57,6 +57,8 @@ const routes: RouteObject[] = [
   },
 ];
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, {
+  basename: '/e-commerce'
+});
 
 export default router;

@@ -33,8 +33,9 @@ const Search: FC<SearchProps> = ({
         onChange={onChangeValue}
         placeholder={placeholder}
         className={clsx(style['input'])}
+        name="searchInput"
       />
-      <Button onClick={onSearch} disabled={disabled} className={clsx(style['button'])}>
+      <Button onClick={onSearch} disabled={disabled} className={clsx(style['button'])} name="searchButton">
         Find now
       </Button>
     </div>

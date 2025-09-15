@@ -1,6 +1,8 @@
 .search {
     gap: $space-xxs $space-xl;
     display: flex;
+    border-radius: $border-radius-secondary;
+    overflow: hidden;
 }
 
 .fullscreen {

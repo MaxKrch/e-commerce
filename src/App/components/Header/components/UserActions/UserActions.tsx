@@ -21,5 +21,5 @@ const UserActions = () => {
   );
 };
 
-UserActions.displayName = 'UserActions';
+
 export default memo(UserActions);

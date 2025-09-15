@@ -1,4 +1,5 @@
 @use "variables" as *;
+@use "keyframes" as *;
 
 @mixin mobile-up {
     @media screen and (min-width: $breakpoint-mobile) {
@@ -70,4 +71,14 @@
     width: $page-container-width;
     padding: 0 $page-container-padding-x;
     margin: auto;
+}
+
+@mixin pulse-gradient($primary-color: $pulse-primary-color,
+    $secondary-color: $pulse-secondary-color,
+    $time: $pulse-animation-time) {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, $primary-color 0%, $secondary-color 50%, $primary-color 100%);
+    background-size: 200% 100%;
+    animation: pulse $time infinite;
 }

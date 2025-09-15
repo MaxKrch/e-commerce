@@ -8,19 +8,20 @@ import type { Product } from 'types/product';
 
 import style from './CardList.module.scss';
 
-type CardListProps = Pick<CardProps, 'contentSlot' | 'actionSlot' | 'captionSlot'> & {
+type CardListProps = Pick<CardProps, 'contentSlot' | 'actionSlot' | 'captionSlot' | 'className'> & {
   display?: 'preview' | 'full';
   products: Product[];
   titleSlot?: ReactNode;
 };
 
 const CardList = ({
-  products,
+  products = [],
   display,
   titleSlot,
   captionSlot,
   actionSlot,
   contentSlot,
+  className
 }: CardListProps) => {
   const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ const CardList = ({
   );
 
   return (
-    <div className={clsx(style['container'])}>
+    <div className={clsx(style['container'], className)}>
       {titleSlot}
       <ul className={clsx(style['list'])}>
         {products.map((product) => (
@@ -53,5 +54,5 @@ const CardList = ({
   );
 };
 
-CardList.displayName = 'cardList';
+
 export default memo(CardList);

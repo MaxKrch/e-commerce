@@ -30,5 +30,5 @@ const StepButton: FC<StepButtonProps> = ({ direction, children, className, ...re
   );
 };
 
-StepButton.displayName = 'StepButton';
+
 export default memo(StepButton);

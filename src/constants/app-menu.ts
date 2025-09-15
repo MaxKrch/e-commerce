@@ -2,15 +2,15 @@ import { appRoutes } from './app-routes';
 
 const AppMenu = [
   {
-    title: 'Products',
+    title: 'Товары',
     path: appRoutes.products.list.create(),
   },
   {
-    title: 'Categories',
+    title: 'Категории',
     path: appRoutes.categories.create(),
   },
   {
-    title: 'About us',
+    title: 'О нас',
     path: appRoutes.about.create(),
   },
 ] as const;

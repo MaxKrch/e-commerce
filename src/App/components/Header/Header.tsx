@@ -11,8 +11,8 @@ const Header = () => {
     <header className={cn(style['header'])}>
       <div className={cn(style['content-container'])}>
         <AppLogo />
-        <UserActions />
         <MainMenu />
+        <UserActions />
       </div>
     </header>
   );

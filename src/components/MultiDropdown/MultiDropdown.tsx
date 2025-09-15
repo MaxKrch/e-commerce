@@ -122,6 +122,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         ref={inputElement}
         afterSlot={<ArrowDownIcon color="secondary" />}
         placeholder={resultGetTitle}
+        name='multiDropdownInput'
       />
       {isShowDropdown && !disabled && (
         <ul ref={optionsElement} className={cn(style['options-container'])}>

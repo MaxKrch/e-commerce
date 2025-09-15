@@ -83,5 +83,5 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-Card.displayName = 'Card';
+
 export default memo(Card);
