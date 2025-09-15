@@ -25,7 +25,7 @@ const StepButton: FC<StepButtonProps> = ({ direction, children, className, ...re
   return (
     <button className={clsx(style['button'], className)} onClick={handleClick} {...rest}>
       <ArrowRightIcon className={clsx(direction === 'back' && style['back'])} />
-      <Text view="p-20">{children}</Text>
+      <Text view="p-20" weight='bold' >{children}</Text>
     </button>
   );
 };
