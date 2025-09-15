@@ -53,7 +53,7 @@ const Card: React.FC<CardProps> = ({
           )}
           <Text
             maxLines={2}
-            view="p-20"
+            tag='h3'
             weight="bold"
             color="primary"
             className={clsx(style[`${display}-title`])}
@@ -62,7 +62,6 @@ const Card: React.FC<CardProps> = ({
           </Text>
           <Text
             maxLines={3}
-            view="p-16"
             weight="normal"
             color="secondary"
             className={clsx(style[`${display}-description`])}

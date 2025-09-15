@@ -1,24 +1,12 @@
 .product-card {
     @include content-container();
+    @include base-font-size();
 
-    margin-top: $space-xxs;
-
-    @include tablet-only() {
-        margin-top: $space-m;
-    }
-
-    @include laptop-up() {
-        margin-top: $space-xxxl;
-    }
+    margin-top: 0.8rem;
 }
 
 .content-slot {
-    font-size: $space-xxxl;
-
-    @include mobile-up() {
-
-        font-size: $title-size;
-    }
+    font-size: 2.5rem;
 }
 
 .action-slot {
