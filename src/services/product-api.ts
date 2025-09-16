@@ -1,5 +1,5 @@
 import { apiRoutes, type ApiProductsArgs } from 'services/api-routes-builder';
-import type { ProductCategory, Product, Product } from 'types/product';
+import type { ProductCategory, Product } from 'types/product';
 import type { StrapiResponse } from 'types/strapi-api';
 import formateAxiosError from 'utils/formate-axios-error';
 

@@ -17,7 +17,7 @@ export type ProductCategory = {
   image: Image;
 };
 
-export type Product = {
+export type ProductApi = {
   id: number;
   documentId: string;
   title: string;
@@ -32,3 +32,19 @@ export type Product = {
   publishedAt: string;
   productCategory: ProductCategory;
 };
+
+export type Product = {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string;
+  price: number;
+  discountPercent: number;
+  rating: number;
+  isInStock: boolean;
+  images: Image[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date;
+  productCategory: ProductCategory;
+}
