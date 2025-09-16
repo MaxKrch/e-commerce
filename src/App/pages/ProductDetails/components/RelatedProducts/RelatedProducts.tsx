@@ -18,7 +18,7 @@ const RelatedProducts = ({ products, requestStatus }: RelatedProductsProps) => {
   return (
     <div className={clsx(style['container'])}>
       <Text color="primary" weight="bold" className={clsx(style['title'])}>
-        Related products
+        Вам понравится
       </Text>
       {requestStatus === REQUEST_STATUS.SUCCESS
         ? (<CardList

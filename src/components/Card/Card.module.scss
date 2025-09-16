@@ -81,6 +81,9 @@
     }
 
     &-img {
+        border-radius: $border-radius-primary;
+        overflow: hidden;
+
         @include tablet-up() {
             width: 350px;
             flex-shrink: 0;

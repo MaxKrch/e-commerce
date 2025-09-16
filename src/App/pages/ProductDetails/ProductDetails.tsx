@@ -23,6 +23,13 @@ const ProductDetailsPage = () => {
   const [requestRelatedProductsStatus, setRequestRelatedProductsStatus] = useState<RequestStatus>(REQUEST_STATUS.IDLE);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }, [params.id])
+
+  useEffect(() => {
     const clearProductAbortCntrl = () => {
       if (productAbortCntr.current) {
         productAbortCntr.current.abort();

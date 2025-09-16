@@ -62,15 +62,15 @@ $button-primary-bg-hover: $brand-hover;
 $button-primary-bg-disabled: $brand-disabled;
 $button-primary-bg-active: $brand-active;
 
-$button-secondary-text: $text-primary;
-$button-secondary-text-hover: $text-primary;
-$button-secondary-text-disabled: $text-primary;
-$button-secondary-text-active: $text-primary;
+$button-secondary-text: $brand;
+$button-secondary-text-hover: $brand-hover;
+$button-secondary-text-disabled: $brand-disabled;
+$button-secondary-text-active: $brand-active;
 
 $button-secondary-bg: #fff;
-$button-secondary-bg-hover: #eeeefe;
-$button-secondary-bg-disabled: $brand-disabled;
-$button-secondary-bg-active: #dedeee;
+$button-secondary-bg-hover: #fefefe;
+$button-secondary-bg-disabled: #eeeeee;
+$button-secondary-bg-active: #efefef;
 
 $button-height: $control-field-heihgt;
 $button-padding-x: $space-l;

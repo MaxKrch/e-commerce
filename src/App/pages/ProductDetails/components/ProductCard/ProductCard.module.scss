@@ -28,10 +28,6 @@
 
     @include mobile-up() {
         justify-content: start;
-        gap: $space-xxxl;
-    }
-
-    @include laptop-up() {
-        gap: $full-card-actions-space;
+        gap: $space-xxl;
     }
 }
