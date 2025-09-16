@@ -82,3 +82,19 @@
     background-size: 200% 100%;
     animation: pulse $time infinite;
 }
+
+@mixin base-font-size {
+    font-size: $space-xs;
+    
+    @include mobile-only() {
+        font-size: $space-m;
+    }
+
+    @include tablet-only() {
+        font-size: $space-l;
+    }
+
+    @include laptop-up() {
+        font-size: $space-xxl;
+    }
+}

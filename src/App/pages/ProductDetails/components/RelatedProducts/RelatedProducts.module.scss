@@ -2,12 +2,15 @@ $margin-top: 48px;
 
 .container {
     @include content-container();
+    @include base-font-size();
     margin-top: $margin-top;
 }
 
 .title {
-    font-size: $space-xxxl;
+    font-size: 1.5rem
+
 }
+
 
 .related-products {
     max-width: 100%;

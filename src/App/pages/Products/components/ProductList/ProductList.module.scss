@@ -1,27 +1,19 @@
 $margin-top: 48px;
 
 .container {
-    @include content-container();
-    margin-top: $margin-top;
+    @include content-container(); 
+    @include base-font-size();
 
+    margin-top: $margin-top;
 }
 
-.count {
+.count {   
     display: flex;
     align-items: center;
-    gap: $space-xl;
-
-    @include mobile-up() {
-        gap: $space-xxl;
-    }
-
+    gap: 1rem;
 
     &__title {
-        font-size: $space-xxl;
-
-        @include tablet-up() {
-            font-size: $space-xxxl;
-        }
+        font-size: 1.5rem;
     }
 }
 
