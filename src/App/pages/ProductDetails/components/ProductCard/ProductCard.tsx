@@ -35,9 +35,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, requestStatus }) => 
       <>
         {product && (
           <div className={clsx(style['action-slot'])}>
-            <Button onClick={() => handlePrimaryBtn(product.documentId)}>Buy Now</Button>
+            <Button onClick={() => handlePrimaryBtn(product.documentId)}>Купить сразу</Button>
             <Button priority="secondary" onClick={() => handleSecondBtn(product.documentId)}>
-              Add to Cart
+              В корзину
             </Button>
           </div>
         )}

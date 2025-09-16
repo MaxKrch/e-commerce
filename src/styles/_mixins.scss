@@ -3,67 +3,54 @@
 
 @mixin mobile-up {
     @media screen and (min-width: $breakpoint-mobile) {
-        @content
+        @content;
     }
 }
 
-;
 
 @mixin tablet-up {
     @media screen and (min-width: $breakpoint-tablet) {
-        @content
+        @content;
     }
 }
 
-;
 
 @mixin laptop-up {
     @media screen and (min-width: $breakpoint-laptop) {
-        @content
+        @content;
     }
 }
 
-;
 
 @mixin desktop-up {
     @media screen and (min-width: $breakpoint-desktop) {
-        @content
+        @content;
     }
 }
-
-;
 
 @mixin mobile-only {
     @media screen and (min-width: $breakpoint-mobile) and (max-width: #{$breakpoint-tablet + 1px}) {
-        @content
+        @content;
     }
 }
-
-;
 
 @mixin tablet-only {
     @media screen and (min-width: $breakpoint-tablet) and (max-width: #{$breakpoint-desktop}) {
-        @content
+        @content;
     }
 }
-
-;
 
 @mixin laptop-only {
     @media screen and (min-width: $breakpoint-deskktop) {
-        @content
+        @content;
     }
 }
-
-;
 
 @mixin desktop-only {
     @media screen and (min-width: $breakpoint-phone) and (max-width: $breakpoint-) {
-        @content
+        @content;
     }
 }
-
-;
 
 @mixin content-container {
     max-width: $page-container-max-width;
@@ -83,9 +70,9 @@
     animation: pulse $time infinite;
 }
 
-@mixin base-font-size {
+@mixin base-adaptive-font-size {
     font-size: $space-xs;
-    
+
     @include mobile-only() {
         font-size: $space-m;
     }
@@ -96,5 +83,37 @@
 
     @include laptop-up() {
         font-size: $space-xxl;
+    }
+}
+
+@mixin base-adaptive-font-size {
+    font-size: $space-s;
+
+    @include mobile-only() {
+        font-size: $space-m;
+    }
+
+    @include tablet-only() {
+        font-size: $space-l;
+    }
+
+    @include laptop-up() {
+        font-size: $space-xl;
+    }
+}
+
+@mixin section-title-font-size {
+    font-size: $section-title-base;
+
+    @include mobile-only() {
+        font-size: $section-title-mobile;
+    }
+
+    @include tablet-only() {
+        font-size: $section-title-tablet;
+    }
+
+    @include laptop-up() {
+        font-size: $section-title-laptop-up;
     }
 }

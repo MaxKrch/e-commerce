@@ -1,21 +1,20 @@
 .product-card {
     @include content-container();
-    @include base-font-size();
 
     margin-top: 0.8rem;
 }
 
 .content-slot {
-    font-size: 2.5rem;
+    font-size: 1.5em;
 }
 
 .action-slot {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    gap: 1em;
 
     @include mobile-up() {
         justify-content: start;
-        gap: $space-xxl;
     }
 }

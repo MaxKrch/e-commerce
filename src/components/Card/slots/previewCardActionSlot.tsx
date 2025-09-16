@@ -6,7 +6,7 @@ const previewCardActionSlot = (id: Product['documentId']) => {
     void id;
   };
 
-  return <Button onClick={() => handleClick(id)}>Add to Cart</Button>;
+  return <Button onClick={() => handleClick(id)}>В корзину</Button>;
 };
 
 export default previewCardActionSlot;

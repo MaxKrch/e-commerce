@@ -11,6 +11,7 @@ $brand-hover: #86aaa7;
 $brand-disabled: #d9d9d9;
 
 // Основные размеры
+$title-size: 44px;
 $space-xxxl: 32px;
 $space-xxl: 24px;
 $space-xl: 20px;
@@ -20,7 +21,12 @@ $space-s: 14px;
 $space-xs: 12px;
 $space-xxs: 10px;
 $space-xxxs: 8px;
-$title-size: 44px;
+
+// Переменные для section title
+$section-title-base: 28px;
+$section-title-mobile: 30px;
+$section-title-tablet: 32px;
+$section-title-laptop-up: 34px;
 
 // Цвета шрифта 
 $text-primary: #000;
@@ -45,7 +51,7 @@ $page-container-max-width: 1240px;
 $page-container-width: 100%;
 $page-container-padding-x: $space-xxs;
 
-$control-field-heihgt: 45px;
+$control-field-heihgt: 42px;
 $control-field-width: 300px;
 
 $border-radius-primary: 4px;
@@ -73,8 +79,8 @@ $button-secondary-bg-disabled: #eeeeee;
 $button-secondary-bg-active: #efefef;
 
 $button-height: $control-field-heihgt;
-$button-padding-x: $space-l;
-$button-padding-y: $space-xxxl;
+$button-padding-x: $space-m;
+$button-padding-y: $space-xl;
 
 // Переменные Input 
 $input-text: $text-primary;
@@ -108,7 +114,7 @@ $checkbox-check-color: $brand;
 $checkbox-check-color-hover: $brand;
 $checkbox-check-color-disabled: $brand-disabled;
 
-$checkbox-size: 40px;
+$checkbox-size: $control-field-heihgt;
 
 // Переменные Card  
 $preview-card-bg: #fff;

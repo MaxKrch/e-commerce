@@ -1,14 +1,11 @@
-$margin-top: 48px;
-
 .container {
     @include content-container();
-    @include base-font-size();
-    margin-top: $margin-top;
+    margin-top: 48px;
+    padding-bottom: 48px;
 }
 
 .title {
-    font-size: 1.5rem
-
+    @include section-title-font-size()
 }
 
 

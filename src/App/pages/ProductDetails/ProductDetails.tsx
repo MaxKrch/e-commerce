@@ -67,7 +67,7 @@ const ProductDetailsPage = () => {
         }
 
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
+        if (err instanceof Error && err.name !== 'AbortError' && err.name !== 'CanceledError') {
           setRequestProductStatus(REQUEST_STATUS.ERROR);
         }
       }
@@ -112,7 +112,7 @@ const ProductDetailsPage = () => {
           setRequestRelatedProductsStatus(REQUEST_STATUS.IDLE)
         }
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
+        if (err instanceof Error && err.name !== 'AbortError' && err.name !== 'CanceledError') {
           setRequestRelatedProductsStatus(REQUEST_STATUS.ERROR);
         }
       }

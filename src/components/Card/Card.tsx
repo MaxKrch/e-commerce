@@ -46,38 +46,38 @@ const Card: React.FC<CardProps> = ({
           />
         )}
       </div>
-      <div className={clsx(style['body'], style[`${display}-body`])}>
-        <main className={clsx(style['main'], style[`${display}-main`])} onClick={handleClick}>
-          {captionSlot && (
-            <div className={clsx(style[`${display}-caption-slot`])}>{captionSlot(product)}</div>
-          )}
-          <Text
-            maxLines={2}
-            tag='h3'
-            weight="bold"
-            color="primary"
-            className={clsx(style[`${display}-title`])}
-          >
-            {title}
-          </Text>
-          <Text
-            maxLines={3}
-            weight="normal"
-            color="secondary"
-            className={clsx(style[`${display}-description`])}
-          >
-            {description}
-          </Text>
-        </main>
-        <footer className={clsx(style[`${display}-footer`])}>
-          <div className={clsx(style[`${display}-content-slot`])}>
-            {contentSlot && contentSlot(product)}
-          </div>
-          <div className={clsx(style[`${display}-action-slot`])}>
-            {actionSlot && actionSlot(id)}
-          </div>
-        </footer>
-      </div>
+
+      <main className={clsx(style['main'], style[`${display}-main`])} onClick={handleClick}>
+        {captionSlot && (
+          <div className={clsx(style[`${display}-caption-slot`])}>{captionSlot(product)}</div>
+        )}
+        <Text
+          maxLines={2}
+          tag='h3'
+          weight="bold"
+          color="primary"
+          className={clsx(style[`${display}-title`])}
+        >
+          {title}
+        </Text>
+        <Text
+          maxLines={3}
+          weight="normal"
+          color="secondary"
+          className={clsx(style[`${display}-description`])}
+        >
+          {description}
+        </Text>
+      </main>
+
+      <footer className={clsx(style[`${display}-footer`])}>
+        <div className={clsx(style[`${display}-content-slot`])}>
+          {contentSlot && contentSlot(product)}
+        </div>
+        <div className={clsx(style[`${display}-action-slot`])}>
+          {actionSlot && actionSlot(id)}
+        </div>
+      </footer>
     </article>
   );
 };

@@ -1,19 +1,17 @@
 $margin-top: 48px;
 
 .container {
-    @include content-container(); 
-    @include base-font-size();
-
+    @include content-container();
     margin-top: $margin-top;
 }
 
-.count {   
+.count {
     display: flex;
     align-items: center;
     gap: 1rem;
 
     &__title {
-        font-size: 1.5rem;
+        @include section-title-font-size();
     }
 }
 

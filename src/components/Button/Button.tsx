@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button {...rest} className={classes} disabled={loading || disabled}>
       {loading && <Loader size="s" className={cn(style['loader'])} />}
-      <Text view="button">{children}</Text>
+      <Text view="button" className={cn(style['text'])}>{children}</Text>
     </button>
   );
 };

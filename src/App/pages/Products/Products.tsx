@@ -68,7 +68,7 @@ const ProductsPage = () => {
         setProductsTotal(response.data.meta.pagination.total);
         setRequestStatus(REQUEST_STATUS.SUCCESS)
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
+        if (err instanceof Error && err.name !== 'AbortError' && err.name !== 'CanceledError') {
           setRequestStatus(REQUEST_STATUS.ERROR)
         }
       }
