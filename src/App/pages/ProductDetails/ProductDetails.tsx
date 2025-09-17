@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import productApi from 'services/product-api';
-import type { Product } from 'types/product';
+import type { Product } from 'types/products';
 import { isStrapiSuccessResponse } from 'types/strapi-api';
 
 import ProductCard from './components/ProductCard';
@@ -55,19 +55,15 @@ const ProductDetailsPage = () => {
           throw response;
         }
 
-        if (!isStrapiSuccessResponse<Product>(response.data)) {
-          throw new Error('Unknown error');
-        }
-
-        if (response.data.data.documentId === params.id) {
-          setProduct(response.data.data);
+        if (response.data.documentId === params.id) {
+          setProduct(response.data);
           setRequestProductStatus(REQUEST_STATUS.SUCCESS)
         } else {
           setRequestProductStatus(REQUEST_STATUS.IDLE)
         }
 
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError' && err.name !== 'CanceledError') {
+        if (err instanceof Error && err.name !== 'AbortError') {
           setRequestProductStatus(REQUEST_STATUS.ERROR);
         }
       }
@@ -101,18 +97,14 @@ const ProductDetailsPage = () => {
           throw response;
         }
 
-        if (!isStrapiSuccessResponse<Product[]>(response.data)) {
-          throw new Error('Unknown Error');
-        }
-
         if (releatedProductId === params.id) {
-          setRelatedProducts(response.data.data);
+          setRelatedProducts(response.data);
           setRequestRelatedProductsStatus(REQUEST_STATUS.SUCCESS);
         } else {
           setRequestRelatedProductsStatus(REQUEST_STATUS.IDLE)
         }
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError' && err.name !== 'CanceledError') {
+        if (err instanceof Error && err.name !== 'AbortError') {
           setRequestRelatedProductsStatus(REQUEST_STATUS.ERROR);
         }
       }

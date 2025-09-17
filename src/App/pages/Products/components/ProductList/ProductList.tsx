@@ -7,7 +7,7 @@ import {
 import CardList from 'components/CardList';
 import Text from 'components/Text';
 import { memo } from 'react';
-import type { Product } from 'types/product';
+import type { Product } from 'types/products';
 
 import style from './ProductList.module.scss';
 import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';

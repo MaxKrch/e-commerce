@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import type { Product } from 'types/product';
+import type { Product } from 'types/products';
 
 import style from './ImageGalery.module.scss';
 

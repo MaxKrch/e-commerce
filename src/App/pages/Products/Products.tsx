@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import productApi from 'services/product-api';
-import type { Product } from 'types/product';
+import type { Product } from 'types/products';
 import { isStrapiSuccessResponse } from 'types/strapi-api';
 
 import ProductFilter from './components/ProductFilter';
@@ -59,16 +59,12 @@ const ProductsPage = () => {
           throw response;
         }
 
-        if (!isStrapiSuccessResponse<Product[]>(response.data)) {
-          throw new Error('Unknown Error');
-        }
-
-        setPageCount(response.data.meta.pagination.pageCount);
-        setProducts(response.data.data);
-        setProductsTotal(response.data.meta.pagination.total);
+        setPageCount(response.meta.pagination.pageCount);
+        setProducts(response.data);
+        setProductsTotal(response.meta.pagination.total);
         setRequestStatus(REQUEST_STATUS.SUCCESS)
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError' && err.name !== 'CanceledError') {
+        if (err instanceof Error && err.name !== 'AbortError') {
           setRequestStatus(REQUEST_STATUS.ERROR)
         }
       }

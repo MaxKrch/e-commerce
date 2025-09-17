@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import Text from 'components/Text';
 import React, { memo, useCallback } from 'react';
-import type { Product } from 'types/product';
+import type { Product } from 'types/products';
 
 import style from './Card.module.scss';
 import ImageGalery from './components/ImageGalery';

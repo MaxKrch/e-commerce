@@ -3,7 +3,7 @@ import Button from 'components/Button';
 import Card, { CardSkeleton } from 'components/Card';
 import Text from 'components/Text';
 import React from 'react';
-import type { Product } from 'types/product';
+import type { Product } from 'types/products';
 
 import style from './ProductCard.module.scss';
 import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';

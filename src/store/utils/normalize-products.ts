@@ -1,4 +1,4 @@
-import type { Product, ProductApi } from "types/product";
+import type { Product, ProductApi } from "types/products";
 
 const normalizeProducts = (products: ProductApi[]): Product[] => {
     return products.map(from => ({

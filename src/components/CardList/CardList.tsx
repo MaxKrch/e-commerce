@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import Card, { type CardProps } from 'components/Card';
 import { memo, useCallback, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Product } from 'types/product';
+import type { Product } from 'types/products';
 
 import style from './CardList.module.scss';
 
