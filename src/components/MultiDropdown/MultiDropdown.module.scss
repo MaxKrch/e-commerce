@@ -1,13 +1,17 @@
  .container {
-   width: $dropdown-width;
    border-radius: $border-radius-secondary;
    overflow: hidden;
+   position: relative;
  }
 
  .options-container {
    background: $dropdown-options-bg;
    margin-top: $space-xxs;
    box-shadow: $dropdown-options-shadow;
+   position: absolute;
+   left: 0;
+   width: 100%;
+   top: $space-l;
  }
 
  .option {

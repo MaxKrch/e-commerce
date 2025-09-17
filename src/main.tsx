@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 
 import router from './config/router';
 import './styles/main.scss';
+import './config/configureMobX';
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 createRoot(document.getElementById('root')!).render(

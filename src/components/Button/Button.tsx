@@ -1,6 +1,4 @@
 import cn from 'clsx';
-import Loader from 'components/Loader';
-import Text from 'components/Text';
 import React, { memo } from 'react';
 
 import style from './Button.module.scss';
@@ -29,8 +27,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button {...rest} className={classes} disabled={loading || disabled}>
-      {loading && <Loader size="s" className={cn(style['loader'])} />}
-      <Text view="button" className={cn(style['text'])}>{children}</Text>
+      {children}
     </button>
   );
 };

@@ -1,8 +1,9 @@
 import { apiRoutes, type ApiProductsArgs } from 'services/api-routes-builder';
-import type { ProductCategory, Product } from 'types/products';
+import type { ProductCategory, ProductApi } from 'types/products';
 import { isStrapiSuccessResponse, type StrapiResponse } from 'types/strapi-api';
 import formateError from 'utils/formate-error';
 import api from './api-client';
+import { normalizeProductItem, normalizeProductList } from 'store/utils/normalize-products';
 
 export type RequestArgs<T> = {
   request: T;
@@ -27,14 +28,18 @@ const productApi = {
   },
   getProductList: async ({ request, signal }: RequestArgs<ApiProductsArgs['ProductsList']>) => {
     try {
-      const response = await api.get<StrapiResponse<Product[]>>(apiRoutes.products.list(request), {
+      const response = await api.get<StrapiResponse<ProductApi[]>>(apiRoutes.products.list(request), {
         signal,
-      }) as unknown as StrapiResponse<Product[]>;
+      }) as unknown as StrapiResponse<ProductApi[]>;
 
       if (!isStrapiSuccessResponse(response)) {
         throw (new Error(response.error.message));
       }
-      return response;
+
+      return ({
+        ...response,
+        data: normalizeProductList(response.data)
+      });
 
     } catch (err) {
       return formateError(err)
@@ -45,14 +50,18 @@ const productApi = {
     signal,
   }: RequestArgs<ApiProductsArgs['ProductsDetails']>) => {
     try {
-      const response = await api.get<StrapiResponse<Product>>(apiRoutes.products.details(request), {
+      const response = await api.get<StrapiResponse<ProductApi>>(apiRoutes.products.details(request), {
         signal,
-      }) as unknown as StrapiResponse<Product>;
+      }) as unknown as StrapiResponse<ProductApi>;
 
       if (!isStrapiSuccessResponse(response)) {
         throw new Error(response.error.message);
       }
-      return response;
+
+      return ({
+        ...response,
+        data: normalizeProductItem(response.data)
+      });
 
     } catch (err) {
       return formateError(err);

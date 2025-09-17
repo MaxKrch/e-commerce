@@ -1,4 +1,82 @@
+$cross-size: 28px;
+$cross-margin: calc(($control-field-heihgt - $cross-size) / 2);
+$input-right-padding: calc($cross-size + 2 * $cross-margin);
+
 .search {
+    @include content-container();
+    display: flex;
+    flex-direction: column;
+    gap: $space-xl;
     width: 100%;
-    @include content-container()
+}
+
+.filter,
+.input,
+.button {
+    border-radius: $border-radius-secondary;
+}
+
+.filter {
+    width: 100%;
+
+    @include tablet-up() {
+        width: 360px;
+    }
+}
+
+.query {
+    display: flex;
+    gap: $space-xxs;
+    width: 100%;
+
+    &-input {
+        flex-basis: 100%;
+        position: relative;
+
+        &-element {
+            input {
+                padding-right: $input-right-padding;
+            }
+        }
+
+        &-cross {
+            position: absolute;
+            top: $cross-margin;
+            right: $cross-margin;
+            width: $cross-size;
+            height: $cross-size;
+            color: $brand;
+            cursor: pointer;
+        }
+    }
+
+    &-button {
+        padding: 0;
+        width: $control-field-heihgt;
+        flex-shrink: 0;
+
+        @include tablet-up() {
+            padding: $button-padding-y $button-padding-x;
+            width: auto;
+        }
+
+        &-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        &-text {
+            display: none;
+
+            @include tablet-up() {
+                display: inline-block;
+            }
+        }
+
+        @include tablet-up() {
+            display: flex;
+            gap: $space-xxs;
+        }
+    }
 }

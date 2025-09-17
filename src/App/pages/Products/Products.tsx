@@ -5,9 +5,6 @@ import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import productApi from 'services/product-api';
 import type { Product } from 'types/products';
-import { isStrapiSuccessResponse } from 'types/strapi-api';
-
-import ProductFilter from './components/ProductFilter';
 import ProductList from './components/ProductList';
 import ProductSearch from './components/ProductSearch';
 import { metaData, textData } from './config';
@@ -81,7 +78,6 @@ const ProductsPage = () => {
       </Helmet>
       <SectionHeader title={textData.title()} content={textData.description()} />
       <ProductSearch onSearch={() => undefined} />
-      <ProductFilter />
       <ProductList products={products} total={productsTotal} requestStatus={requestStatus} />
       <Pagination currentPage={currentPage} pageCount={pageCount} onClick={handleChangePage} />
     </div>

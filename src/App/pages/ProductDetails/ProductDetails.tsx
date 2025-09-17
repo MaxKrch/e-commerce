@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import productApi from 'services/product-api';
 import type { Product } from 'types/products';
-import { isStrapiSuccessResponse } from 'types/strapi-api';
 
 import ProductCard from './components/ProductCard';
 import RelatedProducts from './components/RelatedProducts';
