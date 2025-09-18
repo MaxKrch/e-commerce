@@ -1,44 +1,45 @@
-import qs from 'qs';
+import { buildQueryString } from 'utils/build-query-string';
 
-const populate = ['images', 'productCategory'];
+const populate = {
+  products: ['images', 'productCategory'],
+  categories: ['image']
+} as const
 
 export type ApiProductsArgs = {
-  Categories: {
-    page?: number;
-    pageSize?: number;
-  };
   ProductsList: {
     page?: number;
     pageSize?: number;
+    categories?: number[],
   };
+
   ProductsDetails: {
     id: string;
   };
 };
 
+
 export const apiRoutes = {
   categories: {
-    list: ({ page = 1, pageSize = 25 }: ApiProductsArgs['Categories']) => {
-      const queryString = qs.stringify({
-        populate,
-        pagination: { page, pageSize },
+    list: () => {
+      const queryString = buildQueryString({
+        populate: populate['categories']
       });
 
       return `/product-categories?${queryString}`;
     },
   },
   products: {
-    list: ({ page = 1, pageSize = 25 }: ApiProductsArgs['ProductsList']) => {
-      const queryString = qs.stringify({
-        populate,
-        pagination: { page, pageSize },
+    list: (args: ApiProductsArgs['ProductsList']) => {
+      const queryString = buildQueryString({
+        ...args,
+        populate: populate['products'],
       });
 
       return `/products?${queryString}`;
     },
 
     details: ({ id }: ApiProductsArgs['ProductsDetails']) => {
-      const queryString = qs.stringify({ populate });
+      const queryString = buildQueryString({ populate: populate['products'] });
 
       return `/products/${id}?${queryString}`;
     },

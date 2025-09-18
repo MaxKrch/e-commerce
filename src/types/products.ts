@@ -10,6 +10,13 @@ type Image = {
   [key: string]: unknown;
 };
 
+export type ProductCategoryApi = {
+  id: number;
+  documentId: string;
+  title: string;
+  image: Image;
+};
+
 export type ProductCategory = {
   id: number;
   documentId: string;

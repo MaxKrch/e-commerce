@@ -6,21 +6,21 @@ import { memo } from 'react';
 import type { Product } from 'types/products';
 
 import style from './RelatedProducts.module.scss';
-import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';
+import { META_STATUS, type MetaStatus } from 'constants/meta-status';
 import CardListSkeleton from 'components/CardList/CardListSkeleton';
 
 export type RelatedProductsProps = {
   products: Product[];
-  requestStatus: RequestStatus;
+  MetaStatus: MetaStatus;
 };
 
-const RelatedProducts = ({ products, requestStatus }: RelatedProductsProps) => {
+const RelatedProducts = ({ products, MetaStatus }: RelatedProductsProps) => {
   return (
     <div className={clsx(style['container'])}>
       <Text color="primary" weight="bold" className={clsx(style['title'])}>
         Вам понравится
       </Text>
-      {requestStatus === REQUEST_STATUS.SUCCESS
+      {MetaStatus === META_STATUS.SUCCESS
         ? (<CardList
           display="preview"
           products={products}

@@ -8,18 +8,18 @@ import ProductCard from './components/ProductCard';
 import RelatedProducts from './components/RelatedProducts';
 import StepBack from './components/StepBack';
 import { metaData } from './config';
-import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';
+import { META_STATUS, type MetaStatus } from 'constants/meta-status';
 
 const ProductDetailsPage = () => {
   const params = useParams();
 
   const [product, setProduct] = useState<Product | null>(null);
   const productAbortCntr = useRef<AbortController | null>(null);
-  const [requestProductStatus, setRequestProductStatus] = useState<RequestStatus>(REQUEST_STATUS.IDLE);
+  const [requestProductStatus, setRequestProductStatus] = useState<MetaStatus>(META_STATUS.IDLE);
 
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const relatedProductsAbortCntr = useRef<AbortController | null>(null);
-  const [requestRelatedProductsStatus, setRequestRelatedProductsStatus] = useState<RequestStatus>(REQUEST_STATUS.IDLE);
+  const [requestRelatedProductsStatus, setRequestRelatedProductsStatus] = useState<MetaStatus>(META_STATUS.IDLE);
 
   useEffect(() => {
     window.scrollTo({
@@ -42,7 +42,7 @@ const ProductDetailsPage = () => {
       setProduct(null);
       setRelatedProducts([]);
       productAbortCntr.current = new AbortController();
-      setRequestProductStatus(REQUEST_STATUS.IDLE);
+      setRequestProductStatus(META_STATUS.IDLE);
 
       try {
         const response = await productApi.getProductDetails({
@@ -56,14 +56,14 @@ const ProductDetailsPage = () => {
 
         if (response.data.documentId === params.id) {
           setProduct(response.data);
-          setRequestProductStatus(REQUEST_STATUS.SUCCESS)
+          setRequestProductStatus(META_STATUS.SUCCESS)
         } else {
-          setRequestProductStatus(REQUEST_STATUS.IDLE)
+          setRequestProductStatus(META_STATUS.IDLE)
         }
 
       } catch (err) {
         if (err instanceof Error && err.name !== 'AbortError') {
-          setRequestProductStatus(REQUEST_STATUS.ERROR);
+          setRequestProductStatus(META_STATUS.ERROR);
         }
       }
     };
@@ -82,7 +82,7 @@ const ProductDetailsPage = () => {
 
     const requestRelatedProducts = async () => {
       clearRelatedProductsAbortCntrl();
-      setRequestRelatedProductsStatus(REQUEST_STATUS.PENDING)
+      setRequestRelatedProductsStatus(META_STATUS.PENDING)
       relatedProductsAbortCntr.current = new AbortController();
       const releatedProductId = params.id;
 
@@ -98,13 +98,13 @@ const ProductDetailsPage = () => {
 
         if (releatedProductId === params.id) {
           setRelatedProducts(response.data);
-          setRequestRelatedProductsStatus(REQUEST_STATUS.SUCCESS);
+          setRequestRelatedProductsStatus(META_STATUS.SUCCESS);
         } else {
-          setRequestRelatedProductsStatus(REQUEST_STATUS.IDLE)
+          setRequestRelatedProductsStatus(META_STATUS.IDLE)
         }
       } catch (err) {
         if (err instanceof Error && err.name !== 'AbortError') {
-          setRequestRelatedProductsStatus(REQUEST_STATUS.ERROR);
+          setRequestRelatedProductsStatus(META_STATUS.ERROR);
         }
       }
     };
@@ -120,8 +120,8 @@ const ProductDetailsPage = () => {
         <title>{metaData.title(product?.title)}</title>
       </Helmet>
       <StepBack />
-      {<ProductCard requestStatus={requestProductStatus} product={product} />}
-      {<RelatedProducts requestStatus={requestRelatedProductsStatus} products={relatedProducts} />}
+      {<ProductCard MetaStatus={requestProductStatus} product={product} />}
+      {<RelatedProducts MetaStatus={requestRelatedProductsStatus} products={relatedProducts} />}
     </div>
   );
 };

@@ -10,16 +10,16 @@ import { memo } from 'react';
 import type { Product } from 'types/products';
 
 import style from './ProductList.module.scss';
-import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';
+import { META_STATUS, type MetaStatus } from 'constants/meta-status';
 import CardListSkeleton from 'components/CardList/CardListSkeleton';
 
 type ProductListProps = {
   products: Product[];
   total?: number;
-  requestStatus: RequestStatus;
+  MetaStatus: MetaStatus;
 };
 
-const ProductList = ({ products, total, requestStatus }: ProductListProps) => {
+const ProductList = ({ products, total, MetaStatus }: ProductListProps) => {
   return (
     <div className={clsx(style['container'])}>
       <div className={clsx(style['count'])}>
@@ -30,7 +30,7 @@ const ProductList = ({ products, total, requestStatus }: ProductListProps) => {
           {total || products.length}
         </Text>
       </div>
-      {requestStatus === REQUEST_STATUS.SUCCESS
+      {MetaStatus === META_STATUS.SUCCESS
         ? (
           <CardList
             display="preview"

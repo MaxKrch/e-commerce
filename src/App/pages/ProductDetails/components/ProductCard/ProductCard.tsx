@@ -6,14 +6,14 @@ import React from 'react';
 import type { Product } from 'types/products';
 
 import style from './ProductCard.module.scss';
-import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';
+import { META_STATUS, type MetaStatus } from 'constants/meta-status';
 
 export type ProductCardProps = {
   product: Product | null;
-  requestStatus: RequestStatus;
+  MetaStatus: MetaStatus;
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, requestStatus }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, MetaStatus }) => {
   const handlePrimaryBtn = (id: Product['documentId']) => {
     void id;
   }
@@ -47,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, requestStatus }) => 
 
   return (
     <article className={clsx(style['product-card'])}>
-      {(requestStatus === REQUEST_STATUS.PENDING || !product)
+      {(MetaStatus === META_STATUS.PENDING || !product)
         ? <CardSkeleton display='full' />
         : <Card display="full" product={product} contentSlot={contentSlot} actionSlot={actionSlot} />
       }

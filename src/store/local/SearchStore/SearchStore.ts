@@ -1,43 +1,93 @@
 import type { ILocalStore } from "hooks/useLocalStore";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
-import qs from "qs";
+import { action, computed, makeObservable, observable, reaction, type IReactionDisposer } from "mobx";
+import type RootStore from "store/RootStore/RootStore";
+import getInitialCollection from "store/utils/get-initial-collection";
+import { linearizeCollection, normalizeColection } from "store/utils/normalize-collection";
+import type { Collection } from "types/collections";
+import type { Option } from "types/option-dropdown";
 import type { ProductCategory } from "types/products";
+import type { QueryParams } from "types/query-params";
 
 type PrivateFields =
     | '_inputValue'
-    | '_categories'
     | '_selectedCategories'
-    | '_setInputValue'
-    | '_setSelectedCategories'
-    | '_setParams'
+    | '_filterSelectedCategories'
+    | '_getSelectedCategoriegByIds'
+
+
 
 export default class SearchStore implements ILocalStore {
     private _inputValue: string = '';
-    private _categories: ProductCategory[] = [];
-    private _selectedCategories: ProductCategory[] = [];
+    private _selectedCategories: Collection<ProductCategory['id'], ProductCategory> = getInitialCollection();
     private _debounce: ReturnType<typeof setTimeout> | null = null;
-    private _params: URLSearchParams | null = null;
+    private _handleChange: (params: QueryParams) => void;
+    private _rootStore: RootStore;
+    private _pendingSelectedIds: ProductCategory['id'][] | null = null;
 
-    constructor() {
+    constructor({
+        initData,
+        handleChange,
+        rootStore
+    }: {
+        initData: QueryParams,
+        handleChange: (params: QueryParams) => void,
+        rootStore: RootStore,
+    }) {
         makeObservable<SearchStore, PrivateFields>(this, {
             _inputValue: observable,
-            _categories: observable,
             _selectedCategories: observable,
 
-            _setInputValue: action.bound,
-            _setSelectedCategories: action.bound,
-            _setParams: action.bound,
+            handleInput: action.bound,
+            handleSelectCategories: action.bound,
+            _filterSelectedCategories: action,
+            _getSelectedCategoriegByIds: action,
 
             inputValue: computed,
             categories: computed,
             selectedCategories: computed,
+            options: computed,
+            value: computed,
+            title: computed,
         })
 
-        const params = qs.parse(window.location.search, {
-            ignoreQueryPrefix: true,
-        });
-        //кладем фильтры и инвпут значения в стор, 
-        console.log(params)
+        this._inputValue = initData.query ?? '';
+        this._handleChange = handleChange;
+        this._rootStore = rootStore;
+    }
+
+    private _filterSelectedCategories(categories: ProductCategory[]): void {
+        const filtredCategories = categories.filter(item => this._selectedCategories.order.includes(item.id));
+        this.selectedCategories = filtredCategories;
+    }
+
+    private _getSelectedCategoriegByIds(categories: ProductCategory[]): void {
+        const filtredCategories = categories.filter(item => this._pendingSelectedIds?.includes(item.id));
+        this.selectedCategories = filtredCategories;
+
+        this._pendingSelectedIds = null;
+    }
+
+    get options(): Option[] {
+        return this.categories.map(item => ({
+            key: `${item.id}`,
+            value: item.title,
+        }))
+    }
+
+    get value(): Option[] {
+        return this.selectedCategories.map(item => ({
+            key: `${item.id}`,
+            value: item.title,
+        }))
+    }
+
+    get title(): string {
+        if (this.selectedCategories.length > 0) {
+            return this.selectedCategories.map(item => item.title)
+                .join(', ')
+        }
+
+        return 'Любая категория'
     }
 
     get inputValue(): string {
@@ -45,53 +95,82 @@ export default class SearchStore implements ILocalStore {
     }
 
     get categories(): ProductCategory[] {
-        return this._categories;
+        return this._rootStore.categoriesStore.list;
     }
 
     get selectedCategories(): ProductCategory[] {
-        return this._selectedCategories;
+        return linearizeCollection(this._selectedCategories);
     }
 
-    private _setSelectedCategories(categories: ProductCategory[]): void {
-        console.log(categories)
+    private set selectedCategories(categories: ProductCategory[]) {
+        this._selectedCategories = normalizeColection(
+            categories,
+            (item) => item.id
+        )
     }
 
-    private _setInputValue(value: string): void {
+    handleInput(value: string): void {
         this._inputValue = value;
-        console.log(value, this._inputValue)
     }
 
-    private _setParams(): void {
-        console.log(5)
+    handleSelectCategories(options: Option[]): void {
+        const selected: ProductCategory[] = []
+        options.forEach(item => {
+            const target = this.categories.find(el => `${el.id}` === item.key)
+            if (target) {
+                selected.push(target)
+            }
+        })
+        this.selectedCategories = selected;
     }
 
-    handleChangeInput(): void {
+    handleSearch = (): void => this._handleChange({
+        query: this._inputValue,
+        categories: this.selectedCategories.map(item => item.id)
+    })
+
+
+    reactionInputValue: IReactionDisposer = reaction(
+        () => this.inputValue,
+        (query) => {
+            if (this._debounce) {
+                clearTimeout(this._debounce)
+            }
+            this._debounce = setTimeout(() => this._handleChange({
+                query,
+                categories: this.selectedCategories.map(category => category.id)
+            }), 1000)
+        }
+    )
+
+    reactionLoadCategories: IReactionDisposer = reaction(
+        () => this._rootStore.categoriesStore.list,
+        (categories) => {
+            if (this._pendingSelectedIds) {
+                this._getSelectedCategoriegByIds(categories);
+            } else {
+                this._filterSelectedCategories(categories);
+            }
+        }
+    )
+
+
+    reactionSelectCategories: IReactionDisposer = reaction(
+        () => this.selectedCategories,
+        (categories) => this._handleChange({
+            query: this.inputValue,
+            categories: categories.map(category => category.id)
+        })
+    )
+
+    destroy(): void {
         if (this._debounce) {
             clearTimeout(this._debounce)
         }
 
-        this._debounce = setTimeout(this._setParams, 1000)
+        this.reactionInputValue();
+        this.reactionLoadCategories();
+        this.reactionSelectCategories();
     }
-
-    handleSelectCategories(): void {
-
-    }
-
-    // private reactionDisposer = reaction(
-    // Первый аргумент – колбэк, который возвращает отслеживаемые поля
-    //   () => value,
-
-    // Второй аргумент – колбэк, в котором выполняется желаемая логика
-    //   (value, previousValue, reaction) => { задать url },
-
-    // Третий аргумент — опции
-    //   options
-    // );
-
-    destroy(): void {
-        console.log(5)
-        // отписаться от реакции (вызвать возаращеную реакцией)
-    }
-
 }
 

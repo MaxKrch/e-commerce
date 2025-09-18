@@ -8,13 +8,14 @@ import type { Product } from 'types/products';
 import ProductList from './components/ProductList';
 import ProductSearch from './components/ProductSearch';
 import { metaData, textData } from './config';
-import { REQUEST_STATUS, type RequestStatus } from 'constants/request-status';
+import { META_STATUS, type MetaStatus } from 'constants/meta-status';
+
 
 const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [requestStatus, setRequestStatus] = useState<RequestStatus>(REQUEST_STATUS.IDLE)
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
+  const [MetaStatus, setMetaStatus] = useState<MetaStatus>(META_STATUS.IDLE)
+  const [QueryParams, setQueryParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(Number(QueryParams.get('page')) || 1);
   const [pageCount, setPageCount] = useState<number | undefined>(undefined);
   const [productsTotal, setProductsTotal] = useState<number | undefined>(undefined);
   const lastRequestSignal = useRef<AbortController | null>(null);
@@ -22,13 +23,13 @@ const ProductsPage = () => {
   const handleChangePage = useCallback(
     (page: number) => {
       if (page !== currentPage) {
-        const newSearchParams = new URLSearchParams(searchParams);
-        newSearchParams.set('page', `${page}`);
-        setSearchParams(newSearchParams);
+        const newQueryParams = new URLSearchParams(QueryParams);
+        newQueryParams.set('page', `${page}`);
+        setQueryParams(newQueryParams);
         setCurrentPage(page);
       }
     },
-    [currentPage, searchParams, setSearchParams]
+    [currentPage, QueryParams, setQueryParams]
   );
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const ProductsPage = () => {
       lastRequestSignal.current = new AbortController();
 
       try {
-        setRequestStatus(REQUEST_STATUS.PENDING);
+        setMetaStatus(META_STATUS.PENDING);
         const response = await productApi.getProductList({
           request: {
             page: currentPage,
@@ -59,10 +60,10 @@ const ProductsPage = () => {
         setPageCount(response.meta.pagination.pageCount);
         setProducts(response.data);
         setProductsTotal(response.meta.pagination.total);
-        setRequestStatus(REQUEST_STATUS.SUCCESS)
+        setMetaStatus(META_STATUS.SUCCESS)
       } catch (err) {
         if (err instanceof Error && err.name !== 'AbortError') {
-          setRequestStatus(REQUEST_STATUS.ERROR)
+          setMetaStatus(META_STATUS.ERROR)
         }
       }
     };
@@ -77,8 +78,8 @@ const ProductsPage = () => {
         <title>{metaData.title()}</title>
       </Helmet>
       <SectionHeader title={textData.title()} content={textData.description()} />
-      <ProductSearch onSearch={() => undefined} />
-      <ProductList products={products} total={productsTotal} requestStatus={requestStatus} />
+      <ProductSearch />
+      <ProductList products={products} total={productsTotal} MetaStatus={MetaStatus} />
       <Pagination currentPage={currentPage} pageCount={pageCount} onClick={handleChangePage} />
     </div>
   );

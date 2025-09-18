@@ -1,6 +1,5 @@
  .container {
    border-radius: $border-radius-secondary;
-   overflow: hidden;
    position: relative;
  }
 
@@ -11,7 +10,7 @@
    position: absolute;
    left: 0;
    width: 100%;
-   top: $space-l;
+   top: $control-field-heihgt;
  }
 
  .option {
