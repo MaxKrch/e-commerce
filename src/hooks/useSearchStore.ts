@@ -4,18 +4,23 @@ import parseQueryParamsFromUrl from "utils/parse-query-params-from-url";
 import type { QueryParams } from "types/query-params";
 import useRootStore from "context/root-store/useRootStore";
 import type { Option } from "types/option-dropdown";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 export type UseSearchStore = {
     handleChange: (params: QueryParams) => void
 }
 
 const useSearchStore = ({ handleChange }: UseSearchStore) => {
+    const hookHandleChange = useCallback((params: QueryParams) => {
+        handleChange(params)
+    }, [handleChange])
     const rootStore = useRootStore();
 
+    const initData = parseQueryParamsFromUrl();
+
     const searchStore = useLocalStore(() => new SearchStore({
-        initData: parseQueryParamsFromUrl(),
-        handleChange,
+        initData: initData,
+        handleChange: hookHandleChange,
         rootStore
     }));
 

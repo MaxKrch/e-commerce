@@ -1,7 +1,7 @@
 import type { Collection } from "types/collections";
 import getInitialCollection from "./get-initial-collection";
 
-export const normalizeColection = <K extends number | string, T>(
+export const normalizeCollection = <K extends number | string, T>(
     elements: T[], getKeyForCollection: (element: T) => K
 ): Collection<K, T> => {
     const collection = getInitialCollection()

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Product } from 'types/products';
 
 import style from './CardList.module.scss';
+import { observer } from 'mobx-react-lite';
 
 type CardListProps = Pick<CardProps, 'contentSlot' | 'actionSlot' | 'captionSlot' | 'className'> & {
   display?: 'preview' | 'full';
@@ -55,4 +56,4 @@ const CardList = ({
 };
 
 
-export default memo(CardList);
+export default memo(observer(CardList));

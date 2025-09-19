@@ -2,13 +2,14 @@ import { META_STATUS, type MetaStatus } from "constants/meta-status";
 import { action, computed, makeObservable, observable, runInAction } from "mobx";
 import categoryApi from "services/categories-api";
 import { normalizeCategoriesList } from "store/utils/normalize-categories";
-import { linearizeCollection, normalizeColection } from "store/utils/normalize-collection";
+import { linearizeCollection, normalizeCollection } from "store/utils/normalize-collection";
 import type { Collection } from "types/collections";
 import type { ProductCategory } from "types/products";
 import getInitialCollection from "store/utils/get-initial-collection";
 
 export interface ICategoriesStore {
-    getCategories: () => Promise<void>
+    getCategoryById: (id: ProductCategory['id']) => ProductCategory | undefined
+
 }
 
 type PrivateFields = '_list' | '_status'
@@ -20,12 +21,12 @@ export default class CategoriesStore implements ICategoriesStore {
 
     constructor() {
         makeObservable<CategoriesStore, PrivateFields>(this, {
-            _list: observable.ref,
+            _list: observable,
             _status: observable,
 
             list: computed,
             status: computed,
-            getCategories: action,
+            fetchCategories: action,
         })
     }
 
@@ -37,6 +38,10 @@ export default class CategoriesStore implements ICategoriesStore {
         return this._status;
     }
 
+    getCategoryById(id: ProductCategory['id']): ProductCategory | undefined {
+        return this._list.entities[id]
+    }
+
     abort(): void {
         if (this.abortCtrl) {
             this.abortCtrl.abort();
@@ -44,7 +49,7 @@ export default class CategoriesStore implements ICategoriesStore {
         }
     }
 
-    async getCategories(): Promise<void> {
+    async fetchCategories(): Promise<void> {
         this.abort()
         this.abortCtrl = new AbortController()
 
@@ -62,7 +67,7 @@ export default class CategoriesStore implements ICategoriesStore {
                 throw response;
             }
 
-            const normalized = normalizeColection(
+            const normalized = normalizeCollection(
                 normalizeCategoriesList(response.data),
                 (element) => element.id
             )

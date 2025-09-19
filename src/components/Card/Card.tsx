@@ -5,6 +5,7 @@ import type { Product } from 'types/products';
 
 import style from './Card.module.scss';
 import ImageGalery from './components/ImageGalery';
+import { observer } from 'mobx-react-lite';
 
 export type CardProps = {
   display?: 'full' | 'preview';
@@ -83,4 +84,4 @@ const Card: React.FC<CardProps> = ({
 };
 
 
-export default memo(Card);
+export default memo(observer(Card));

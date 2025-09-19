@@ -5,7 +5,7 @@ export type StrapiPagination = {
   total: number;
 };
 
-type MetaResponse<T> = T extends unknown[] ? { pagination: StrapiPagination } : object;
+export type MetaResponse<T> = T extends unknown[] ? { pagination: StrapiPagination } : object;
 
 type StrapiResponseSuccess<T> = {
   data: T;

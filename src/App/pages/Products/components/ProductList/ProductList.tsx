@@ -6,20 +6,17 @@ import {
 } from 'components/Card/slots';
 import CardList from 'components/CardList';
 import Text from 'components/Text';
-import { memo } from 'react';
-import type { Product } from 'types/products';
+import React, { memo } from 'react';
 
 import style from './ProductList.module.scss';
-import { META_STATUS, type MetaStatus } from 'constants/meta-status';
+import { META_STATUS } from 'constants/meta-status';
 import CardListSkeleton from 'components/CardList/CardListSkeleton';
+import { observer } from 'mobx-react-lite';
+import useRootStore from 'context/root-store/useRootStore';
 
-type ProductListProps = {
-  products: Product[];
-  total?: number;
-  MetaStatus: MetaStatus;
-};
+const ProductList: React.FC = () => {
+  const { productsStore } = useRootStore();
 
-const ProductList = ({ products, total, MetaStatus }: ProductListProps) => {
   return (
     <div className={clsx(style['container'])}>
       <div className={clsx(style['count'])}>
@@ -27,14 +24,14 @@ const ProductList = ({ products, total, MetaStatus }: ProductListProps) => {
           Найдено товаров
         </Text>
         <Text view="p-20" color="secondary" className={clsx(style['count__size'])}>
-          {total || products.length}
+          {productsStore.countProducts}
         </Text>
       </div>
-      {MetaStatus === META_STATUS.SUCCESS
+      {productsStore.status === META_STATUS.SUCCESS
         ? (
           <CardList
             display="preview"
-            products={products}
+            products={productsStore.products}
             captionSlot={previewCardCaptionSlot}
             contentSlot={previewCardContentSlot}
             actionSlot={previewCardActionSlot}
@@ -47,5 +44,4 @@ const ProductList = ({ products, total, MetaStatus }: ProductListProps) => {
   );
 };
 
-
-export default memo(ProductList);
+export default memo(observer(ProductList));

@@ -1,8 +1,9 @@
+import { META_STATUS } from "constants/meta-status";
 import type { ILocalStore } from "hooks/useLocalStore";
 import { action, computed, makeObservable, observable, reaction, type IReactionDisposer } from "mobx";
 import type RootStore from "store/RootStore/RootStore";
 import getInitialCollection from "store/utils/get-initial-collection";
-import { linearizeCollection, normalizeColection } from "store/utils/normalize-collection";
+import { linearizeCollection, normalizeCollection } from "store/utils/normalize-collection";
 import type { Collection } from "types/collections";
 import type { Option } from "types/option-dropdown";
 import type { ProductCategory } from "types/products";
@@ -12,12 +13,12 @@ type PrivateFields =
     | '_inputValue'
     | '_selectedCategories'
     | '_filterSelectedCategories'
-    | '_getSelectedCategoriegByIds'
+    | '_getSelectedCategoriesByIds'
 
 
 
 export default class SearchStore implements ILocalStore {
-    private _inputValue: string = '';
+    private _inputValue: string;
     private _selectedCategories: Collection<ProductCategory['id'], ProductCategory> = getInitialCollection();
     private _debounce: ReturnType<typeof setTimeout> | null = null;
     private _handleChange: (params: QueryParams) => void;
@@ -40,7 +41,7 @@ export default class SearchStore implements ILocalStore {
             handleInput: action.bound,
             handleSelectCategories: action.bound,
             _filterSelectedCategories: action,
-            _getSelectedCategoriegByIds: action,
+            _getSelectedCategoriesByIds: action,
 
             inputValue: computed,
             categories: computed,
@@ -51,20 +52,28 @@ export default class SearchStore implements ILocalStore {
         })
 
         this._inputValue = initData.query ?? '';
+        this._pendingSelectedIds = initData.categories ?? [];
         this._handleChange = handleChange;
         this._rootStore = rootStore;
     }
 
     private _filterSelectedCategories(categories: ProductCategory[]): void {
         const filtredCategories = categories.filter(item => this._selectedCategories.order.includes(item.id));
-        this.selectedCategories = filtredCategories;
+        this.setSelectedCategories(filtredCategories);
     }
 
-    private _getSelectedCategoriegByIds(categories: ProductCategory[]): void {
+    private _getSelectedCategoriesByIds(categories: ProductCategory[]): void {
         const filtredCategories = categories.filter(item => this._pendingSelectedIds?.includes(item.id));
-        this.selectedCategories = filtredCategories;
+        this.setSelectedCategories(filtredCategories);
 
         this._pendingSelectedIds = null;
+    }
+
+    private setSelectedCategories(categories: ProductCategory[]): void {
+        this._selectedCategories = normalizeCollection(
+            categories,
+            (item) => item.id
+        )
     }
 
     get options(): Option[] {
@@ -99,14 +108,7 @@ export default class SearchStore implements ILocalStore {
     }
 
     get selectedCategories(): ProductCategory[] {
-        return linearizeCollection(this._selectedCategories);
-    }
-
-    private set selectedCategories(categories: ProductCategory[]) {
-        this._selectedCategories = normalizeColection(
-            categories,
-            (item) => item.id
-        )
+        return linearizeCollection(this._selectedCategories)
     }
 
     handleInput(value: string): void {
@@ -116,12 +118,12 @@ export default class SearchStore implements ILocalStore {
     handleSelectCategories(options: Option[]): void {
         const selected: ProductCategory[] = []
         options.forEach(item => {
-            const target = this.categories.find(el => `${el.id}` === item.key)
+            const target = this._rootStore.categoriesStore.getCategoryById(Number(item.key))
             if (target) {
                 selected.push(target)
             }
         })
-        this.selectedCategories = selected;
+        this.setSelectedCategories(selected);
     }
 
     handleSearch = (): void => this._handleChange({
@@ -146,8 +148,11 @@ export default class SearchStore implements ILocalStore {
     reactionLoadCategories: IReactionDisposer = reaction(
         () => this._rootStore.categoriesStore.list,
         (categories) => {
+            if (this._rootStore.categoriesStore.status !== META_STATUS.SUCCESS) {
+                return
+            }
             if (this._pendingSelectedIds) {
-                this._getSelectedCategoriegByIds(categories);
+                this._getSelectedCategoriesByIds(categories);
             } else {
                 this._filterSelectedCategories(categories);
             }
@@ -157,10 +162,15 @@ export default class SearchStore implements ILocalStore {
 
     reactionSelectCategories: IReactionDisposer = reaction(
         () => this.selectedCategories,
-        (categories) => this._handleChange({
-            query: this.inputValue,
-            categories: categories.map(category => category.id)
-        })
+        (categories) => {
+            if (this._pendingSelectedIds || this._rootStore.categoriesStore.status !== META_STATUS.SUCCESS) {
+                return
+            }
+            this._handleChange({
+                query: this.inputValue,
+                categories: categories.map(category => category.id)
+            })
+        }
     )
 
     destroy(): void {

@@ -1,76 +1,48 @@
-import Pagination from 'components/Pagination';
 import SectionHeader from 'components/SectionHeader';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
-import productApi from 'services/product-api';
-import type { Product } from 'types/products';
 import ProductList from './components/ProductList';
 import ProductSearch from './components/ProductSearch';
 import { metaData, textData } from './config';
-import { META_STATUS, type MetaStatus } from 'constants/meta-status';
-
+import { META_STATUS } from 'constants/meta-status';
+import useRootStore from 'context/root-store/useRootStore';
+import parseQueryParamsFromUrl from 'utils/parse-query-params-from-url';
+import NetworkError from 'components/NetworkError';
+import { observer } from 'mobx-react-lite';
+import defaultContentSlot from 'components/NetworkError/slots/defaultContentSlot';
+import defaultActionSlot from 'components/NetworkError/slots/defaultActionSlot';
+import ProductPagination from './components/ProductPagination';
 
 const ProductsPage = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [MetaStatus, setMetaStatus] = useState<MetaStatus>(META_STATUS.IDLE)
-  const [QueryParams, setQueryParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(Number(QueryParams.get('page')) || 1);
-  const [pageCount, setPageCount] = useState<number | undefined>(undefined);
-  const [productsTotal, setProductsTotal] = useState<number | undefined>(undefined);
-  const lastRequestSignal = useRef<AbortController | null>(null);
+  const [params] = useSearchParams();
+  const paramsString = params.toString();
+  const currentRequestid = useRef<string | null>(null);
+  const { productsStore } = useRootStore()
+  console.log(paramsString)
+  const refetch = useCallback(() => {
+    productsStore.fetchProducts({
+      ...parseQueryParamsFromUrl(),
+      count: 9
+    })
+  }, [paramsString])
 
-  const handleChangePage = useCallback(
-    (page: number) => {
-      if (page !== currentPage) {
-        const newQueryParams = new URLSearchParams(QueryParams);
-        newQueryParams.set('page', `${page}`);
-        setQueryParams(newQueryParams);
-        setCurrentPage(page);
-      }
-    },
-    [currentPage, QueryParams, setQueryParams]
-  );
+  const isFailedRequest = productsStore.status === META_STATUS.ERROR
+    || (productsStore.status === META_STATUS.SUCCESS && productsStore.requestId !== currentRequestid.current)
 
   useEffect(() => {
-    const abortLastRequest = () => {
-      if (lastRequestSignal.current) {
-        lastRequestSignal.current.abort();
-      }
-    };
+    const id = crypto.randomUUID();
+    currentRequestid.current = id;
+    const queryParams = {
+      ...parseQueryParamsFromUrl(),
+      count: 9
+    }
+    productsStore.fetchProducts(queryParams, id);
 
-    const getProducts = async () => {
-      abortLastRequest();
-      lastRequestSignal.current = new AbortController();
-
-      try {
-        setMetaStatus(META_STATUS.PENDING);
-        const response = await productApi.getProductList({
-          request: {
-            page: currentPage,
-            pageSize: 9,
-          },
-          signal: lastRequestSignal.current.signal,
-        });
-
-        if (response instanceof Error) {
-          throw response;
-        }
-
-        setPageCount(response.meta.pagination.pageCount);
-        setProducts(response.data);
-        setProductsTotal(response.meta.pagination.total);
-        setMetaStatus(META_STATUS.SUCCESS)
-      } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
-          setMetaStatus(META_STATUS.ERROR)
-        }
-      }
-    };
-    getProducts();
-
-    return () => abortLastRequest();
-  }, [currentPage]);
+    return () => {
+      currentRequestid.current = null;
+    }
+  }, [paramsString])
 
   return (
     <div>
@@ -78,11 +50,18 @@ const ProductsPage = () => {
         <title>{metaData.title()}</title>
       </Helmet>
       <SectionHeader title={textData.title()} content={textData.description()} />
-      <ProductSearch />
-      <ProductList products={products} total={productsTotal} MetaStatus={MetaStatus} />
-      <Pagination currentPage={currentPage} pageCount={pageCount} onClick={handleChangePage} />
+      {
+        isFailedRequest
+          ? <NetworkError contentSlot={defaultContentSlot()} actionSlot={defaultActionSlot(refetch)} />
+          : (<>
+            <ProductSearch />
+            <ProductList />
+            {/* <ProductPagination /> */}
+          </>
+          )
+      }
     </div>
   );
 };
 
-export default ProductsPage;
+export default observer(ProductsPage);

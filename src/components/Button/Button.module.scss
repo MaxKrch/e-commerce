@@ -1,5 +1,5 @@
 .button {
-    @include base-adaptive-font-size();
+    @include button-adaptive-font-size();
     display: flex;
     gap: $space-xxs;
     justify-content: center;
@@ -10,10 +10,7 @@
     height: $button-height;
     white-space: nowrap;
     cursor: pointer;
-}
 
-.text {
-    font-size: 0.9em;
 }
 
 .primary {

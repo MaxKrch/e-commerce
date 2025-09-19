@@ -3,7 +3,6 @@ import type { ProductApi } from 'types/products';
 import { isStrapiSuccessResponse, type StrapiResponse } from 'types/strapi-api';
 import formateError from 'utils/formate-error';
 import api from './api-client';
-import { normalizeProductItem, normalizeProductList } from 'store/utils/normalize-products';
 
 export type RequestArgs<T> = {
   request: T;
@@ -21,10 +20,7 @@ const productApi = {
         throw (new Error(response.error.message));
       }
 
-      return ({
-        ...response,
-        data: normalizeProductList(response.data)
-      });
+      return response
 
     } catch (err) {
       return formateError(err)
@@ -43,10 +39,7 @@ const productApi = {
         throw new Error(response.error.message);
       }
 
-      return ({
-        ...response,
-        data: normalizeProductItem(response.data)
-      });
+      response
 
     } catch (err) {
       return formateError(err);

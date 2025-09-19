@@ -1,3 +1,4 @@
+import type { QueryParams } from 'types/query-params';
 import { buildQueryString } from 'utils/build-query-string';
 
 const populate = {
@@ -6,11 +7,7 @@ const populate = {
 } as const
 
 export type ApiProductsArgs = {
-  ProductsList: {
-    page?: number;
-    pageSize?: number;
-    categories?: number[],
-  };
+  ProductsList: QueryParams
 
   ProductsDetails: {
     id: string;

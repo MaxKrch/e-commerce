@@ -28,7 +28,7 @@ const ProductSearch = () => {
           <Input
             value={inputValue}
             onChange={handleInput}
-            placeholder={''}
+            placeholder={'Что будем искать?'}
             className={clsx(style['query-input-element'])}
             name="searchInput"
           />

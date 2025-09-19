@@ -5,11 +5,11 @@ const useInitApp = () => {
     const rootStore = useRootStore();
 
     useEffect(() => {
-        rootStore.categoriesStore.getCategories();
+        rootStore.categoriesStore.fetchCategories();
     }, [rootStore]);
 
     const reset = useCallback(() => {
-        rootStore.categoriesStore.getCategories();
+        rootStore.categoriesStore.fetchCategories();
     }, [rootStore]);
 
     return {

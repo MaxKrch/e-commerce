@@ -117,3 +117,19 @@
         font-size: $section-title-laptop-up;
     }
 }
+
+@mixin button-adaptive-font-size {
+    font-size: $button-title-base;
+
+    @include mobile-only() {
+        font-size: $button-title-mobile;
+    }
+
+    @include tablet-only() {
+        font-size: $button-title-tablet;
+    }
+
+    @include laptop-up() {
+        font-size: $button-title-laptop-up;
+    }
+}
