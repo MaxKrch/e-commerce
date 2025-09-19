@@ -1,31 +1,29 @@
 import SectionHeader from 'components/SectionHeader';
 import { useCallback, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useSearchParams } from 'react-router-dom';
 import ProductList from './components/ProductList';
 import ProductSearch from './components/ProductSearch';
 import { metaData, textData } from './config';
 import { META_STATUS } from 'constants/meta-status';
 import useRootStore from 'context/root-store/useRootStore';
-import parseQueryParamsFromUrl from 'utils/parse-query-params-from-url';
 import NetworkError from 'components/NetworkError';
 import { observer } from 'mobx-react-lite';
 import defaultContentSlot from 'components/NetworkError/slots/defaultContentSlot';
 import defaultActionSlot from 'components/NetworkError/slots/defaultActionSlot';
 import ProductPagination from './components/ProductPagination';
+import useQueryParams from 'hooks/useQueryParams';
 
 const ProductsPage = () => {
-  const [params] = useSearchParams();
-  const paramsString = params.toString();
+  const { queryParams } = useQueryParams()
   const currentRequestid = useRef<string | null>(null);
   const { productsStore } = useRootStore()
-  console.log(paramsString)
+
   const refetch = useCallback(() => {
     productsStore.fetchProducts({
-      ...parseQueryParamsFromUrl(),
+      ...queryParams,
       count: 9
     })
-  }, [paramsString])
+  }, [queryParams])
 
   const isFailedRequest = productsStore.status === META_STATUS.ERROR
     || (productsStore.status === META_STATUS.SUCCESS && productsStore.requestId !== currentRequestid.current)
@@ -33,16 +31,17 @@ const ProductsPage = () => {
   useEffect(() => {
     const id = crypto.randomUUID();
     currentRequestid.current = id;
-    const queryParams = {
-      ...parseQueryParamsFromUrl(),
+
+    productsStore.fetchProducts({
+      ...queryParams,
       count: 9
-    }
-    productsStore.fetchProducts(queryParams, id);
+    }, id);
 
     return () => {
       currentRequestid.current = null;
     }
-  }, [paramsString])
+  }, [queryParams])
+
 
   return (
     <div>
@@ -56,7 +55,7 @@ const ProductsPage = () => {
           : (<>
             <ProductSearch />
             <ProductList />
-            {/* <ProductPagination /> */}
+            <ProductPagination />
           </>
           )
       }

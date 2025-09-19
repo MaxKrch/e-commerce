@@ -1,29 +1,36 @@
 import Pagination from "components/Pagination";
+import normalizeCurrentPage from "components/Pagination/utils/normalize-current-page";
 import useRootStore from "context/root-store/useRootStore";
+import useQueryParams from "hooks/useQueryParams";
 import { observer } from "mobx-react-lite";
 import type React from "react";
-import { useCallback, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-import setQueryParams from "utils/set-query-params";
+import { useCallback, useEffect, useMemo } from "react";
 
 const ProductPagination: React.FC = () => {
+    const { queryParams, setQueryParams } = useQueryParams()
     const { productsStore } = useRootStore();
     const pagination = productsStore.pagination;
+    const { pageCount, total } = productsStore.pagination || {}
 
-    const [queryParams] = useSearchParams();
-    const currentPage = useMemo(() => {
-        return Number(queryParams.get('page') ?? 1)
-    }, [queryParams]);
+
+    const currentPage = useMemo(() => normalizeCurrentPage(
+        Number(queryParams.page ?? 1),
+        pageCount
+    ), [queryParams.page])
+
+    useEffect(() => {
+        if (pageCount && pageCount < currentPage) {
+            setQueryParams({ page: pageCount })
+        }
+    }, [pageCount, queryParams.page])
 
     const handleClick = useCallback((page: number) => {
-
-        // setQueryParams({
-        //     page,
-        // })
-
+        if (page !== currentPage) {
+            setQueryParams({ page })
+        }
     }, [pagination])
 
-    if (!pagination) {
+    if (!pageCount || total === 0) {
         return null
     }
 
@@ -31,7 +38,7 @@ const ProductPagination: React.FC = () => {
         <Pagination
             currentPage={currentPage}
             onClick={handleClick}
-            pageCount={pagination?.pageCount}
+            pageCount={pageCount}
         />
     )
 }

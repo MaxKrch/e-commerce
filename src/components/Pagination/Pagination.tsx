@@ -5,8 +5,6 @@ import { memo, useEffect, useMemo, type FC } from 'react';
 
 import style from './Pagination.module.scss';
 import getPageNumbers from './utils/get-page-numbers';
-import normalizeCurrentPage from './utils/normalize-current-page';
-import { observer } from 'mobx-react-lite';
 
 export type PaginationProps = {
   currentPage: number;
@@ -30,28 +28,23 @@ const Pagination: FC<PaginationProps> = ({
     });
   }, [currentPage]);
 
-  const normalizedCurrentPage = useMemo(
-    () => normalizeCurrentPage(currentPage, pageCount),
-    [currentPage, pageCount]
-  )
-
-  const showLeftElipses = normalizedCurrentPage - visiblePageArround > 2;
+  const showLeftElipses = currentPage - visiblePageArround > 2;
   const showRightElipses =
-    !!pageCount && normalizedCurrentPage + visiblePageArround < pageCount - 1;
+    !!pageCount && currentPage + visiblePageArround < pageCount - 1;
 
   const pages = useMemo(
-    () => getPageNumbers(normalizedCurrentPage, pageCount, visiblePageArround),
-    [normalizedCurrentPage, pageCount, visiblePageArround]
+    () => getPageNumbers(currentPage, pageCount, visiblePageArround),
+    [currentPage, pageCount, visiblePageArround]
   )
 
   return (
     <div className={clsx(style['container'], className)}>
       <div
-        onClick={() => onClick(normalizedCurrentPage - 1)}
+        onClick={() => onClick(currentPage - 1)}
         className={clsx(
           style['page'],
           style['page__prev'],
-          normalizedCurrentPage === 1 && style['disabled']
+          currentPage === 1 && style['disabled']
         )}
       >
         <ArrowRightIcon className={clsx(style['page__prev-icon'])} />
@@ -60,7 +53,7 @@ const Pagination: FC<PaginationProps> = ({
       <ul className={clsx(style['list'])}>
         {pages.map((item) => (
           <li
-            className={clsx(style['page'], item === normalizedCurrentPage && style['current'])}
+            className={clsx(style['page'], item === currentPage && style['current'])}
             key={item}
             onClick={() => onClick(item)}
           >
@@ -74,11 +67,11 @@ const Pagination: FC<PaginationProps> = ({
         <div className={clsx(style['elipses'], style['elipses__next'])}>...</div>
       )}
       <div
-        onClick={() => onClick(normalizedCurrentPage + 1)}
+        onClick={() => onClick(currentPage + 1)}
         className={clsx(
           style['page'],
           style['page__next'],
-          normalizedCurrentPage === pageCount && style['disabled']
+          currentPage === pageCount && style['disabled']
         )}
       >
         <ArrowRightIcon className={clsx(style['page__next-icon'])} />
@@ -88,4 +81,4 @@ const Pagination: FC<PaginationProps> = ({
 };
 
 
-export default memo(observer(Pagination));
+export default memo(Pagination);

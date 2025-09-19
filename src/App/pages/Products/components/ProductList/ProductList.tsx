@@ -24,7 +24,7 @@ const ProductList: React.FC = () => {
           Найдено товаров
         </Text>
         <Text view="p-20" color="secondary" className={clsx(style['count__size'])}>
-          {productsStore.countProducts}
+          {productsStore.pagination?.total}
         </Text>
       </div>
       {productsStore.status === META_STATUS.SUCCESS

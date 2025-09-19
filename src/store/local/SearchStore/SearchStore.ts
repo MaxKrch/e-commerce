@@ -40,6 +40,7 @@ export default class SearchStore implements ILocalStore {
 
             handleInput: action.bound,
             handleSelectCategories: action.bound,
+            resetValues: action.bound,
             _filterSelectedCategories: action,
             _getSelectedCategoriesByIds: action,
 
@@ -111,6 +112,11 @@ export default class SearchStore implements ILocalStore {
         return linearizeCollection(this._selectedCategories)
     }
 
+    resetValues(): void {
+        this._selectedCategories = getInitialCollection();
+        this._inputValue = ''
+    }
+
     handleInput(value: string): void {
         this._inputValue = value;
     }
@@ -148,9 +154,10 @@ export default class SearchStore implements ILocalStore {
     reactionLoadCategories: IReactionDisposer = reaction(
         () => this._rootStore.categoriesStore.list,
         (categories) => {
-            if (this._rootStore.categoriesStore.status !== META_STATUS.SUCCESS) {
+            if (this._rootStore.categoriesStore.status !== META_STATUS.SUCCESS || categories.length === 0) {
                 return
             }
+
             if (this._pendingSelectedIds) {
                 this._getSelectedCategoriesByIds(categories);
             } else {
