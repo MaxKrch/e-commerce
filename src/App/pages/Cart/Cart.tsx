@@ -21,19 +21,19 @@ const CartPage: React.FC = () => {
   console.log(cartStore.status, cartStore)
   return (
     <div className={clsx(style['container'])}>
-      {<Skeleton />}
+      {(cartStore.status === META_STATUS.PENDING || cartStore.status === META_STATUS.IDLE) && <Skeleton />}
       {cartStore.status === META_STATUS.ERROR &&
         <NetworkError
           contentSlot={defaultContentSlot()}
           actionSlot={defaultActionSlot(handleErrorClick)} />
       }
-      {/* {cartStore.status === META_STATUS.SUCCESS &&
+      {cartStore.status === META_STATUS.SUCCESS &&
         <>
           <InStockProducts />
           <OutOfStock />
           <CartSummary />
         </>
-      } */}
+      }
     </div>
   )
 };
