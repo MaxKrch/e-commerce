@@ -1,5 +1,5 @@
 import { META_STATUS, type MetaStatus } from 'constants/meta-status';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction, set } from 'mobx';
 import cartApi from 'services/cart-api';
 import getInitialCollection from 'store/utils/get-initial-collection';
 import { linearizeCollection, normalizeCollection } from 'store/utils/normalize-collection';
@@ -90,10 +90,7 @@ export default class CartStore {
     }
 
     this._products.order.push(product.id);
-    this._products.entities[product.id] = {
-      quantity: 1,
-      product
-    }
+    set(this._products.entities, product.id, { quantity: 1, product });
   }
 
   private _removeFromCart(product: Product): void {
@@ -111,7 +108,10 @@ export default class CartStore {
     }
 
     this._products.order = this._products.order.filter(item => item !== product.id);
-    delete this._products.entities[product.id]
+    this._products.entities = {
+      ...this._products.entities,
+    };
+    delete this._products.entities[product.id];
   }
 
   private _setProducts(products: ProductInCartApi[]): void {
