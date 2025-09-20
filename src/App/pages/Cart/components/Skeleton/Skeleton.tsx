@@ -10,8 +10,8 @@ const Skeleton: React.FC = () => {
                 <div className={clsx(style['list-card-content'])}>
                     <div className={clsx(style['list-card-content-title'])} />
                     <div className={clsx(style['list-card-content-description'])} />
+                    <div className={clsx(style['list-card-content-button'])} />
                 </div>
-                <div className={clsx(style['list-card-content-button'])} />
             </div>
 
             <div className={clsx(style['list-card'])}>
@@ -19,13 +19,15 @@ const Skeleton: React.FC = () => {
                 <div className={clsx(style['list-card-content'])}>
                     <div className={clsx(style['list-card-content-title'])} />
                     <div className={clsx(style['list-card-content-description'])} />
+                    <div className={clsx(style['list-card-content-button'])} />
                 </div>
-                <div className={clsx(style['list-card-content-button'])} />
             </div>
 
             <div className={clsx(style['summary'])}>
-                <div className={clsx(style['summary-content'])} />
-                <div className={clsx(style['summary-button'])} />
+                <div className={clsx(style['summary-body'])}>
+                    <div className={clsx(style['summary-body-content'])} />
+                    <div className={clsx(style['summary-body-button'])} />
+                </div>
             </div>
         </div>
     )
