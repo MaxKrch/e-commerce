@@ -20,7 +20,7 @@ $base-width: 340px;
     height: 100%;
     @include link-bottom();
 
-    &:hover {
+    &:hover:not(.active) {
         color: $link-hover-color;
         border-bottom-color: $link-hover-color;
     }
@@ -40,4 +40,5 @@ $base-width: 340px;
 
 .active {
     color: $active-link-color;
+    pointer-events: none;
 }

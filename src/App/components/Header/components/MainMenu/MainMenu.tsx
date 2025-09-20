@@ -18,7 +18,9 @@ const MainMenu = () => {
     <nav className={clsx(style['menu'])}>
       {AppMenu.map((item) => (
         <NavLink key={item.path} to={item.path} className={classes} end>
-          <Text weight='bold' className={clsx(style['link-text'])}>{item.title}</Text>
+          <Text weight="bold" className={clsx(style['link-text'])}>
+            {item.title}
+          </Text>
         </NavLink>
       ))}
     </nav>

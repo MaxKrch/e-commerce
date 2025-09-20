@@ -1,4 +1,3 @@
-
 const formateError = (err: unknown) => {
   if (err instanceof Error) {
     return err;

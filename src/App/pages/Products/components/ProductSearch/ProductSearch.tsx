@@ -1,23 +1,30 @@
 import { clsx } from 'clsx';
-import style from './ProductSearch.module.scss';
-import MultiDropdown from 'components/MultiDropdown';
-import Input from 'components/Input';
 import Button from 'components/Button';
-import SearchIcon from 'components/icons/SearchIcon';
+import Input from 'components/Input';
+import MultiDropdown from 'components/MultiDropdown';
 import CrossIcon from 'components/icons/CrossIcon';
-import { observer } from 'mobx-react-lite';
-import useSearchStore from 'hooks/useSearchStore';
+import SearchIcon from 'components/icons/SearchIcon';
 import useQueryParams from 'hooks/useQueryParams';
+import useSearchStore from 'hooks/useSearchStore';
+import { observer } from 'mobx-react-lite';
+import { useCallback, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
 
+import style from './ProductSearch.module.scss';
 
 const ProductSearch = () => {
   const { setQueryParams } = useQueryParams();
-  const searchCleared = useRef(false)
-  const location = useLocation()
-
+  const searchCleared = useRef(false);
+  const location = useLocation();
   const searchStore = useSearchStore({ handleChange: setQueryParams });
+
+  const handleCrossInputClick = useCallback(() => {
+    searchStore.handleInput('');
+  }, [searchStore.handleInput]);
+
+  const handleCrossFilterClick = useCallback(() => {
+    searchStore.handleSelectCategories([]);
+  }, [searchStore.handleInput]);
 
   useEffect(() => {
     if (location.search !== '') {
@@ -25,7 +32,7 @@ const ProductSearch = () => {
       return;
     }
 
-    if (location.search === "" && !searchCleared.current) {
+    if (location.search === '' && !searchCleared.current) {
       searchStore.resetValues();
       searchCleared.current = true;
     }
@@ -42,25 +49,38 @@ const ProductSearch = () => {
             className={clsx(style['query-input-element'])}
             name="searchInput"
           />
-          {searchStore.inputValue.length > 0 && <CrossIcon className={clsx(style['query-input-cross'])} />}
+          {searchStore.inputValue.length > 0 && (
+            <CrossIcon
+              onClick={handleCrossInputClick}
+              className={clsx(style['query-input-cross'])}
+            />
+          )}
         </div>
 
-        <Button onClick={searchStore.handleSearch} disabled={false} className={clsx(style['query-button'])} name="searchButton">
+        <Button
+          onClick={searchStore.handleSearch}
+          disabled={false}
+          className={clsx(style['query-button'])}
+          name="searchButton"
+        >
           <SearchIcon className={clsx(style['query-button-icon'])} />
           {<div className={clsx(style['query-button-text'])}>Найти</div>}
         </Button>
       </div>
-
-      <MultiDropdown
-        options={searchStore.options}
-        value={searchStore.value}
-        onChange={searchStore.handleSelectCategories}
-        getTitle={() => searchStore.title}
-        className={clsx(style['filter'])}
-      />
+      <div className={clsx(style['filter'])}>
+        <MultiDropdown
+          options={searchStore.options}
+          value={searchStore.value}
+          onChange={searchStore.handleSelectCategories}
+          getTitle={() => searchStore.title}
+          className={clsx(style['filter-dropdown'])}
+        />
+        {searchStore.value.length > 0 && (
+          <CrossIcon onClick={handleCrossFilterClick} className={clsx(style['filter-cross'])} />
+        )}
+      </div>
     </div>
   );
 };
-
 
 export default observer(ProductSearch);

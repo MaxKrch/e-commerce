@@ -2,17 +2,18 @@ import { appRoutes } from 'constants/app-routes';
 
 import { clsx } from 'clsx';
 import Card, { type CardProps } from 'components/Card';
+import { observer } from 'mobx-react-lite';
 import { memo, useCallback, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Product } from 'types/products';
-
 import style from './CardList.module.scss';
-import { observer } from 'mobx-react-lite';
+import type { ActionSlot } from 'components/Card/types';
 
-type CardListProps = Pick<CardProps, 'contentSlot' | 'actionSlot' | 'captionSlot' | 'className'> & {
-  display?: 'preview' | 'full';
+type CardListProps = Pick<CardProps, 'contentSlot' | 'captionSlot' | 'className'> & {
+  display?: 'preview' | 'full'
   products: Product[];
   titleSlot?: ReactNode;
+  ActionSlot: ActionSlot
 };
 
 const CardList = ({
@@ -20,9 +21,9 @@ const CardList = ({
   display,
   titleSlot,
   captionSlot,
-  actionSlot,
+  ActionSlot,
   contentSlot,
-  className
+  className,
 }: CardListProps) => {
   const navigate = useNavigate();
 
@@ -46,7 +47,7 @@ const CardList = ({
               onClick={() => handleCartClick(product.documentId)}
               captionSlot={captionSlot}
               contentSlot={contentSlot}
-              actionSlot={actionSlot}
+              ActionSlot={ActionSlot}
             />
           </li>
         ))}
@@ -54,6 +55,5 @@ const CardList = ({
     </div>
   );
 };
-
 
 export default memo(observer(CardList));

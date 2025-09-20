@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import Input from 'components/Input';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { Option } from 'types/option-dropdown';
 
 import style from './MultiDropdown.module.scss';
-import type { Option } from 'types/option-dropdown';
 
 export type MultiDropdownProps = {
   className?: string;
@@ -61,21 +61,38 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         return;
       }
 
-      if (inputElement.current?.contains(target) && !stateRef.current.disabled && !stateRef.current.isShowDropdown) {
+      //Если клик по дропбоксу, и опции скрыты - раскрываем их
+      if (
+        inputElement.current?.contains(target) &&
+        !stateRef.current.disabled &&
+        !stateRef.current.isShowDropdown
+      ) {
         setIsShowDropdown(true);
         return;
       }
 
+      //Если клик был по опции
       if (optionsElement.current?.contains(target) && target instanceof HTMLLIElement) {
-        const isSelectedOption = stateRef.current.value.findIndex((option) => option.key === target.dataset.id) > -1;
+        if (stateRef.current.options.length < 1) {
+          return;
+        }
 
+        const isSelectedOption =
+          stateRef.current.value.findIndex((option) => option.key === target.dataset.id) > -1;
+
+        // Если клик по уже выбранной опции - нужно ее удалить из списка
         if (isSelectedOption) {
-          const indexTargetOption = stateRef.current.value.findIndex((option) => option.key === target.dataset.id);
+          const indexTargetOption = stateRef.current.value.findIndex(
+            (option) => option.key === target.dataset.id
+          );
           if (indexTargetOption > -1) {
             onChange(stateRef.current.value.filter((option) => option.key !== target.dataset.id));
           }
         } else {
-          const targetOption = stateRef.current.options.find((option) => option.key === target.dataset.id);
+          // Если опции нет в списке - нужно ее добавить
+          const targetOption = stateRef.current.options.find(
+            (option) => option.key === target.dataset.id
+          );
           if (targetOption) {
             onChange([...stateRef.current.value, targetOption]);
           }
@@ -83,6 +100,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         return;
       }
 
+      // Еслик коик вне контейнера дропдауна - скрыть дропдаун, отменить всплытие
       if (
         !inputElement.current?.contains(target) &&
         !optionsElement.current?.contains(target) &&
@@ -118,7 +136,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
         ref={inputElement}
         afterSlot={<ArrowDownIcon color="secondary" />}
         placeholder={title}
-        name='multiDropdownInput'
+        name="multiDropdownInput"
       />
       {isShowDropdown && !disabled && (
         <ul ref={optionsElement} className={clsx(style['options-container'])}>

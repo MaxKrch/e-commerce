@@ -1,59 +1,35 @@
+import { META_STATUS, type MetaStatus } from 'constants/meta-status';
+
 import clsx from 'clsx';
-import Button from 'components/Button';
 import Card, { CardSkeleton } from 'components/Card';
-import Text from 'components/Text';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import type { Product } from 'types/products';
 
 import style from './ProductCard.module.scss';
-import { META_STATUS, type MetaStatus } from 'constants/meta-status';
+import ActionSlot from './slots/ActionSlot';
+import ContentSlot from './slots/ContentSlot';
 
 export type ProductCardProps = {
   product: Product | null;
-  MetaStatus: MetaStatus;
+  status: MetaStatus;
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, MetaStatus }) => {
-  const handlePrimaryBtn = (id: Product['documentId']) => {
-    void id;
-  }
-
-  const handleSecondBtn = (id: Product['documentId']) => {
-    void id;
-  }
-
-  const contentSlot = () => {
-    return (
-      <Text weight="bold" className={clsx(style['content-slot'])}>
-        ${product?.price}
-      </Text>
-    );
-  }
-
-  const actionSlot = () => {
-    return (
-      <>
-        {product && (
-          <div className={clsx(style['action-slot'])}>
-            <Button onClick={() => handlePrimaryBtn(product.documentId)}>Купить сразу</Button>
-            <Button priority="secondary" onClick={() => handleSecondBtn(product.documentId)}>
-              В корзину
-            </Button>
-          </div>
-        )}
-      </>
-    );
-  }
-
+const ProductCard: React.FC<ProductCardProps> = ({ product, status }) => {
   return (
     <article className={clsx(style['product-card'])}>
-      {(MetaStatus === META_STATUS.PENDING || !product)
-        ? <CardSkeleton display='full' />
-        : <Card display="full" product={product} contentSlot={contentSlot} actionSlot={actionSlot} />
-      }
+      {status === META_STATUS.PENDING || !product ? (
+        <CardSkeleton display="full" />
+      ) : (
+        <Card
+          display="full"
+          product={product}
+          contentSlot={() => <ContentSlot product={product} />}
+          ActionSlot={ActionSlot}
+        />
+      )}
     </article>
   );
 };
 
-
-export default React.memo(ProductCard);
+export default observer(ProductCard);

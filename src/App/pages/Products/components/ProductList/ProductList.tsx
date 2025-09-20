@@ -1,18 +1,19 @@
+import { META_STATUS } from 'constants/meta-status';
+
 import { clsx } from 'clsx';
 import {
-  previewCardActionSlot,
+  PreviewCardActionSlot,
   previewCardContentSlot,
   previewCardCaptionSlot,
 } from 'components/Card/slots';
 import CardList from 'components/CardList';
+import CardListSkeleton from 'components/CardList/CardListSkeleton';
 import Text from 'components/Text';
+import useRootStore from 'context/root-store/useRootStore';
+import { observer } from 'mobx-react-lite';
 import React, { memo } from 'react';
 
 import style from './ProductList.module.scss';
-import { META_STATUS } from 'constants/meta-status';
-import CardListSkeleton from 'components/CardList/CardListSkeleton';
-import { observer } from 'mobx-react-lite';
-import useRootStore from 'context/root-store/useRootStore';
 
 const ProductList: React.FC = () => {
   const { productsStore } = useRootStore();
@@ -27,19 +28,17 @@ const ProductList: React.FC = () => {
           {productsStore.pagination?.total}
         </Text>
       </div>
-      {productsStore.status === META_STATUS.SUCCESS
-        ? (
-          <CardList
-            display="preview"
-            products={productsStore.products}
-            captionSlot={previewCardCaptionSlot}
-            contentSlot={previewCardContentSlot}
-            actionSlot={previewCardActionSlot}
-          />
-        ) : (
-          <CardListSkeleton skeletonCount={6} display='preview' />
-        )
-      }
+      {productsStore.status === META_STATUS.SUCCESS ? (
+        <CardList
+          display="preview"
+          products={productsStore.products}
+          captionSlot={previewCardCaptionSlot}
+          contentSlot={previewCardContentSlot}
+          ActionSlot={PreviewCardActionSlot}
+        />
+      ) : (
+        <CardListSkeleton skeletonCount={6} display="preview" />
+      )}
     </div>
   );
 };

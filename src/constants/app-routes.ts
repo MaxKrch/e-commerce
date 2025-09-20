@@ -19,9 +19,9 @@ export const appRoutes = {
     mask: '/categories',
     create: () => '/categories',
   },
-  card: {
-    mask: '/card',
-    create: () => '/card',
+  cart: {
+    mask: '/cart',
+    create: () => '/cart',
   },
   my: {
     mask: '/my',

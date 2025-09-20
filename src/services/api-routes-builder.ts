@@ -1,32 +1,24 @@
 import type { QueryParams } from 'types/query-params';
-import { buildQueryString } from 'utils/build-query-string';
+
+import { buildQueryString } from './build-query-string';
 
 const populate = {
   products: ['images', 'productCategory'],
-  categories: ['image']
-} as const
-
-export type ApiProductsArgs = {
-  ProductsList: QueryParams
-
-  ProductsDetails: {
-    id: string;
-  };
-};
-
+  categories: ['image'],
+} as const;
 
 export const apiRoutes = {
   categories: {
     list: () => {
       const queryString = buildQueryString({
-        populate: populate['categories']
+        populate: populate['categories'],
       });
 
       return `/product-categories?${queryString}`;
     },
   },
   products: {
-    list: (args: ApiProductsArgs['ProductsList']) => {
+    list: (args: QueryParams) => {
       const queryString = buildQueryString({
         ...args,
         populate: populate['products'],
@@ -35,7 +27,7 @@ export const apiRoutes = {
       return `/products?${queryString}`;
     },
 
-    details: ({ id }: ApiProductsArgs['ProductsDetails']) => {
+    details: ({ id }: { id: string }) => {
       const queryString = buildQueryString({ populate: populate['products'] });
 
       return `/products/${id}?${queryString}`;
@@ -43,13 +35,13 @@ export const apiRoutes = {
   },
   cart: {
     details: () => {
-      return `/card`;
+      return `/cart`;
     },
     add: () => {
-      return `/card/add`;
+      return `/cart/add`;
     },
     remove: () => {
-      return `/card/remove`;
+      return `/cart/remove`;
     },
   },
 } as const;

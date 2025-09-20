@@ -1,20 +1,16 @@
-import { META_STATUS, type MetaStatus } from "constants/meta-status";
-import { action, computed, makeObservable, observable, runInAction } from "mobx";
-import productApi from "services/product-api";
-import getInitialCollection from "store/utils/get-initial-collection";
-import { linearizeCollection, normalizeCollection } from "store/utils/normalize-collection";
-import { normalizeProductList } from "store/utils/normalize-products";
-import type { Collection } from "types/collections";
-import type { Product, ProductApi } from "types/products";
-import type { QueryParams } from "types/query-params";
-import type { MetaResponse } from "types/strapi-api";
+import { META_STATUS, type MetaStatus } from 'constants/meta-status';
 
-type PrivateFields =
-    | '_products'
-    | '_status'
-    | '_meta'
-    | '_requestId'
-    | 'setProducts'
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import productApi from 'services/product-api';
+import getInitialCollection from 'store/utils/get-initial-collection';
+import { linearizeCollection, normalizeCollection } from 'store/utils/normalize-collection';
+import { normalizeProductList } from 'store/utils/normalize-products';
+import type { Collection } from 'types/collections';
+import type { Product, ProductApi } from 'types/products';
+import type { QueryParams } from 'types/query-params';
+import type { MetaResponse } from 'types/strapi-api';
+
+type PrivateFields = '_products' | '_status' | '_meta' | '_requestId' | 'setProducts';
 
 export default class ProductsStore {
     private _products: Collection<Product['id'], Product> = getInitialCollection();
@@ -37,8 +33,9 @@ export default class ProductsStore {
             countProducts: computed,
 
             fetchProducts: action.bound,
+            resetProductList: action.bound,
             setProducts: action,
-        })
+        });
     }
 
     get products(): Product[] {
@@ -54,11 +51,11 @@ export default class ProductsStore {
     }
 
     get pagination(): MetaResponse<Product[]>['pagination'] | undefined {
-        return this._meta?.pagination
+        return this._meta?.pagination;
     }
 
     get countProducts(): number {
-        return this._products.order.length
+        return this._products.order.length;
     }
 
     private setProducts(products: ProductApi[] | null) {
@@ -67,14 +64,18 @@ export default class ProductsStore {
             return;
         }
 
-        this._products = normalizeCollection(
-            normalizeProductList(products),
-            (product) => product.id
-        )
+        this._products = normalizeCollection(normalizeProductList(products), (product) => product.id);
     }
 
     getProductbyId(id: Product['id']): Product | undefined {
-        return this._products.entities[id]
+        return this._products.entities[id];
+    }
+
+    resetProductList(): void {
+        this._products = getInitialCollection();
+        this._meta = null;
+        this._requestId = undefined;
+        this._status = META_STATUS.IDLE;
     }
 
     async fetchProducts(params: QueryParams, id?: string): Promise<void> {
@@ -88,25 +89,26 @@ export default class ProductsStore {
             this._requestId = id;
             this._meta = null;
             this.setProducts(null);
-        })
+        });
 
         try {
             const response = await productApi.getProductList({
-                request: params
-            })
+                params: params,
+                signal: this._abortCtrl.signal,
+            });
 
             if (response instanceof Error) {
-                throw response
+                throw response;
             }
 
             runInAction(() => {
                 this._meta = response.meta;
                 this.setProducts(response.data);
+                this._abortCtrl = null;
                 this._status = META_STATUS.SUCCESS;
-            })
-
+            });
         } catch (err) {
-            if (err instanceof Error && err.name === "AbortError") {
+            if (err instanceof Error && err.name === 'AbortError') {
                 return;
             }
 
@@ -115,7 +117,7 @@ export default class ProductsStore {
                 this._requestId = undefined;
                 this.setProducts(null);
                 this._status = META_STATUS.ERROR;
-            })
+            });
         }
     }
 }

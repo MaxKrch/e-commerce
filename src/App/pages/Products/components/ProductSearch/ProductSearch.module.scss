@@ -1,5 +1,6 @@
-$cross-size: 28px;
+$cross-size: 24px;
 $cross-margin: calc(($control-field-heihgt - $cross-size) / 2);
+$filter-cross-right: 32px;
 $input-right-padding: calc($cross-size + 2 * $cross-margin);
 
 .search {
@@ -18,9 +19,19 @@ $input-right-padding: calc($cross-size + 2 * $cross-margin);
 
 .filter {
     width: 100%;
+    display: flex;
+    gap: $space-xs;
+    align-items: center;
 
     @include tablet-up() {
-        width: 360px;
+        width: 450px;
+    }
+
+    &-cross {
+        width: $cross-size;
+        height: $cross-size;
+        color: $brand;
+        cursor: pointer;
     }
 }
 

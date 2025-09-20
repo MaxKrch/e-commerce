@@ -29,23 +29,18 @@ const Pagination: FC<PaginationProps> = ({
   }, [currentPage]);
 
   const showLeftElipses = currentPage - visiblePageArround > 2;
-  const showRightElipses =
-    !!pageCount && currentPage + visiblePageArround < pageCount - 1;
+  const showRightElipses = !!pageCount && currentPage + visiblePageArround < pageCount - 1;
 
   const pages = useMemo(
     () => getPageNumbers(currentPage, pageCount, visiblePageArround),
     [currentPage, pageCount, visiblePageArround]
-  )
+  );
 
   return (
     <div className={clsx(style['container'], className)}>
       <div
         onClick={() => onClick(currentPage - 1)}
-        className={clsx(
-          style['page'],
-          style['page__prev'],
-          currentPage === 1 && style['disabled']
-        )}
+        className={clsx(style['page'], style['page__prev'], currentPage === 1 && style['disabled'])}
       >
         <ArrowRightIcon className={clsx(style['page__prev-icon'])} />
       </div>
@@ -79,6 +74,5 @@ const Pagination: FC<PaginationProps> = ({
     </div>
   );
 };
-
 
 export default memo(Pagination);

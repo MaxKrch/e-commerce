@@ -1,25 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import productApi from 'services/product-api';
-import type { Product } from 'types/products';
-
 import ProductCard from './components/ProductCard';
 import RelatedProducts from './components/RelatedProducts';
 import StepBack from './components/StepBack';
 import { metaData } from './config';
-import { META_STATUS, type MetaStatus } from 'constants/meta-status';
+import { META_STATUS } from 'constants/meta-status';
+import useProductStore from 'hooks/useProductStore';
+import useRootStore from 'context/root-store/useRootStore';
+import NetworkError from 'components/NetworkError';
+import defaultContentSlot from 'components/NetworkError/slots/defaultContentSlot';
+import defaultActionSlot from 'components/NetworkError/slots/defaultActionSlot';
+import { observer } from 'mobx-react-lite';
 
 const ProductDetailsPage = () => {
   const params = useParams();
+  const productDetailsStore = useProductStore()
+  const { productsStore } = useRootStore()
+  const isErrorProductDetails = productDetailsStore.status === META_STATUS.ERROR
+    || (productDetailsStore.status === META_STATUS.SUCCESS && productDetailsStore.product?.documentId !== params.id)
 
-  const [product, setProduct] = useState<Product | null>(null);
-  const productAbortCntr = useRef<AbortController | null>(null);
-  const [requestProductStatus, setRequestProductStatus] = useState<MetaStatus>(META_STATUS.IDLE);
-
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-  const relatedProductsAbortCntr = useRef<AbortController | null>(null);
-  const [requestRelatedProductsStatus, setRequestRelatedProductsStatus] = useState<MetaStatus>(META_STATUS.IDLE);
+  useEffect(() => {
+    if (params.id) {
+      productDetailsStore.fetchProduct(params.id);
+    }
+  }, [params.id, productDetailsStore.fetchProduct])
 
   useEffect(() => {
     window.scrollTo({
@@ -28,102 +33,41 @@ const ProductDetailsPage = () => {
     })
   }, [params.id])
 
-  useEffect(() => {
-    const clearProductAbortCntrl = () => {
-      if (productAbortCntr.current) {
-        productAbortCntr.current.abort();
-      }
-    };
+  const hadleRetryFetchProduct = useCallback(() => {
+    if (params.id) {
+      productDetailsStore.fetchProduct(params.id);
+    }
+  }, [params.id, productDetailsStore.fetchProduct])
 
-    const requestProduct = async () => {
-      if (!params.id) return;
+  const hadleRetryFetchRelatedProducts = useCallback(() => {
+    if (productDetailsStore.product) {
+      productsStore.fetchProducts({
+        categories: [productDetailsStore.product.productCategory.id]
+      });
+      return;
+    }
 
-      clearProductAbortCntrl();
-      setProduct(null);
-      setRelatedProducts([]);
-      productAbortCntr.current = new AbortController();
-      setRequestProductStatus(META_STATUS.IDLE);
-
-      try {
-        const response = await productApi.getProductDetails({
-          request: { id: params.id },
-          signal: productAbortCntr.current.signal,
-        });
-
-        if (response instanceof Error) {
-          throw response;
-        }
-
-        if (response.data.documentId === params.id) {
-          setProduct(response.data);
-          setRequestProductStatus(META_STATUS.SUCCESS)
-        } else {
-          setRequestProductStatus(META_STATUS.IDLE)
-        }
-
-      } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
-          setRequestProductStatus(META_STATUS.ERROR);
-        }
-      }
-    };
-
-    requestProduct();
-
-    return () => clearProductAbortCntrl();
-  }, [params]);
-
-  useEffect(() => {
-    const clearRelatedProductsAbortCntrl = () => {
-      if (relatedProductsAbortCntr.current) {
-        relatedProductsAbortCntr.current.abort();
-      }
-    };
-
-    const requestRelatedProducts = async () => {
-      clearRelatedProductsAbortCntrl();
-      setRequestRelatedProductsStatus(META_STATUS.PENDING)
-      relatedProductsAbortCntr.current = new AbortController();
-      const releatedProductId = params.id;
-
-      try {
-        const response = await productApi.getProductList({
-          request: { pageSize: 3 },
-          signal: relatedProductsAbortCntr.current.signal,
-        });
-
-        if (response instanceof Error) {
-          throw response;
-        }
-
-        if (releatedProductId === params.id) {
-          setRelatedProducts(response.data);
-          setRequestRelatedProductsStatus(META_STATUS.SUCCESS);
-        } else {
-          setRequestRelatedProductsStatus(META_STATUS.IDLE)
-        }
-      } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
-          setRequestRelatedProductsStatus(META_STATUS.ERROR);
-        }
-      }
-    };
-
-    requestRelatedProducts();
-
-    return () => clearRelatedProductsAbortCntrl();
-  }, [product, params.id]);
+    if (params.id) {
+      productDetailsStore.fetchProduct(params.id)
+    }
+  }, [params.id])
 
   return (
     <div>
       <Helmet>
-        <title>{metaData.title(product?.title)}</title>
+        <title>{metaData.title()}</title>
       </Helmet>
       <StepBack />
-      {<ProductCard MetaStatus={requestProductStatus} product={product} />}
-      {<RelatedProducts MetaStatus={requestRelatedProductsStatus} products={relatedProducts} />}
+      {isErrorProductDetails
+        ? <NetworkError contentSlot={defaultContentSlot()} actionSlot={defaultActionSlot(hadleRetryFetchProduct)} />
+        : <ProductCard product={productDetailsStore.product} status={productDetailsStore.status} />
+      }
+      {productsStore.status === META_STATUS.ERROR
+        ? <NetworkError contentSlot={defaultContentSlot()} actionSlot={defaultActionSlot(hadleRetryFetchRelatedProducts)} />
+        : <RelatedProducts />
+      }
     </div>
   );
 };
 
-export default ProductDetailsPage;
+export default observer(ProductDetailsPage);

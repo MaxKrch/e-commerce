@@ -1,20 +1,22 @@
-import useRootStore from "context/root-store/useRootStore";
-import { useCallback, useEffect } from "react"
+import useRootStore from 'context/root-store/useRootStore';
+import { useCallback, useEffect } from 'react';
 
 const useInitApp = () => {
-    const rootStore = useRootStore();
+  const rootStore = useRootStore();
 
-    useEffect(() => {
-        rootStore.categoriesStore.fetchCategories();
-    }, [rootStore]);
+  useEffect(() => {
+    rootStore.categoriesStore.fetchCategories();
+    rootStore.cartStore.fetchCart();
+  }, [rootStore]);
 
-    const reset = useCallback(() => {
-        rootStore.categoriesStore.fetchCategories();
-    }, [rootStore]);
+  const reset = useCallback(() => {
+    rootStore.categoriesStore.fetchCategories();
+    rootStore.cartStore.fetchCart();
+  }, [rootStore]);
 
-    return {
-        reset,
-    };
-}
+  return {
+    reset,
+  };
+};
 
-export default useInitApp
+export default useInitApp;

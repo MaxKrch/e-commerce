@@ -54,9 +54,9 @@ const Text: React.FC<TextProps> = ({
     : {};
 
   const classes = cn(
-    view && viewClasses[view], 
-    weightClasses[weight], 
-    colorClasses[color], 
+    view && viewClasses[view],
+    weightClasses[weight],
+    colorClasses[color],
     className
   );
 

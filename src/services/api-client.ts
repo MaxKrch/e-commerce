@@ -7,22 +7,24 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig & { requiredAuth?: boolean }) => {
-    if (config.requiredAuth) {
-      const token = import.meta.env.VITE_API_TOKEN;
-      if (token) {
-        config.headers = config.headers || {};
-        config.headers.Authorization = `Bearer ${token}`
-      }
+export interface AuthRequestConfig extends InternalAxiosRequestConfig {
+  requiredAuth?: boolean;
+}
+
+api.interceptors.request.use((config: AuthRequestConfig) => {
+  if (config.requiredAuth) {
+    const token = import.meta.env.VITE_API_TOKEN;
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
     }
-    return config;
   }
-)
+  return config;
+});
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    return response.data
+    return response.data;
   },
   (error) => {
     if (isCancel(error)) {
@@ -37,8 +39,8 @@ api.interceptors.response.use(
       return Promise.reject(new Error('NetworkError'));
     }
 
-    return Promise.reject(new Error(('UnknownError')));
+    return Promise.reject(new Error('UnknownError'));
   }
-)
+);
 
 export default api;

@@ -54,4 +54,5 @@ export type Product = {
   updatedAt: Date;
   publishedAt: Date;
   productCategory: ProductCategory;
-}
+};
+

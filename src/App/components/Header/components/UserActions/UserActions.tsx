@@ -11,15 +11,14 @@ import style from './UserActions.module.scss';
 const UserActions = () => {
   return (
     <div className={clsx(style['actions'])}>
-      <Link to={appRoutes.main.create()}>
+      <Link to={appRoutes.cart.create()}>
         <BagIcon className={clsx(style['action'])} />
       </Link>
-      <Link to={appRoutes.main.create()}>
+      <Link to={appRoutes.cart.create()}>
         <UserIcon className={clsx(style['action'])} />
       </Link>
     </div>
   );
 };
-
 
 export default memo(UserActions);

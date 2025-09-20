@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Icon, { type IconProps } from '../Icon';
 
 const SearchIcon: React.FC<IconProps> = ({ width = 24, height = 24, ...rest }) => {
@@ -9,7 +10,8 @@ const SearchIcon: React.FC<IconProps> = ({ width = 24, height = 24, ...rest }) =
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
-        strokeLinejoin="round" />
+        strokeLinejoin="round"
+      />
     </Icon>
   );
 };

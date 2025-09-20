@@ -27,5 +27,4 @@ const SectionHeader: FC<SectionHeaderProps> = ({
   );
 };
 
-
 export default memo(SectionHeader);

@@ -1,20 +1,21 @@
 import clsx from 'clsx';
 import Text from 'components/Text';
+import { observer } from 'mobx-react-lite';
 import React, { memo, useCallback } from 'react';
 import type { Product } from 'types/products';
 
 import style from './Card.module.scss';
 import ImageGalery from './components/ImageGalery';
-import { observer } from 'mobx-react-lite';
+import type { ActionSlot } from './types';
 
 export type CardProps = {
-  display?: 'full' | 'preview';
+  display?: 'full' | 'preview' | 'cart';
   product: Product;
   className?: string;
   onClick?: React.MouseEventHandler;
   captionSlot?: (product: Product) => React.ReactNode;
   contentSlot?: (product: Product) => React.ReactNode;
-  actionSlot?: (id: Product['documentId']) => React.ReactNode;
+  ActionSlot?: ActionSlot;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -23,16 +24,16 @@ const Card: React.FC<CardProps> = ({
   onClick,
   captionSlot,
   contentSlot,
-  actionSlot,
+  ActionSlot,
   className,
 }) => {
-  const { images, description, documentId: id, title } = product;
+  const { images, description, title } = product;
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     if (display === 'preview' && onClick) {
-      onClick(event)
+      onClick(event);
     }
-  }, [])
+  }, []);
 
   return (
     <article className={clsx(style['card'], style[`${display}-card`], className)}>
@@ -54,7 +55,7 @@ const Card: React.FC<CardProps> = ({
         )}
         <Text
           maxLines={2}
-          tag='h3'
+          tag="h3"
           weight="bold"
           color="primary"
           className={clsx(style[`${display}-title`])}
@@ -76,12 +77,11 @@ const Card: React.FC<CardProps> = ({
           {contentSlot && contentSlot(product)}
         </div>
         <div className={clsx(style[`${display}-action-slot`])}>
-          {actionSlot && actionSlot(id)}
+          {ActionSlot && <ActionSlot product={product} />}
         </div>
       </footer>
     </article>
   );
 };
-
 
 export default memo(observer(Card));
