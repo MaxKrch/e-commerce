@@ -25,6 +25,8 @@ const Skeleton: React.FC = () => {
 
             <div className={clsx(style['summary'])}>
                 <div className={clsx(style['summary-body'])}>
+                    <div className={clsx(style['summary-body-title'])} />
+                    <div className={clsx(style['summary-body-content'])} />
                     <div className={clsx(style['summary-body-content'])} />
                     <div className={clsx(style['summary-body-button'])} />
                 </div>

@@ -11,11 +11,14 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import style from './ProductSearch.module.scss';
+import useRootStore from 'context/root-store/useRootStore';
+import { META_STATUS } from 'constants/meta-status';
 
 const ProductSearch = () => {
   const { setQueryParams } = useQueryParams();
   const searchCleared = useRef(false);
   const location = useLocation();
+  const { categoriesStore } = useRootStore();
   const searchStore = useSearchStore({ handleChange: setQueryParams });
 
   const handleCrossInputClick = useCallback(() => {
@@ -68,13 +71,17 @@ const ProductSearch = () => {
         </Button>
       </div>
       <div className={clsx(style['filter'])}>
-        <MultiDropdown
-          options={searchStore.options}
-          value={searchStore.value}
-          onChange={searchStore.handleSelectCategories}
-          getTitle={() => searchStore.title}
-          className={clsx(style['filter-dropdown'])}
-        />
+        {categoriesStore.status === META_STATUS.SUCCESS
+          ? (<MultiDropdown
+            options={searchStore.options}
+            value={searchStore.value}
+            onChange={searchStore.handleSelectCategories}
+            getTitle={() => searchStore.title}
+            className={clsx(style['filter-dropdown'])}
+          />)
+          : <div className={clsx(style['filter'], style['filter-skeleton'])} />
+        }
+
         {searchStore.value.length > 0 && (
           <CrossIcon onClick={handleCrossFilterClick} className={clsx(style['filter-cross'])} />
         )}

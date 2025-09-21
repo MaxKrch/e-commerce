@@ -8,7 +8,7 @@ import type { ProductInCart, ProductInCartApi } from 'types/cart';
 import type { Collection } from 'types/collections';
 import type { Product } from 'types/products';
 
-type PrivateFields = '_products' | '_status' | '_setProducts' | '_addToCart' | '_removeFromCart';
+type PrivateFields = '_products' | '_status' | '_setProducts' | '_addToCartOnServer' | '_removeFromCartOnServer';
 
 export default class CartStore {
   private _products: Collection<Product['id'], ProductInCart> = getInitialCollection();
@@ -24,13 +24,14 @@ export default class CartStore {
       inStockProducts: computed,
       outOfStockProducts: computed,
       totalPrice: computed,
+      totalItemsToOrder: computed,
       status: computed,
 
-      _addToCart: action,
-      _removeFromCart: action,
+      _addToCartOnServer: action,
+      _removeFromCartOnServer: action,
       _setProducts: action,
-      handleAddToCart: action.bound,
-      handleRemoveFromCart: action.bound,
+      addToCart: action.bound,
+      removeFromCart: action.bound,
       fetchCart: action.bound,
     });
   }
@@ -47,6 +48,12 @@ export default class CartStore {
     return this.products.filter(item => !item.product.isInStock);
   }
 
+  get totalItemsToOrder(): number {
+    return this.inStockProducts.reduce((total, item) => {
+      return total + item.quantity
+    }, 0)
+  }
+
   get totalPrice(): number {
     return this.inStockProducts.reduce((total, item) => {
       return (total + (item.quantity * item.product.price))
@@ -57,8 +64,8 @@ export default class CartStore {
     return this._status;
   }
 
-  async handleAddToCart(product: Product): Promise<void> {
-    this._addToCart(product);
+  async addToCart(product: Product): Promise<void> {
+    this._addToCartOnServer(product);
 
     try {
       const response = await cartApi.addProduct({ product: product.id });
@@ -66,23 +73,23 @@ export default class CartStore {
         throw response;
       }
     } catch {
-      this._removeFromCart(product)
+      this._removeFromCartOnServer(product)
     }
   }
 
-  async handleRemoveFromCart(product: Product): Promise<void> {
-    this._removeFromCart(product)
+  async removeFromCart(product: Product): Promise<void> {
+    this._removeFromCartOnServer(product)
     try {
       const response = await cartApi.removeProduct({ product: product.id });
       if (response instanceof Error) {
         throw response;
       }
     } catch {
-      this._addToCart(product)
+      this._addToCartOnServer(product)
     }
   }
 
-  private _addToCart(product: Product): void {
+  private _addToCartOnServer(product: Product): void {
     const isToCart = this._products.order.includes(product.id);
     if (isToCart) {
       this._products.entities[product.id].quantity += 1;
@@ -93,7 +100,7 @@ export default class CartStore {
     set(this._products.entities, product.id, { quantity: 1, product });
   }
 
-  private _removeFromCart(product: Product): void {
+  private _removeFromCartOnServer(product: Product): void {
     const isToCart = this._products.order.includes(product.id);
 
     if (!isToCart) {

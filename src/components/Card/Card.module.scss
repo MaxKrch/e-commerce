@@ -129,6 +129,60 @@ $mini-base-gap: 0.33em;
     }
 }
 
-.mini {
-    flex-direction: row;
+.cart {
+    &-card {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: $base-gap;
+        grid-template-areas:
+            'image main'
+            'image content'
+            'action action';
+
+        @include tablet-up() {
+            grid-template-areas:
+                'image main'
+                'image footer';
+        }
+    }
+
+    &-img {
+        width: 100px;
+        grid-area: image;
+
+        @include mobile-only() {
+            width: 150px;
+        }
+
+        @include tablet-up() {
+            width: 250px;
+        }
+    }
+
+    &-main {
+        grid-area: main;
+    }
+
+    &-footer {
+        display: contents;
+        padding: $base-gap;
+
+        @include tablet-up() {
+            gap: $base-gap;
+            flex-direction: column;
+            display: flex;
+            grid-area: footer;
+        }
+    }
+
+    &-content-clot {
+        grid-area: content;
+
+    }
+
+    &-action-slot {
+        grid-area: action;
+
+    }
+
 }

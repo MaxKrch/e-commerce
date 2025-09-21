@@ -8,8 +8,8 @@ import type { ActionSlot } from '../types';
 const PreviewCardActionSlot: ActionSlot = ({ product }) => {
   const { cartStore } = useRootStore()
   const handleClick = useCallback((product: Product) => {
-    cartStore.handleAddToCart(product)
-  }, [cartStore.handleAddToCart, product]);
+    cartStore.addToCart(product)
+  }, [cartStore.addToCart, product]);
 
   return <Button onClick={() => handleClick(product)}>В корзину</Button>;
 };

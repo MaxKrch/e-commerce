@@ -17,17 +17,17 @@ const ActionSlot: React.FC<{ product: Product }> = ({ product }) => {
     return null;
   }
   const handleSecondBtn = useCallback((product: Product) => {
-    cartStore.handleAddToCart(product);
-  }, [cartStore.handleAddToCart, product]);
+    cartStore.addToCart(product);
+  }, [cartStore.addToCart, product]);
 
   const handlePrimaryBtn = useCallback((product: Product) => {
-    cartStore.handleAddToCart(product);
+    cartStore.addToCart(product);
     navigate(appRoutes.cart.create())
-  }, [cartStore.handleAddToCart, product]);
+  }, [cartStore.addToCart, product]);
 
   return (
     <div className={clsx(style['action-slot'])}>
-      <Button onClick={() => handlePrimaryBtn(product)}>Купить сразу</Button>
+      <Button onClick={() => handlePrimaryBtn(product)}>Купить</Button>
       <Button priority="secondary" onClick={() => handleSecondBtn(product)}>
         В корзину
       </Button>

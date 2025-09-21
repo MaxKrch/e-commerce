@@ -62,14 +62,16 @@ const Card: React.FC<CardProps> = ({
         >
           {title}
         </Text>
-        <Text
-          maxLines={3}
-          weight="normal"
-          color="secondary"
-          className={clsx(style[`${display}-description`])}
-        >
-          {description}
-        </Text>
+        {display !== 'cart' &&
+          <Text
+            maxLines={3}
+            weight="normal"
+            color="secondary"
+            className={clsx(style[`${display}-description`])}
+          >
+            {description}
+          </Text>
+        }
       </main>
 
       <footer className={clsx(style[`${display}-footer`])}>

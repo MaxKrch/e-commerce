@@ -23,8 +23,8 @@ $input-right-padding: calc($cross-size + 2 * $cross-margin);
     gap: $space-xs;
     align-items: center;
 
-    @include tablet-up() {
-        width: 450px;
+    @include mobile-up() {
+        width: 325px;
     }
 
     &-cross {
@@ -32,6 +32,16 @@ $input-right-padding: calc($cross-size + 2 * $cross-margin);
         height: $cross-size;
         color: $brand;
         cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    &-skeleton {
+        @include pulse-gradient();
+        height: $control-field-heihgt;
+    }
+
+    &-dropdown {
+        flex-basis: 100%;
     }
 }
 
