@@ -1,6 +1,6 @@
 import { META_STATUS, type MetaStatus } from 'constants/meta-status';
 
-import { action, computed, makeObservable, observable, remove, runInAction, set } from 'mobx';
+import { action, computed, makeObservable, observable, remove, runInAction } from 'mobx';
 import cartApi from 'services/cart-api';
 import getInitialCollection from 'store/utils/get-initial-collection';
 import { linearizeCollection, normalizeCollection } from 'store/utils/normalize-collection';
@@ -102,16 +102,10 @@ export default class CartStore {
       return;
     }
 
-    if (this._products.order.length === 0) {
-      this._products = {
-        order: [product.id],
-        entities: { [product.id]: { quantity: 1, product } },
-      };
-      return;
-    }
-
-    this._products.order.push(product.id);
-    set(this._products.entities, product.id, { quantity: 1, product });
+    this._products = {
+      order: [...this._products.order, product.id],
+      entities: { ...this._products.entities, [product.id]: { quantity: 1, product } },
+    };
   }
 
   private _removeFromCartOnServer(product: Product): void {

@@ -19,7 +19,7 @@ const OutOfStock: React.FC = () => {
   return (
     <section className={clsx(style['container'])}>
       <Text tag="h2" className={clsx(style['title'])}>
-        Эти товары закончились:
+        Товаров пока нет:
       </Text>
       <ul className={clsx(style['list'])}>
         {cartStore.inStockProducts.map((item) => (
