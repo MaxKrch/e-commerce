@@ -1,10 +1,10 @@
 import { apiRoutes } from 'services/api-routes-builder';
 import type { Product, ProductApi } from 'types/products';
+import type { QueryParams } from 'types/query-params';
 import { isStrapiSuccessResponse, type StrapiResponse } from 'types/strapi-api';
 import formateError from 'utils/formate-error';
 
 import api from './api-client';
-import type { QueryParams } from 'types/query-params';
 
 export type RequestProductArgs<T> = {
   params: T;

@@ -1,9 +1,9 @@
 import type { Collection } from 'types/collections';
 
-const getInitialCollection = (): Collection<any, any> => {
+const getInitialCollection = <K extends string | number, V = unknown>(): Collection<K, V> => {
   return {
-    order: [],
-    entities: {},
+    order: [] as K[],
+    entities: {} as Record<K, V>,
   };
 };
 export default getInitialCollection;

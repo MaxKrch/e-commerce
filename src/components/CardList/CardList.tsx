@@ -2,18 +2,19 @@ import { appRoutes } from 'constants/app-routes';
 
 import { clsx } from 'clsx';
 import Card, { type CardProps } from 'components/Card';
+import type { ActionSlot } from 'components/Card/types';
 import { observer } from 'mobx-react-lite';
 import { memo, useCallback, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Product } from 'types/products';
+
 import style from './CardList.module.scss';
-import type { ActionSlot } from 'components/Card/types';
 
 type CardListProps = Pick<CardProps, 'contentSlot' | 'captionSlot' | 'className'> & {
-  display?: 'preview' | 'full'
+  display?: 'preview' | 'full';
   products: Product[];
   titleSlot?: ReactNode;
-  ActionSlot: ActionSlot
+  ActionSlot: ActionSlot;
 };
 
 const CardList = ({

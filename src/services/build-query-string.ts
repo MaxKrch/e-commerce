@@ -2,13 +2,13 @@ import qs from 'qs';
 import type { QueryParams } from 'types/query-params';
 
 type buildQueryStringArgs = QueryParams & {
-  populate?: string[] | string | {};
+  populate?: string[] | string | object;
 };
 
 export function buildQueryString(params: buildQueryStringArgs) {
   const { page = 1, count = 25, query, categories, populate } = params;
 
-  const strapiQuery: Record<string, any> = {
+  const strapiQuery: Record<string, unknown> = {
     pagination: {
       page,
       pageSize: count,

@@ -7,15 +7,14 @@ const api = axios.create({
   },
 });
 
-export interface AuthRequestConfig extends InternalAxiosRequestConfig {
+export type AuthRequestConfig = {
   requiredAuth?: boolean;
-}
+} & InternalAxiosRequestConfig;
 
 api.interceptors.request.use((config: AuthRequestConfig) => {
   if (config.requiredAuth) {
     const token = import.meta.env.VITE_API_TOKEN;
     if (token) {
-      config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
     }
   }

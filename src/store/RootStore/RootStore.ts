@@ -1,7 +1,6 @@
 import CartStore from 'store/global/CartStore';
-import ProductsStore from 'store/global/ProductsStore';
-
 import CategoriesStore from 'store/global/CategoriesStore/CategoriesStore';
+import ProductsStore from 'store/global/ProductsStore';
 
 export type IRootStore = {
   readonly categoriesStore: CategoriesStore;

@@ -9,19 +9,18 @@ import { useCallback, useEffect, useMemo } from 'react';
 const ProductPagination: React.FC = () => {
   const { queryParams, setQueryParams } = useQueryParams();
   const { productsStore } = useRootStore();
-  const pagination = productsStore.pagination;
   const { pageCount, total } = productsStore.pagination || {};
 
   const currentPage = useMemo(
     () => normalizeCurrentPage(Number(queryParams.page ?? 1), pageCount),
-    [queryParams.page]
+    [queryParams.page, pageCount]
   );
 
   useEffect(() => {
     if (pageCount && pageCount < currentPage) {
       setQueryParams({ page: pageCount });
     }
-  }, [pageCount, queryParams.page]);
+  }, [pageCount, queryParams.page, currentPage, setQueryParams]);
 
   const handleClick = useCallback(
     (page: number) => {
@@ -29,7 +28,7 @@ const ProductPagination: React.FC = () => {
         setQueryParams({ page });
       }
     },
-    [pagination]
+    [currentPage, setQueryParams]
   );
 
   if (!pageCount || total === 0) {

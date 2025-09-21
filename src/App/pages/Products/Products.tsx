@@ -25,7 +25,7 @@ const ProductsPage = () => {
       ...queryParams,
       count: 9,
     });
-  }, [queryParams]);
+  }, [queryParams, productsStore]);
 
   const isFailedRequest =
     productsStore.status === META_STATUS.ERROR ||
@@ -47,7 +47,7 @@ const ProductsPage = () => {
     return () => {
       currentRequestid.current = null;
     };
-  }, [queryParams]);
+  }, [queryParams, productsStore]);
 
   return (
     <div>

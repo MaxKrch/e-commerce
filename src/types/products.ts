@@ -55,4 +55,3 @@ export type Product = {
   publishedAt: Date;
   productCategory: ProductCategory;
 };
-

@@ -10,10 +10,10 @@ import CardList from 'components/CardList';
 import CardListSkeleton from 'components/CardList/CardListSkeleton';
 import Text from 'components/Text';
 import useRootStore from 'context/root-store/useRootStore';
+import { observer } from 'mobx-react-lite';
 import { memo } from 'react';
 
 import style from './RelatedProducts.module.scss';
-import { observer } from 'mobx-react-lite';
 
 const RelatedProducts = () => {
   const { productsStore } = useRootStore();

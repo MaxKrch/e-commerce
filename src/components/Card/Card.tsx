@@ -29,11 +29,14 @@ const Card: React.FC<CardProps> = ({
 }) => {
   const { images, description, title } = product;
 
-  const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    if (display === 'preview' && onClick) {
-      onClick(event);
-    }
-  }, []);
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      if (display === 'preview' && onClick) {
+        onClick(event);
+      }
+    },
+    [display, onClick]
+  );
 
   return (
     <article className={clsx(style['card'], style[`${display}-card`], className)}>
@@ -62,7 +65,7 @@ const Card: React.FC<CardProps> = ({
         >
           {title}
         </Text>
-        {display !== 'cart' &&
+        {display !== 'cart' && (
           <Text
             maxLines={3}
             weight="normal"
@@ -71,7 +74,7 @@ const Card: React.FC<CardProps> = ({
           >
             {description}
           </Text>
-        }
+        )}
       </main>
 
       <footer className={clsx(style[`${display}-footer`])}>

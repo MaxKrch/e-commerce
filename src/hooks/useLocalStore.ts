@@ -13,8 +13,10 @@ const useLocalStore = <T extends ILocalStore & { _destroyed?: boolean }>(creator
 
   React.useEffect(() => {
     return () => {
-      container.current!._destroyed = true;
-      container.current?.destroy();
+      if (container.current) {
+        container.current._destroyed = true;
+        container.current.destroy();
+      }
     };
   }, []);
 

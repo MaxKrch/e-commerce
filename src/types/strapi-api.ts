@@ -1,4 +1,4 @@
-import type { ProductInCartApi } from "./cart";
+import type { ProductInCartApi } from './cart';
 
 export type StrapiPagination = {
   page: number;
@@ -33,8 +33,9 @@ export function isStrapiSuccessResponse<T>(
   return !('error' in response);
 }
 
-
-export type StrapiResponseCart<T extends ProductInCartApi | ProductInCartApi[]> = T | StrapiResponseError;
+export type StrapiResponseCart<T extends ProductInCartApi | ProductInCartApi[]> =
+  | T
+  | StrapiResponseError;
 
 export function isStrapiSuccessResponseCart<T extends ProductInCartApi | ProductInCartApi[]>(
   response: StrapiResponseCart<T>

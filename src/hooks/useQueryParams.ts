@@ -35,7 +35,7 @@ const useQueryParams = () => {
       const newParams = new URLSearchParams(params);
       if (changes.categories !== undefined) {
         newParams.delete('categories');
-        if (changes.categories && changes.categories.length > 0) {
+        if (changes.categories.length > 0) {
           changes.categories.forEach((item) => newParams.append('categories', `${item}`));
         }
       }
@@ -58,7 +58,7 @@ const useQueryParams = () => {
 
       setParams(newParams, { replace: true });
     },
-    [setParams]
+    [setParams, params]
   );
 
   return {

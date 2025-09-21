@@ -7,10 +7,6 @@ import type { Product } from 'types/products';
 import style from '../ProductCard.module.scss';
 
 const ContentSlot: React.FC<{ product: Product }> = ({ product }) => {
-  if (!product) {
-    return null;
-  }
-
   return (
     <Text weight="bold" className={clsx(style['content-slot'])}>
       ${product.price}

@@ -1,29 +1,33 @@
+import { appRoutes } from 'constants/app-routes';
+
 import clsx from 'clsx';
 import Button from 'components/Button';
+import useRootStore from 'context/root-store/useRootStore';
 import { observer } from 'mobx-react-lite';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Product } from 'types/products';
 
 import style from '../ProductCard.module.scss';
-import { useCallback } from 'react';
-import useRootStore from 'context/root-store/useRootStore';
-import { useNavigate } from 'react-router-dom';
-import { appRoutes } from 'constants/app-routes';
 
 const ActionSlot: React.FC<{ product: Product }> = ({ product }) => {
   const { cartStore } = useRootStore();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  if (!product) {
-    return null;
-  }
-  const handleSecondBtn = useCallback((product: Product) => {
-    cartStore.addToCart(product);
-  }, [cartStore.addToCart, product]);
+  const handleSecondBtn = useCallback(
+    (product: Product) => {
+      cartStore.addToCart(product);
+    },
+    [cartStore]
+  );
 
-  const handlePrimaryBtn = useCallback((product: Product) => {
-    cartStore.addToCart(product);
-    navigate(appRoutes.cart.create())
-  }, [cartStore.addToCart, product]);
+  const handlePrimaryBtn = useCallback(
+    (product: Product) => {
+      cartStore.addToCart(product);
+      navigate(appRoutes.cart.create());
+    },
+    [cartStore, navigate]
+  );
 
   return (
     <div className={clsx(style['action-slot'])}>
