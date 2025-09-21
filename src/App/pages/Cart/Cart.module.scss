@@ -1,6 +1,7 @@
 .container {
     @include content-container();
     @include base-adaptive-font-size();
+    margin-top: $space-xxl;
     display: flex;
     flex-direction: column;
     gap: $space-xxl;

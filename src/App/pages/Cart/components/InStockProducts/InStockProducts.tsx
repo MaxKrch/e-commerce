@@ -11,6 +11,9 @@ import style from './InStockProducts.module.scss';
 
 const InStockProducts: React.FC = () => {
   const { cartStore } = useRootStore();
+  if (cartStore.inStockProducts.length === 0) {
+    return null;
+  }
 
   return (
     <section className={clsx(style['container'])}>
@@ -19,7 +22,7 @@ const InStockProducts: React.FC = () => {
           <li key={item.product.id}>
             <Card
               className={clsx(style['card'])}
-              product={item.product}
+              product={item?.product}
               display="cart"
               contentSlot={() => (
                 <Text className={clsx(style['content-slot'])}>${item.product.price}</Text>

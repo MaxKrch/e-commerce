@@ -102,6 +102,14 @@ export default class CartStore {
       return;
     }
 
+    if (this._products.order.length === 0) {
+      this._products = {
+        order: [product.id],
+        entities: { [product.id]: { quantity: 1, product } },
+      };
+      return;
+    }
+
     this._products.order.push(product.id);
     set(this._products.entities, product.id, { quantity: 1, product });
   }
