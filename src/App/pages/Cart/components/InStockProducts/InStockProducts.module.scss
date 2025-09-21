@@ -12,5 +12,19 @@
 }
 
 .content-slot {
-    font-size: 2em;
+    display: flex;
+    gap: $space-s;
+}
+
+.content-title {
+    font-size: 1em;
+    color: $brand;
+}
+
+.content-value {
+    font-size: 1.5em;
+}
+
+.card {
+    border-bottom: 1px solid $brand;
 }

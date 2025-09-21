@@ -14,3 +14,8 @@
 .title {
     padding: $space-xl;
 }
+
+.card {
+    border-bottom: 1px solid $brand;
+    opacity: 0.75;
+}

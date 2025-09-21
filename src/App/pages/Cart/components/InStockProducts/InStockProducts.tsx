@@ -25,7 +25,10 @@ const InStockProducts: React.FC = () => {
               product={item?.product}
               display="cart"
               contentSlot={() => (
-                <Text className={clsx(style['content-slot'])}>${item.product.price}</Text>
+                <div className={clsx(style['content-slot'])}>
+                  <Text className={clsx(style['content-title'])}>Цена:</Text>
+                  <Text className={clsx(style['content-value'])}>${item.product.price}</Text>
+                </div>
               )}
               ActionSlot={() => <InStockActionSlot product={item.product} />}
             />
