@@ -21,13 +21,14 @@ const Pagination: FC<PaginationProps> = ({
   visiblePageArround = 2,
   onClick,
 }) => {
-  const lastCurrentPage = useRef(currentPage);
+  const refPage = useRef(currentPage);
   useEffect(() => {
-    if (currentPage !== lastCurrentPage.current) {
+    if (refPage.current !== currentPage) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
       });
+      refPage.current = currentPage;
     }
   }, [currentPage]);
 
