@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import Text from 'components/Text';
 import ArrowRightIcon from 'components/icons/ArrowRightIcon';
-import { memo, useEffect, useMemo, type FC } from 'react';
+import { memo, useEffect, useMemo, useRef, type FC } from 'react';
 
 import style from './Pagination.module.scss';
 import getPageNumbers from './utils/get-page-numbers';
@@ -21,11 +21,15 @@ const Pagination: FC<PaginationProps> = ({
   visiblePageArround = 2,
   onClick,
 }) => {
+  const lastCurrentPage = useRef(currentPage)
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    if (currentPage !== lastCurrentPage.current) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+
   }, [currentPage]);
 
   const showLeftElipses = currentPage - visiblePageArround > 2;

@@ -43,10 +43,6 @@ const ProductsPage = () => {
       },
       id
     );
-
-    return () => {
-      currentRequestid.current = null;
-    };
   }, [queryParams, productsStore]);
 
   return (
