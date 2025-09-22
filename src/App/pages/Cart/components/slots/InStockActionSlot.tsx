@@ -3,6 +3,7 @@ import Button from 'components/Button';
 import useRootStore from 'context/root-store/useRootStore';
 import { observer } from 'mobx-react-lite';
 import type { Product } from 'types/products';
+
 import style from '../../Cart.module.scss';
 
 const InStockActionSlot: React.FC<{ product: Product }> = ({ product }) => {

@@ -21,7 +21,7 @@ const Pagination: FC<PaginationProps> = ({
   visiblePageArround = 2,
   onClick,
 }) => {
-  const lastCurrentPage = useRef(currentPage)
+  const lastCurrentPage = useRef(currentPage);
   useEffect(() => {
     if (currentPage !== lastCurrentPage.current) {
       window.scrollTo({
@@ -29,7 +29,6 @@ const Pagination: FC<PaginationProps> = ({
         behavior: 'smooth',
       });
     }
-
   }, [currentPage]);
 
   const showLeftElipses = currentPage - visiblePageArround > 2;

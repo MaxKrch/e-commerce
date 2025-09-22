@@ -18,21 +18,25 @@ const OutOfStock: React.FC = () => {
 
   return (
     <section className={clsx(style['container'])}>
-      <Text tag="h2" className={clsx(style['title'])}>
-        Товаров пока нет:
-      </Text>
-      <ul className={clsx(style['list'])}>
-        {cartStore.inStockProducts.map((item) => (
-          <li key={item.product.id}>
-            <Card
-              className={clsx(style['card'])}
-              product={item.product}
-              display="cart"
-              ActionSlot={() => <OutOfStockActionSlot product={item.product} />}
-            />
-          </li>
-        ))}
-      </ul>
+      {cartStore.outOfStockProducts.length > 0 && (
+        <>
+          <Text tag="h2" className={clsx(style['title'])}>
+            Товаров пока нет:
+          </Text>
+          <ul className={clsx(style['list'])}>
+            {cartStore.outOfStockProducts.map((item) => (
+              <li key={item.product.id}>
+                <Card
+                  className={clsx(style['card'])}
+                  product={item.product}
+                  display="cart"
+                  ActionSlot={() => <OutOfStockActionSlot product={item.product} />}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </section>
   );
 };

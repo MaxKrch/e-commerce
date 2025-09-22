@@ -17,24 +17,26 @@ const InStockProducts: React.FC = () => {
 
   return (
     <section className={clsx(style['container'])}>
-      <ul className={clsx(style['list'])}>
-        {cartStore.inStockProducts.map((item) => (
-          <li key={item.product.id}>
-            <Card
-              className={clsx(style['card'])}
-              product={item?.product}
-              display="cart"
-              contentSlot={() => (
-                <div className={clsx(style['content-slot'])}>
-                  <Text className={clsx(style['content-title'])}>Цена:</Text>
-                  <Text className={clsx(style['content-value'])}>${item.product.price}</Text>
-                </div>
-              )}
-              ActionSlot={() => <InStockActionSlot product={item.product} />}
-            />
-          </li>
-        ))}
-      </ul>
+      {cartStore.inStockProducts.length > 0 && (
+        <ul className={clsx(style['list'])}>
+          {cartStore.inStockProducts.map((item) => (
+            <li key={item.product.id}>
+              <Card
+                className={clsx(style['card'])}
+                product={item.product}
+                display="cart"
+                contentSlot={() => (
+                  <div className={clsx(style['content-slot'])}>
+                    <Text className={clsx(style['content-title'])}>Цена:</Text>
+                    <Text className={clsx(style['content-value'])}>${item.product.price}</Text>
+                  </div>
+                )}
+                ActionSlot={() => <InStockActionSlot product={item.product} />}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 };
