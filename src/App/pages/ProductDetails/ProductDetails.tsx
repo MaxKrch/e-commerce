@@ -6,7 +6,7 @@ import defaultContentSlot from 'components/NetworkError/slots/defaultContentSlot
 import useRootStore from 'context/root-store/useRootStore';
 import useProductStore from 'hooks/useProductStore';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
@@ -17,6 +17,7 @@ import { metaData } from './config';
 
 const ProductDetailsPage = () => {
   const params = useParams();
+  const lastRequestedProduct = useRef<string | null>(null)
   const productDetailsStore = useProductStore();
   const { productsStore } = useRootStore();
   const isErrorProductDetails =
@@ -25,8 +26,9 @@ const ProductDetailsPage = () => {
       productDetailsStore.product?.documentId !== params.id);
 
   useEffect(() => {
-    if (params.id) {
+    if (params.id && params.id !== lastRequestedProduct.current) {
       productDetailsStore.fetchProduct(params.id);
+      lastRequestedProduct.current = params.id
     }
   }, [params.id, productDetailsStore]);
 

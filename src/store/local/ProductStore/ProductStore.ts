@@ -1,7 +1,7 @@
 import { META_STATUS, type MetaStatus } from 'constants/meta-status';
 
 import type { ILocalStore } from 'hooks/useLocalStore';
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction, type IReactionDisposer } from 'mobx';
 import productApi from 'services/product-api';
 import type RootStore from 'store/RootStore';
 import { normalizeProductItem } from 'store/utils/normalize-products';
@@ -15,6 +15,7 @@ export default class ProductStore implements ILocalStore {
   private _status: MetaStatus = META_STATUS.IDLE;
   private _requestId: string | undefined;
   private _rootStore: RootStore;
+  reactions: IReactionDisposer[];
 
   constructor({ rootStore }: { rootStore: RootStore }) {
     makeObservable<ProductStore, PrivateFields>(this, {
@@ -31,6 +32,11 @@ export default class ProductStore implements ILocalStore {
     });
 
     this._rootStore = rootStore;
+    this.reactions = [];
+    this.initReactions()
+  }
+
+  initReactions(): void {
   }
 
   get product(): Product | null {
@@ -99,9 +105,16 @@ export default class ProductStore implements ILocalStore {
     }
   }
 
+  clearReactions(): void {
+    this.reactions.map(item => item())
+    this.reactions = [];
+  }
+
   destroy(): void {
     if (this._abortCtrl) {
       this._abortCtrl.abort();
     }
+
+    this.clearReactions()
   }
 }

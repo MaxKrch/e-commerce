@@ -31,6 +31,7 @@ export default class SearchStore implements ILocalStore {
   private _handleChange: (params: QueryParams) => void;
   private _rootStore: RootStore;
   private _pendingSelectedIds: ProductCategory['id'][] | null = null;
+  reactions: IReactionDisposer[]
 
   constructor({
     initData,
@@ -63,6 +64,64 @@ export default class SearchStore implements ILocalStore {
     this._pendingSelectedIds = initData.categories ?? [];
     this._handleChange = handleChange;
     this._rootStore = rootStore;
+    this.reactions = [];
+    this.initReactions();
+  }
+
+  initReactions(): void {
+    const reactionInputValue = reaction(
+      () => this.inputValue,
+      (query) => {
+        if (this._debounce) {
+          clearTimeout(this._debounce);
+        }
+        this._debounce = setTimeout(
+          () =>
+            this._handleChange({
+              query,
+              categories: this._selectedCategories.order,
+            }),
+          1000
+        );
+      }
+    );
+    this.reactions.push(reactionInputValue)
+
+    const reactionLoadCategories = reaction(
+      () => this._rootStore.categoriesStore.list,
+      (categories) => {
+        if (
+          this._rootStore.categoriesStore.status !== META_STATUS.SUCCESS ||
+          categories.length === 0
+        ) {
+          return;
+        }
+
+        if (this._pendingSelectedIds) {
+          this._getSelectedCategoriesByIds(categories);
+        } else {
+          this._filterSelectedCategories(categories);
+        }
+      }
+    );
+    this.reactions.push(reactionLoadCategories)
+
+    const reactionSelectCategories = reaction(
+      () => this.selectedCategories,
+      (categories) => {
+        if (
+          this._pendingSelectedIds ||
+          this._rootStore.categoriesStore.status !== META_STATUS.SUCCESS
+        ) {
+          return;
+        }
+        this._handleChange({
+          query: this.inputValue,
+          categories: categories.map((category) => category.id),
+        });
+      }
+    );
+    this.reactions.push(reactionSelectCategories)
   }
 
   private _filterSelectedCategories(categories: ProductCategory[]): void {
@@ -149,64 +208,16 @@ export default class SearchStore implements ILocalStore {
       categories: this.selectedCategories.map((item) => item.id),
     });
 
-  reactionInputValue: IReactionDisposer = reaction(
-    () => this.inputValue,
-    (query) => {
-      if (this._debounce) {
-        clearTimeout(this._debounce);
-      }
-      this._debounce = setTimeout(
-        () =>
-          this._handleChange({
-            query,
-            categories: this._selectedCategories.order,
-          }),
-        1000
-      );
-    }
-  );
-
-  reactionLoadCategories: IReactionDisposer = reaction(
-    () => this._rootStore.categoriesStore.list,
-    (categories) => {
-      if (
-        this._rootStore.categoriesStore.status !== META_STATUS.SUCCESS ||
-        categories.length === 0
-      ) {
-        return;
-      }
-
-      if (this._pendingSelectedIds) {
-        this._getSelectedCategoriesByIds(categories);
-      } else {
-        this._filterSelectedCategories(categories);
-      }
-    }
-  );
-
-  reactionSelectCategories: IReactionDisposer = reaction(
-    () => this.selectedCategories,
-    (categories) => {
-      if (
-        this._pendingSelectedIds ||
-        this._rootStore.categoriesStore.status !== META_STATUS.SUCCESS
-      ) {
-        return;
-      }
-      this._handleChange({
-        query: this.inputValue,
-        categories: categories.map((category) => category.id),
-      });
-    }
-  );
+  clearReactions(): void {
+    this.reactions.forEach(item => item())
+    this.reactions = [];
+  }
 
   destroy(): void {
     if (this._debounce) {
       clearTimeout(this._debounce);
     }
 
-    this.reactionInputValue();
-    this.reactionLoadCategories();
-    this.reactionSelectCategories();
+    this.clearReactions();
   }
 }
