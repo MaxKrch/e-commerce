@@ -27,5 +27,4 @@ const SectionHeader: FC<SectionHeaderProps> = ({
   );
 };
 
-SectionHeader.displayName = 'SectionHeader';
 export default memo(SectionHeader);

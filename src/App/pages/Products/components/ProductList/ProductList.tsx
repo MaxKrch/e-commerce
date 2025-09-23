@@ -1,38 +1,46 @@
+import { META_STATUS } from 'constants/meta-status';
+
 import { clsx } from 'clsx';
-import previewCardActionSlot from 'components/Card/slots/previewCardActionSlot';
-import previewCardContentSlot from 'components/Card/slots/previewCardContentSlot';
+import {
+  PreviewCardActionSlot,
+  previewCardContentSlot,
+  previewCardCaptionSlot,
+} from 'components/Card/slots';
 import CardList from 'components/CardList';
+import CardListSkeleton from 'components/CardList/CardListSkeleton';
 import Text from 'components/Text';
-import { memo } from 'react';
-import type { ProductResponseShort } from 'types/product';
+import useRootStore from 'context/root-store/useRootStore';
+import { observer } from 'mobx-react-lite';
+import React, { memo } from 'react';
 
 import style from './ProductList.module.scss';
 
-type ProductListProps = {
-  products: ProductResponseShort[];
-  total?: number;
-};
+const ProductList: React.FC = () => {
+  const { productsStore } = useRootStore();
 
-const ProductList = ({ products, total }: ProductListProps) => {
   return (
     <div className={clsx(style['container'])}>
       <div className={clsx(style['count'])}>
         <Text color="primary" weight="bold" className={clsx(style['count__title'])}>
-          Total products
+          Найдено товаров
         </Text>
         <Text view="p-20" color="secondary" className={clsx(style['count__size'])}>
-          {total || products.length}
+          {productsStore.pagination?.total}
         </Text>
       </div>
-      <CardList
-        display="preview"
-        products={products}
-        contentSlot={previewCardContentSlot}
-        actionSlot={previewCardActionSlot}
-      />
+      {productsStore.status === META_STATUS.SUCCESS ? (
+        <CardList
+          display="preview"
+          products={productsStore.products}
+          captionSlot={previewCardCaptionSlot}
+          contentSlot={previewCardContentSlot}
+          ActionSlot={PreviewCardActionSlot}
+        />
+      ) : (
+        <CardListSkeleton skeletonCount={6} display="preview" />
+      )}
     </div>
   );
 };
 
-ProductList.displayName = 'ProductList';
-export default memo(ProductList);
+export default memo(observer(ProductList));

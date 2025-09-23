@@ -1,20 +1,21 @@
 import clsx from 'clsx';
-import type { ProductResponseFull } from 'types/product';
+import { observer } from 'mobx-react-lite';
+import type { Product } from 'types/products';
 
 import style from './ImageGalery.module.scss';
 
 export type ImageGaleryProps = {
-  images: ProductResponseFull['images'];
+  images: Product['images'];
 };
 
 const ImageGalery = ({ images }: ImageGaleryProps) => {
   return (
     <img
       className={clsx(style['img__img'])}
-      src={images[0].url}
-      alt={images[0].alternativeText ?? 'Card Image'}
+      src={images[0]?.url}
+      alt={images[0]?.alternativeText ?? 'Card Image'}
     />
   );
 };
 
-export default ImageGalery;
+export default observer(ImageGalery);

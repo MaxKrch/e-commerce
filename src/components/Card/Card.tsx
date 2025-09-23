@@ -1,19 +1,21 @@
 import clsx from 'clsx';
 import Text from 'components/Text';
-import React, { memo } from 'react';
-import type { ProductResponseShort } from 'types/product';
+import { observer } from 'mobx-react-lite';
+import React, { memo, useCallback } from 'react';
+import type { Product } from 'types/products';
 
 import style from './Card.module.scss';
 import ImageGalery from './components/ImageGalery';
+import type { ActionSlot } from './types';
 
 export type CardProps = {
-  display?: 'full' | 'preview';
-  product: ProductResponseShort;
+  display?: 'full' | 'preview' | 'cart';
+  product: Product;
   className?: string;
   onClick?: React.MouseEventHandler;
-  captionSlot?: React.ReactNode;
-  contentSlot?: (product: ProductResponseShort) => React.ReactNode;
-  actionSlot?: (id: ProductResponseShort['documentId']) => React.ReactNode;
+  captionSlot?: (product: Product) => React.ReactNode;
+  contentSlot?: (product: Product) => React.ReactNode;
+  ActionSlot?: ActionSlot;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -22,13 +24,23 @@ const Card: React.FC<CardProps> = ({
   onClick,
   captionSlot,
   contentSlot,
-  actionSlot,
+  ActionSlot,
   className,
 }) => {
-  const { images, description, documentId: id, title } = product;
+  const { images, description, title } = product;
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      if (display === 'preview' && onClick) {
+        onClick(event);
+      }
+    },
+    [display, onClick]
+  );
+
   return (
     <article className={clsx(style['card'], style[`${display}-card`], className)}>
-      <div className={clsx(style['img'], style[`${display}-img`])} onClick={onClick}>
+      <div className={clsx(style['img'], style[`${display}-img`])} onClick={handleClick}>
         {display === 'full' ? (
           <ImageGalery images={images} />
         ) : (
@@ -39,40 +51,42 @@ const Card: React.FC<CardProps> = ({
           />
         )}
       </div>
-      <div className={clsx(style['body'], style[`${display}-body`])}>
-        <main className={clsx(style['main'], style[`${display}-main`])} onClick={onClick}>
-          <div className={clsx(style[`${display}-caption-slot`])}>{captionSlot}</div>
-          <Text
-            maxLines={2}
-            view="p-20"
-            weight="bold"
-            color="primary"
-            className={clsx(style[`${display}-title`])}
-          >
-            {title}
-          </Text>
+
+      <main className={clsx(style['main'], style[`${display}-main`])} onClick={handleClick}>
+        {captionSlot && (
+          <div className={clsx(style[`${display}-caption-slot`])}>{captionSlot(product)}</div>
+        )}
+        <Text
+          maxLines={2}
+          tag="h3"
+          weight="bold"
+          color="primary"
+          className={clsx(style[`${display}-title`])}
+        >
+          {title}
+        </Text>
+        {display !== 'cart' && (
           <Text
             maxLines={3}
-            view="p-16"
             weight="normal"
             color="secondary"
             className={clsx(style[`${display}-description`])}
           >
             {description}
           </Text>
-        </main>
-        <footer className={clsx(style[`${display}-footer`])}>
-          <div className={clsx(style[`${display}-content-slot`])}>
-            {contentSlot && contentSlot(product)}
-          </div>
-          <div className={clsx(style[`${display}-action-slot`])}>
-            {actionSlot && actionSlot(id)}
-          </div>
-        </footer>
-      </div>
+        )}
+      </main>
+
+      <footer className={clsx(style[`${display}-footer`])}>
+        <div className={clsx(style[`${display}-content-slot`])}>
+          {contentSlot && contentSlot(product)}
+        </div>
+        <div className={clsx(style[`${display}-action-slot`])}>
+          {ActionSlot && <ActionSlot product={product} />}
+        </div>
+      </footer>
     </article>
   );
 };
 
-Card.displayName = 'Card';
-export default memo(Card);
+export default memo(observer(Card));

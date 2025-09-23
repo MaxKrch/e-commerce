@@ -1,50 +1,35 @@
+import { META_STATUS, type MetaStatus } from 'constants/meta-status';
+
 import clsx from 'clsx';
-import Button from 'components/Button';
-import Card from 'components/Card';
-import Text from 'components/Text';
-import { memo, useCallback } from 'react';
-import type { ProductResponseFull } from 'types/product';
+import Card, { CardSkeleton } from 'components/Card';
+import { observer } from 'mobx-react-lite';
+import React from 'react';
+import type { Product } from 'types/products';
 
 import style from './ProductCard.module.scss';
+import ActionSlot from './slots/ActionSlot';
+import ContentSlot from './slots/ContentSlot';
 
 export type ProductCardProps = {
-  product: ProductResponseFull;
+  product: Product | null;
+  status: MetaStatus;
 };
 
-const ProductCard = ({ product }: ProductCardProps) => {
-  const handlePrimaryBtn = useCallback((id: ProductResponseFull['documentId']) => {
-    void id;
-  }, []);
-
-  const handleSecondBtn = useCallback((id: ProductResponseFull['documentId']) => {
-    void id;
-  }, []);
-
-  const contentSlot = useCallback(() => {
-    return (
-      <Text weight="bold" className={clsx(style['content-slot'])}>
-        ${product.price}
-      </Text>
-    );
-  }, [product]);
-
-  const actionSlot = useCallback(() => {
-    return (
-      <div className={clsx(style['action-slot'])}>
-        <Button onClick={() => handlePrimaryBtn(product.documentId)}>Buy Now</Button>
-        <Button priority="secondary" onClick={() => handleSecondBtn(product.documentId)}>
-          Add to Cart
-        </Button>
-      </div>
-    );
-  }, [product, handlePrimaryBtn, handleSecondBtn]);
-
+const ProductCard: React.FC<ProductCardProps> = ({ product, status }) => {
   return (
     <article className={clsx(style['product-card'])}>
-      <Card display="full" product={product} contentSlot={contentSlot} actionSlot={actionSlot} />
+      {status === META_STATUS.PENDING || !product ? (
+        <CardSkeleton display="full" />
+      ) : (
+        <Card
+          display="full"
+          product={product}
+          contentSlot={() => <ContentSlot product={product} />}
+          ActionSlot={ActionSlot}
+        />
+      )}
     </article>
   );
 };
 
-ProductCard.displayName = 'ProductCard';
-export default memo(ProductCard);
+export default observer(ProductCard);

@@ -1,9 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { META_STATUS } from 'constants/meta-status';
+
+import NetworkError from 'components/NetworkError';
+import defaultActionSlot from 'components/NetworkError/slots/defaultActionSlot';
+import defaultContentSlot from 'components/NetworkError/slots/defaultContentSlot';
+import useRootStore from 'context/root-store/useRootStore';
+import useProductStore from 'hooks/useProductStore';
+import { observer } from 'mobx-react-lite';
+import { useCallback, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import productApi from 'services/product-api';
-import type { ProductResponseFull, ProductResponseShort } from 'types/product';
-import { isStrapiSuccessResponse } from 'types/strapi-api';
 
 import ProductCard from './components/ProductCard';
 import RelatedProducts from './components/RelatedProducts';
@@ -12,110 +17,71 @@ import { metaData } from './config';
 
 const ProductDetailsPage = () => {
   const params = useParams();
-
-  const [product, setProduct] = useState<ProductResponseFull | null>(null);
-  const productAbortCntr = useRef<AbortController | null>(null);
-  const [, setRequestProductError] = useState<Error | null>(null);
-
-  const [relatedProducts, setRelatedProducts] = useState<ProductResponseShort[] | null>(null);
-  const relatedProductsAbortCntr = useRef<AbortController | null>(null);
-  const [, setRequestRelatedProductsError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    const clearProductAbortCntrl = () => {
-      if (productAbortCntr.current) {
-        productAbortCntr.current.abort();
-      }
-    };
-
-    const requestProduct = async () => {
-      if (!params.id) return;
-
-      clearProductAbortCntrl();
-      setProduct(null);
-      setRelatedProducts(null);
-      productAbortCntr.current = new AbortController();
-
-      try {
-        const response = await productApi.getProductDetails({
-          request: { id: params.id },
-          signal: productAbortCntr.current.signal,
-        });
-
-        if (response instanceof Error) {
-          throw response;
-        }
-
-        if (!isStrapiSuccessResponse<ProductResponseFull>(response.data)) {
-          throw new Error('Unknown error');
-        }
-
-        setRequestProductError(null);
-
-        if (response.data.data.documentId === params.id) {
-          setProduct(response.data.data);
-        }
-      } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') setRequestProductError(err);
-      }
-    };
-
-    requestProduct();
-
-    return () => clearProductAbortCntrl();
-  }, [params]);
+  const lastRequestedProduct = useRef<string | null>(null)
+  const productDetailsStore = useProductStore();
+  const { productsStore } = useRootStore();
+  const isErrorProductDetails =
+    productDetailsStore.status === META_STATUS.ERROR ||
+    (productDetailsStore.status === META_STATUS.SUCCESS &&
+      productDetailsStore.product?.documentId !== params.id);
 
   useEffect(() => {
-    const clearRelatedProductsAbortCntrl = () => {
-      if (relatedProductsAbortCntr.current) {
-        relatedProductsAbortCntr.current.abort();
-      }
-    };
+    if (params.id && params.id !== lastRequestedProduct.current) {
+      productDetailsStore.fetchProduct(params.id);
+      lastRequestedProduct.current = params.id
+    }
+  }, [params.id, productDetailsStore]);
 
-    const requestRelatedProducts = async () => {
-      clearRelatedProductsAbortCntrl();
-      relatedProductsAbortCntr.current = new AbortController();
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [params.id]);
 
-      try {
-        const releatedProductId = params.id;
-        const response = await productApi.getProductList({
-          request: { pageSize: 3 },
-          signal: relatedProductsAbortCntr.current.signal,
-        });
+  const hadleRetryFetchProduct = useCallback(() => {
+    if (params.id) {
+      productDetailsStore.fetchProduct(params.id);
+    }
+  }, [params.id, productDetailsStore]);
 
-        if (response instanceof Error) {
-          throw response;
-        }
+  const hadleRetryFetchRelatedProducts = useCallback(() => {
+    if (productDetailsStore.product) {
+      productsStore.fetchProducts({
+        categories: [productDetailsStore.product.productCategory.id],
+      });
+      return;
+    }
 
-        if (!isStrapiSuccessResponse<ProductResponseShort[]>(response.data)) {
-          throw new Error('Unknown Error');
-        }
-
-        setRequestRelatedProductsError(null);
-
-        if (releatedProductId === params.id) {
-          setRelatedProducts(response.data.data);
-        }
-      } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') setRequestRelatedProductsError(err);
-      }
-    };
-
-    requestRelatedProducts();
-
-    return () => clearRelatedProductsAbortCntrl();
-  }, [product, params.id]);
+    if (params.id) {
+      productDetailsStore.fetchProduct(params.id);
+    }
+  }, [params.id, productDetailsStore, productsStore]);
 
   return (
     <div>
       <Helmet>
-        <title>{metaData.title(product?.title)}</title>
+        <title>{metaData.title()}</title>
       </Helmet>
       <StepBack />
-      {product && <ProductCard product={product} />}
-      {relatedProducts && <RelatedProducts products={relatedProducts} />}
+      {isErrorProductDetails ? (
+        <NetworkError
+          contentSlot={defaultContentSlot()}
+          actionSlot={defaultActionSlot(hadleRetryFetchProduct)}
+        />
+      ) : (
+        <ProductCard product={productDetailsStore.product} status={productDetailsStore.status} />
+      )}
+      {productsStore.status === META_STATUS.ERROR ? (
+        <NetworkError
+          contentSlot={defaultContentSlot()}
+          actionSlot={defaultActionSlot(hadleRetryFetchRelatedProducts)}
+        />
+      ) : (
+        <RelatedProducts />
+      )}
     </div>
   );
 };
 
-export default ProductDetailsPage;
+export default observer(ProductDetailsPage);

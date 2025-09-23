@@ -1,62 +1,72 @@
+$base-gap: 0.5em;
+$base-line-height: 150%;
+$mini-base-gap: 0.33em;
+
 .card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    @include base-adaptive-font-size();
 }
 
 .img {
     aspect-ratio: 1 / 1;
     background: $preview-card-image-bg;
-}
+    width: 100%;
+    cursor: pointer;
 
-.body {
-    display: flex;
-    flex-direction: column;
+    &__img {
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+        display: block;
+    }
 }
 
 .main {
     display: flex;
     flex-direction: column;
+    gap: $base-gap;
+    padding: $base-gap;
 }
+
 
 .preview {
     &-card {
-        gap: $space-xl;
-        background: $preview-card-bg;
-        padding-bottom: $space-xl;
         min-width: $preview-card-min-width;
         max-width: $preview-card-max-width;
         height: $preview-card-height;
+        padding-bottom: calc($base-gap * 2);
+        background: $preview-card-bg;
+        border-radius: $border-radius-primary;
 
         &:hover {
             box-shadow: $shadow-normal;
         }
     }
 
-    &-img {
-        width: 100%;
+    &-main {
         cursor: pointer;
-
-        &__img {
-            object-fit: cover;
-            object-position: center;
-            width: 100%;
-            display: block;
-        }
     }
 
-    &-main {
-        padding: 0 $space-xs;
-        gap: $space-xxs;
-        cursor: pointer;
+    &-title {
+        height: 3em;
+        font-size: 1.2em;
+        line-height: $base-line-height;
+    }
+
+    &-description {
+        font-size: 0.8em;
+        line-height: $base-line-height;
+    }
+
+    &-caption-slot {
+        font-size: 0.7em;
     }
 
     &-footer {
         display: flex;
         justify-content: space-between;
         vertical-align: center;
-        margin-top: $space-l;
-        padding: 0 $space-xs;
+        margin-top: calc($base-gap * 3);
+        padding: 0 $base-gap;
     }
 
     &-content-slot {
@@ -67,71 +77,112 @@
 
 .full {
     &-card {
-        gap: $space-xl;
+        display: grid;
+        grid-template-areas:
+            "image"
+            "main"
+            "footer";
 
         @include tablet-up() {
-            flex-direction: row;
+            grid-template-areas:
+                "image main"
+                "image footer";
+            grid-template-rows: auto 1fr;
+            gap: ($base-gap * 2);
         }
     }
 
     &-img {
-        width: 100%;
+        border-radius: $border-radius-primary;
+        grid-area: image;
 
         @include tablet-up() {
             width: 350px;
-            flex-shrink: 0;
         }
 
         @include laptop-up() {
             width: 600px;
-            flex-shrink: 0;
         }
-
     }
 
-    &-body {
-        gap: $space-xxs;
-        cursor: pointer;
+    &-main {
+        gap: $base-gap;
+        padding: $base-gap;
+        grid-area: main;
     }
 
     &-title {
-        @include mobile-up() {
-            font-size: $space-xxxl;
-        }
-
-        @include laptop-up() {
-            font-size: $title-size;
-        }
-
+        font-size: 2em;
     }
 
     &-description {
-        @include mobile-up() {
-            margin-top: $space-xxl;
-            font-size: $space-l;
-        }
-
-        @include laptop-up() {
-            margin-top: $space-xxxl;
-            font-size: $space-xl;
-        }
+        font-size: 0.8em;
+        line-height: $base-line-height;
     }
 
     &-footer {
+        grid-area: footer;
         display: flex;
         flex-direction: column;
-        margin-top: $space-xxl;
-        gap: $space-xxl;
+        padding: $base-gap;
+        gap: ($base-gap * 2);
+    }
+}
 
-        @include mobile-up() {
-            gap: $space-xxl;
-            ;
-            margin-top: $space-xxl;
-        }
+.cart {
+    &-card {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: $base-gap;
+        grid-template-areas:
+            'image main'
+            'image content'
+            'action action';
 
-        @include laptop-up() {
-            gap: $full-card-actions-space;
-            margin-top: $full-card-actions-space;
+        @include tablet-up() {
+            grid-template-areas:
+                'image main'
+                'image footer';
         }
     }
+
+    &-img {
+        width: 100px;
+        grid-area: image;
+
+        @include mobile-only() {
+            width: 150px;
+        }
+
+        @include tablet-up() {
+            width: 250px;
+        }
+    }
+
+    &-main {
+        grid-area: main;
+    }
+
+    &-footer {
+        display: contents;
+        padding: $base-gap;
+
+        @include tablet-up() {
+            gap: $base-gap;
+            flex-direction: column;
+            display: flex;
+            grid-area: footer;
+        }
+    }
+
+    &-content-clot {
+        grid-area: content;
+
+    }
+
+    &-action-slot {
+        grid-area: action;
+
+    }
+
 }

@@ -1,44 +1,54 @@
-import { apiRoutes, type ApiProductsArgs } from 'services/api-routes-builder';
-import type { ProductCategory, ProductResponseFull, ProductResponseShort } from 'types/product';
-import type { StrapiResponse } from 'types/strapi-api';
-import formateAxiosError from 'utils/formate-axios-error';
+import { apiRoutes } from 'services/api-routes-builder';
+import type { Product, ProductApi } from 'types/products';
+import type { QueryParams } from 'types/query-params';
+import { isStrapiSuccessResponse, type StrapiResponse } from 'types/strapi-api';
+import formateError from 'utils/formate-error';
 
 import api from './api-client';
 
-type RequestArgs<T> = {
-  request: T;
+export type RequestProductArgs<T> = {
+  params: T;
   signal?: AbortSignal;
 };
 
 const productApi = {
-  getCategories: async ({ request, signal }: RequestArgs<ApiProductsArgs['Categories']>) => {
+  getProductList: async ({ params, signal }: RequestProductArgs<QueryParams>) => {
     try {
-      return api.get<StrapiResponse<ProductCategory[]>>(apiRoutes.categories.list(request), {
-        signal: signal,
-      });
+      const response = (await api.get<StrapiResponse<ProductApi[]>>(
+        apiRoutes.products.list(params),
+        {
+          signal,
+        }
+      )) as unknown as StrapiResponse<ProductApi[]>;
+
+      if (!isStrapiSuccessResponse(response)) {
+        throw new Error(response.error.message);
+      }
+
+      return response;
     } catch (err) {
-      return formateAxiosError(err);
-    }
-  },
-  getProductList: async ({ request, signal }: RequestArgs<ApiProductsArgs['ProductsList']>) => {
-    try {
-      return api.get<StrapiResponse<ProductResponseShort[]>>(apiRoutes.products.list(request), {
-        signal,
-      });
-    } catch (err) {
-      return formateAxiosError(err);
+      return formateError(err);
     }
   },
   getProductDetails: async ({
-    request,
+    params,
     signal,
-  }: RequestArgs<ApiProductsArgs['ProductsDetails']>) => {
+  }: RequestProductArgs<{ id: Product['documentId'] }>) => {
     try {
-      return api.get<StrapiResponse<ProductResponseFull>>(apiRoutes.products.details(request), {
-        signal,
-      });
+      const response = (await api.get<StrapiResponse<ProductApi>>(
+        apiRoutes.products.details(params),
+        {
+          signal,
+        }
+      )) as unknown as StrapiResponse<ProductApi>;
+
+      if (!isStrapiSuccessResponse(response)) {
+        throw new Error(response.error.message);
+      }
+
+      return response;
     } catch (err) {
-      return formateAxiosError(err);
+      return formateError(err);
     }
   },
 };

@@ -6,6 +6,7 @@
     width: $checkbox-size;
     background: $checkbox-bg;
     border: 1px solid $checkbox-border-color;
+    border-radius: $border-radius-secondary;
     cursor: pointer;
 
     &:not(.disabled):hover {

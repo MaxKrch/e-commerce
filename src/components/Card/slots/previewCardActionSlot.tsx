@@ -1,12 +1,21 @@
 import Button from 'components/Button';
-import type { ProductResponseShort } from 'types/product';
+import useRootStore from 'context/root-store/useRootStore';
+import { observer } from 'mobx-react-lite';
+import { useCallback } from 'react';
+import type { Product } from 'types/products';
 
-const previewCardActionSlot = (id: ProductResponseShort['documentId']) => {
-  const handleClick = (id: ProductResponseShort['documentId']) => {
-    void id;
-  };
+import type { ActionSlot } from '../types';
 
-  return <Button onClick={() => handleClick(id)}>Add to Cart</Button>;
+const PreviewCardActionSlot: ActionSlot = ({ product }) => {
+  const { cartStore } = useRootStore();
+  const handleClick = useCallback(
+    (product: Product) => {
+      cartStore.addToCart(product);
+    },
+    [cartStore]
+  );
+
+  return <Button onClick={() => handleClick(product)}>В корзину</Button>;
 };
 
-export default previewCardActionSlot;
+export default observer(PreviewCardActionSlot);

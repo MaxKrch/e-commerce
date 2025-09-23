@@ -1,32 +1,46 @@
+import { META_STATUS } from 'constants/meta-status';
+
 import clsx from 'clsx';
-import previewCardActionSlot from 'components/Card/slots/previewCardActionSlot';
-import previewCardContentSlot from 'components/Card/slots/previewCardContentSlot';
+import {
+  previewCardCaptionSlot,
+  PreviewCardActionSlot,
+  previewCardContentSlot,
+} from 'components/Card/slots';
 import CardList from 'components/CardList';
+import CardListSkeleton from 'components/CardList/CardListSkeleton';
 import Text from 'components/Text';
+import useRootStore from 'context/root-store/useRootStore';
+import { observer } from 'mobx-react-lite';
 import { memo } from 'react';
-import type { ProductResponseShort } from 'types/product';
 
 import style from './RelatedProducts.module.scss';
 
-export type RelatedProductsProps = {
-  products: ProductResponseShort[];
-};
+const RelatedProducts = () => {
+  const { productsStore } = useRootStore();
 
-const RelatedProducts = ({ products }: RelatedProductsProps) => {
   return (
     <div className={clsx(style['container'])}>
       <Text color="primary" weight="bold" className={clsx(style['title'])}>
-        Related Items
+        Вам понравится
       </Text>
-      <CardList
-        display="preview"
-        products={products}
-        contentSlot={previewCardContentSlot}
-        actionSlot={previewCardActionSlot}
-      />
+      {productsStore.status === META_STATUS.SUCCESS ? (
+        <CardList
+          display="preview"
+          products={productsStore.products}
+          captionSlot={previewCardCaptionSlot}
+          contentSlot={previewCardContentSlot}
+          ActionSlot={PreviewCardActionSlot}
+          className={clsx(style['related-products'])}
+        />
+      ) : (
+        <CardListSkeleton
+          display="preview"
+          skeletonCount={6}
+          className={clsx(style['related-products'])}
+        />
+      )}
     </div>
   );
 };
 
-RelatedProducts.displayName = 'RelatedProducts';
-export default memo(RelatedProducts);
+export default memo(observer(RelatedProducts));

@@ -1,4 +1,5 @@
 import cn from 'clsx';
+import useInitApp from 'hooks/useInitApp';
 import { memo } from 'react';
 
 import style from './Header.module.scss';
@@ -7,12 +8,14 @@ import MainMenu from './components/MainMenu';
 import UserActions from './components/UserActions';
 
 const Header = () => {
+  useInitApp();
+
   return (
     <header className={cn(style['header'])}>
       <div className={cn(style['content-container'])}>
         <AppLogo />
-        <UserActions />
         <MainMenu />
+        <UserActions />
       </div>
     </header>
   );
