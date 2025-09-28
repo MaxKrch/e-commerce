@@ -1,4 +1,5 @@
 import cn from 'clsx';
+import RootStoreProvider from 'context/root-store/RootStore';
 import { HelmetProvider } from 'react-helmet-async';
 import { Outlet } from 'react-router-dom';
 
@@ -10,10 +11,12 @@ const App = () => {
   return (
     <div className={cn(style['app'])}>
       <AppErrorBoundory>
-        <HelmetProvider>
-          <Header />
-          <Outlet />
-        </HelmetProvider>
+        <RootStoreProvider>
+          <HelmetProvider>
+            <Header />
+            <Outlet />
+          </HelmetProvider>
+        </RootStoreProvider>
       </AppErrorBoundory>
     </div>
   );

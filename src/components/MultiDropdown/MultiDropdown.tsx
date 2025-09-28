@@ -1,14 +1,10 @@
-import cn from 'clsx';
+import clsx from 'clsx';
 import Input from 'components/Input';
 import ArrowDownIcon from 'components/icons/ArrowDownIcon';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { Option } from 'types/option-dropdown';
 
 import style from './MultiDropdown.module.scss';
-
-export type Option = {
-  key: string;
-  value: string;
-};
 
 export type MultiDropdownProps = {
   className?: string;
@@ -33,9 +29,9 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
 }) => {
   const inputElement = useRef<HTMLInputElement | null>(null);
   const optionsElement = useRef<HTMLUListElement | null>(null);
-  const resultGetTitle = useMemo(() => getTitle(value), [value, getTitle]);
+  const title = useMemo(() => getTitle(value), [value, getTitle]);
   const [isShowDropdown, setIsShowDropdown] = useState(false);
-  const [inputValue, setInputvalue] = useState(value.length > 0 ? resultGetTitle : '');
+  const [inputValue, setInputvalue] = useState(value.length > 0 ? title : '');
 
   const stateRef = useRef({
     options,
@@ -43,7 +39,7 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     disabled,
     isShowDropdown,
     inputValue,
-    resultGetTitle,
+    title,
   });
 
   useEffect(() => {
@@ -53,46 +49,64 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
       disabled,
       isShowDropdown,
       inputValue,
-      resultGetTitle,
+      title,
     };
-  }, [options, value, disabled, isShowDropdown, inputValue, resultGetTitle]);
+  }, [options, value, disabled, isShowDropdown, inputValue, title]);
 
   const handleClick = useCallback(
     (event: MouseEvent) => {
       const target = event.target;
+
       if (!isNode(target)) {
         return;
       }
 
-      const { value, isShowDropdown, disabled, options } = stateRef.current;
-
-      if (inputElement.current?.contains(target) && !disabled && !isShowDropdown) {
+      //Если клик по дропбоксу, и опции скрыты - раскрываем их
+      if (
+        inputElement.current?.contains(target) &&
+        !stateRef.current.disabled &&
+        !stateRef.current.isShowDropdown
+      ) {
         setIsShowDropdown(true);
         return;
       }
 
+      //Если клик был по опции
       if (optionsElement.current?.contains(target) && target instanceof HTMLLIElement) {
-        const isSelectedOption = value.findIndex((option) => option.key === target.dataset.id) > -1;
+        if (stateRef.current.options.length < 1) {
+          return;
+        }
 
+        const isSelectedOption =
+          stateRef.current.value.findIndex((option) => option.key === target.dataset.id) > -1;
+
+        // Если клик по уже выбранной опции - нужно ее удалить из списка
         if (isSelectedOption) {
-          const indexTargetOption = value.findIndex((option) => option.key === target.dataset.id);
+          const indexTargetOption = stateRef.current.value.findIndex(
+            (option) => option.key === target.dataset.id
+          );
           if (indexTargetOption > -1) {
-            onChange(value.filter((option) => option.key !== target.dataset.id));
+            onChange(stateRef.current.value.filter((option) => option.key !== target.dataset.id));
           }
         } else {
-          const targetOption = options.find((option) => option.key === target.dataset.id);
+          // Если опции нет в списке - нужно ее добавить
+          const targetOption = stateRef.current.options.find(
+            (option) => option.key === target.dataset.id
+          );
           if (targetOption) {
-            onChange([...value, targetOption]);
+            onChange([...stateRef.current.value, targetOption]);
           }
         }
         return;
       }
 
+      // Еслик коик вне контейнера дропдауна - скрыть дропдаун, отменить всплытие
       if (
         !inputElement.current?.contains(target) &&
         !optionsElement.current?.contains(target) &&
-        isShowDropdown
+        stateRef.current.isShowDropdown
       ) {
+        event.stopPropagation();
         setIsShowDropdown(false);
       }
     },
@@ -103,35 +117,36 @@ const MultiDropdown: React.FC<MultiDropdownProps> = ({
     if (isShowDropdown || stateRef.current.value.length === 0) {
       setInputvalue('');
     } else {
-      setInputvalue(resultGetTitle);
+      setInputvalue(title);
     }
-  }, [isShowDropdown, resultGetTitle]);
+  }, [isShowDropdown, title]);
 
   useEffect(() => {
-    document.addEventListener('click', handleClick);
+    document.addEventListener('click', handleClick, true);
 
     return () => document.removeEventListener('click', handleClick);
   }, [handleClick]);
 
   return (
-    <div className={cn(style['container'], className)}>
+    <div className={clsx(style['container'], className)}>
       <Input
         disabled={disabled}
         onChange={setInputvalue}
         value={inputValue}
         ref={inputElement}
         afterSlot={<ArrowDownIcon color="secondary" />}
-        placeholder={resultGetTitle}
+        placeholder={title}
+        name="multiDropdownInput"
       />
       {isShowDropdown && !disabled && (
-        <ul ref={optionsElement} className={cn(style['options-container'])}>
+        <ul ref={optionsElement} className={clsx(style['options-container'])}>
           {options
             .filter((item) => item.value.toLowerCase().includes(inputValue.toLowerCase()))
             .map((option) => (
               <li
                 data-id={option.key}
                 key={option.key}
-                className={cn(
+                className={clsx(
                   style['option'],
                   value.find((value) => value.key === option.key) && style['option_selected']
                 )}

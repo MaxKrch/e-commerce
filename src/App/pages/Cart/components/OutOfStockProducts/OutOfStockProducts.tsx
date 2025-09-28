@@ -1,0 +1,44 @@
+import clsx from 'clsx';
+import Card from 'components/Card';
+import Text from 'components/Text';
+import useRootStore from 'context/root-store/useRootStore';
+import { observer } from 'mobx-react-lite';
+import type React from 'react';
+
+import OutOfStockActionSlot from '../slots/OutOfStockActionSlot';
+
+import style from './OutOfStockProducts.module.scss';
+
+const OutOfStock: React.FC = () => {
+  const { cartStore } = useRootStore();
+
+  if (cartStore.outOfStockProducts.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className={clsx(style['container'])}>
+      {cartStore.outOfStockProducts.length > 0 && (
+        <>
+          <Text tag="h2" className={clsx(style['title'])}>
+            Товаров пока нет:
+          </Text>
+          <ul className={clsx(style['list'])}>
+            {cartStore.outOfStockProducts.map((item) => (
+              <li key={item.product.id}>
+                <Card
+                  className={clsx(style['card'])}
+                  product={item.product}
+                  display="cart"
+                  ActionSlot={() => <OutOfStockActionSlot product={item.product} />}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </section>
+  );
+};
+
+export default observer(OutOfStock);

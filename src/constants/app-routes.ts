@@ -1,4 +1,4 @@
-import type { ProductResponseShort } from 'types/product';
+import type { Product } from 'types/products';
 
 export const appRoutes = {
   main: {
@@ -12,16 +12,16 @@ export const appRoutes = {
     },
     details: {
       mask: '/products/:id',
-      create: (id: ProductResponseShort['documentId']) => `/products/${id}`,
+      create: (id: Product['documentId']) => `/products/${id}`,
     },
   },
   categories: {
     mask: '/categories',
     create: () => '/categories',
   },
-  card: {
-    mask: '/card',
-    create: () => '/card',
+  cart: {
+    mask: '/cart',
+    create: () => '/cart',
   },
   my: {
     mask: '/my',

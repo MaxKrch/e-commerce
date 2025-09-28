@@ -3,16 +3,15 @@ $margin-top: 48px;
 .container {
     @include content-container();
     margin-top: $margin-top;
-
 }
 
 .count {
     display: flex;
     align-items: center;
-    gap: $space-xxl;
+    gap: 1rem;
 
     &__title {
-        font-size: $space-xxxl;
+        @include section-title-font-size();
     }
 }
 

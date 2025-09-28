@@ -1,57 +1,47 @@
-import qs from 'qs';
+import type { QueryParams } from 'types/query-params';
 
-const populate = ['images', 'productCategory'];
+import { buildQueryString } from './build-query-string';
 
-export type ApiProductsArgs = {
-  Categories: {
-    page?: number;
-    pageSize?: number;
-  };
-  ProductsList: {
-    page?: number;
-    pageSize?: number;
-  };
-  ProductsDetails: {
-    id: string;
-  };
-};
+const populate = {
+  products: ['images', 'productCategory'],
+  categories: ['image'],
+} as const;
 
 export const apiRoutes = {
   categories: {
-    list: ({ page = 1, pageSize = 25 }: ApiProductsArgs['Categories']) => {
-      const queryString = qs.stringify({
-        populate,
-        pagination: { page, pageSize },
+    list: () => {
+      const queryString = buildQueryString({
+        populate: populate['categories'],
       });
 
       return `/product-categories?${queryString}`;
     },
   },
   products: {
-    list: ({ page = 1, pageSize = 25 }: ApiProductsArgs['ProductsList']) => {
-      const queryString = qs.stringify({
-        populate,
-        pagination: { page, pageSize },
+    list: (args: QueryParams) => {
+      const queryString = buildQueryString({
+        ...args,
+        populate: populate['products'],
       });
 
       return `/products?${queryString}`;
     },
 
-    details: ({ id }: ApiProductsArgs['ProductsDetails']) => {
-      const queryString = qs.stringify({ populate });
+    details: ({ id }: { id: string }) => {
+      const queryString = buildQueryString({ populate: populate['products'] });
 
       return `/products/${id}?${queryString}`;
     },
   },
   cart: {
     details: () => {
-      return `/card`;
+      return `/cart`;
     },
     add: () => {
-      return `/card/add`;
+      return `/cart/add`;
     },
     remove: () => {
-      return `/card/remove`;
+      return `/cart/remove`;
     },
   },
 } as const;

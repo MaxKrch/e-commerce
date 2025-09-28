@@ -1,0 +1,30 @@
+.container {
+    background-color: #fff;
+    box-shadow: $shadow-normal;
+    border-radius: $border-radius-primary;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xl;
+    padding: $space-s;
+}
+
+.content-slot {
+    display: flex;
+    gap: $space-s;
+}
+
+.content-title {
+    font-size: 1em;
+    color: $brand;
+}
+
+.content-value {
+    font-size: 1.5em;
+}
+
+.card {
+    border-bottom: 1px solid $brand;
+}

@@ -1,3 +1,5 @@
+import type { ProductInCartApi } from './cart';
+
 export type StrapiPagination = {
   page: number;
   pageSize: number;
@@ -5,7 +7,7 @@ export type StrapiPagination = {
   total: number;
 };
 
-type MetaResponse<T> = T extends unknown[] ? { pagination: StrapiPagination } : object;
+export type MetaResponse<T> = T extends unknown[] ? { pagination: StrapiPagination } : object;
 
 type StrapiResponseSuccess<T> = {
   data: T;
@@ -28,5 +30,15 @@ export type StrapiResponse<T> = StrapiResponseSuccess<T> | StrapiResponseError;
 export function isStrapiSuccessResponse<T>(
   response: StrapiResponse<T>
 ): response is StrapiResponseSuccess<T> {
+  return !('error' in response);
+}
+
+export type StrapiResponseCart<T extends ProductInCartApi | ProductInCartApi[]> =
+  | T
+  | StrapiResponseError;
+
+export function isStrapiSuccessResponseCart<T extends ProductInCartApi | ProductInCartApi[]>(
+  response: StrapiResponseCart<T>
+): response is T {
   return !('error' in response);
 }

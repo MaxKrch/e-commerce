@@ -38,7 +38,7 @@ const colorClasses = {
 const Text: React.FC<TextProps> = ({
   color = 'inherit',
   tag: Tag = 'p',
-  view = 'p-16',
+  view,
   weight = 'normal',
   className,
   children,
@@ -53,7 +53,12 @@ const Text: React.FC<TextProps> = ({
       }
     : {};
 
-  const classes = cn(viewClasses[view], weightClasses[weight], colorClasses[color], className);
+  const classes = cn(
+    view && viewClasses[view],
+    weightClasses[weight],
+    colorClasses[color],
+    className
+  );
 
   return (
     <Tag className={classes} style={style}>
